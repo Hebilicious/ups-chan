@@ -4,6 +4,8 @@
   "description": "UPS guild bot",
   "main": "app.js",
   "author": "Hebilicious",
+  "scripts": {"bot": "node app.js"},
+  "license": "MIT",
   "dependencies": {
     "discord.js": "^11.3.0"
   }
