@@ -3,7 +3,7 @@ const auth = require('../auth.json');
 const client = new Discord.Client();
 
 import { secretAlzy, pedoAge } from "./commands/secret-command.js"
-import { handleNodeWar } from "./nodewar/index.js"
+import { handleNodeWar, attendanceNW, listAttendees } from "./nodewar/index.js"
 /**
  * Here we have to call this to initiate the bot.
  */
@@ -28,6 +28,8 @@ client.on('message', msg => {
     secretAlzy(msg);
     pedoAge(msg, client);
     handleNodeWar(msg, client)
+    attendanceNW(msg);
+    listAttendees(msg);
 });
 // channel.send(msg.guild.roles.map(r => `Name:${r.name}, Position:${r.position}, ID: ${r.id}`));
 

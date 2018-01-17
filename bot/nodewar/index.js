@@ -131,3 +131,37 @@ export function handleNodeWar(msg, client){
     }
   }
 }
+
+// Attendance for the upcoming nodewar
+export function attendanceNW(msg){
+  const channel = msg.member.guild.channels.find('name', 'memewar-discussion'); // Use channelID instead of name
+  const role = msg.member.guild.roles.find('name', 'Attending'); // Use roleID instead of the name
+  if (msg.content === '$attend') {
+    // Assign the role to the member
+    msg.member.addRole(role).catch(console.error);
+    // Send the message, mentioning the member
+    channel.send(msg.member.user.username + ' will attend at the upcoming memewar!'); // TAG the user
+  }
+  else if (msg.content === '$cancel') {
+    // Remove the role from the member
+    msg.member.removeRole(role).catch(console.error);
+    // Send the message, mentioning the member
+    channel.send(msg.member.user.username + ' will not attend! Next time fosure though.');
+  }
+};
+
+// List all attendees for next nodewar
+export function listAttendees(msg) {
+  if (msg.content === '$nwlist') {
+    // Send the message to a designated channel on a server:
+    const channel = msg.member.guild.channels.find('name', 'memewar-discussion');
+    // Assign the cached members of the role 'Attending' to the variable
+    var nwlist = msg.member.guild.roles.find('name', 'Attending').members;
+    // Send the message, mentioning the member
+    if (nwlist.size > 0) {
+      channel.send('Here is a list of all attendees for the upcoming memewar:\n' + nwlist.map(u => u.user.username) + '\nThat is a total of **' + nwlist.size + '** people.');
+    } else {
+      channel.send('There are no participants for the upcoming memewar yet.')
+    }
+  }
+};
