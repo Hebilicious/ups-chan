@@ -9,6 +9,8 @@ import { handleNodeWar } from "./nodewar/index.js"
  */
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
+
+  client.user.setPresence({ game: { name: 'Waiting for Lahn Release', type: "WATCHING" } })
 });
 
 /**
