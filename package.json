@@ -4,9 +4,17 @@
   "description": "UPS guild bot",
   "main": "app.js",
   "author": "Hebilicious",
-  "scripts": {"bot": "node app.js"},
+  "scripts": {
+    "dev": "babel-node app.js --presets es2015,stage-2"
+  },
   "license": "MIT",
   "dependencies": {
     "discord.js": "^11.3.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-stage-2": "^6.24.1"
   }
 }
