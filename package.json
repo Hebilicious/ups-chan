@@ -1,0 +1,10 @@
+{
+  "name": "ups-chan",
+  "version": "0.1.0",
+  "description": "UPS guild bot",
+  "main": "app.js",
+  "author": "Hebilicious",
+  "dependencies": {
+    "discord.js": "^11.3.0"
+  }
+}
