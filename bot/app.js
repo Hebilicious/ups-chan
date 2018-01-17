@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const auth = require('./auth.json');
+const auth = require('../auth.json');
 const client = new Discord.Client();
 
 import { secretAlzy } from "./commands/secret-command.js"

@@ -3,7 +3,7 @@ UPS Black Desert Online guild discord bot.
 
 ## How to use
 
-Create an auth.json on the directory root and paste your token like this :
+Create an auth.json at the directory root and paste your token like this :
 
 ```json
 { "token" : "ThisIsYourBotToken" }
