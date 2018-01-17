@@ -17,3 +17,13 @@ npm run dev
 ```
 
 If you do not have yarn ``` npm install -g yarn ``` or use npm instead.
+
+To use the nodewar functionnalities you need a nodewar.json at the root of the Directory
+
+```json
+{
+  "date" : "",
+  "createdAt" : "",
+  "creatorId" : ""
+ }
+```

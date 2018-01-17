@@ -10,3 +10,17 @@ export function secretAlzy(msg){
       channel.send(`https://cdn.discordapp.com/attachments/318482214071566336/402574859013455873/roar.PNG`);
   }
 };
+
+export function pedoAge(msg, client){
+  const regex = /(\bunderage\b|\bage\b)+/mig;
+  let m;
+  // console.log("I'm a bot ? " + msg.author.bot);
+  if(msg.author.bot == false && (m = regex.exec(msg)) !== null){
+    console.log('Matched age somewhere...');
+    const ePedoBear = client.emojis.find("name", "PedoBear");
+    const eKappa = client.emojis.find("name", "Kappa");
+    const reply = `${ePedoBear} Age is nothing but a number ... ${eKappa}`;
+    // console.log(reply);
+    msg.reply(reply);
+  }
+}
