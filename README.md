@@ -1,3 +1,5 @@
+<p align="center"><a href="" target="_blank"><img width="100" src="https://cdn.discordapp.com/attachments/312317025357791242/403003504886546433/upschan.png" alt="UPS logo"></a></p>
+
 # UPS-chan
 UPS Black Desert Online guild discord bot.
 
