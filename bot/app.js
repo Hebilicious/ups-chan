@@ -4,6 +4,9 @@ const client = new Discord.Client();
 
 import { secretAlzy, pedoAge } from "./commands/secret-command.js"
 import { handleNodeWar } from "./nodewar/index.js"
+// import rethink from "rethinkdb"
+
+
 /**
  * Here we have to call this to initiate the bot.
  */
@@ -11,6 +14,7 @@ client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 
   client.user.setPresence({ game: { name: 'Waiting for Lahn Release', type: "WATCHING" } })
+
 });
 
 /**
@@ -25,7 +29,7 @@ client.on('message', msg => {
 /**
  * Call a custom command on each message.
  */
-client.on('message', msg => {
+client.on('message', (msg) => {
     // console.log(`New message : ${msg}`);
     secretAlzy(msg);
     pedoAge(msg, client);

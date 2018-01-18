@@ -1,14 +1,11 @@
 import moment from "moment-timezone"
 import Sugar from "sugar"
-import schedule from "node-schedule"
+import rethink from 'rethinkdb'
 const fs = require("fs")
 // const schedule = require("node-schedule")
 
-const nodewarPath = '../../nodewar.json';
 const timezone = "Europe/Paris";
 const authorizedRolesIds = ["312317944417878016", "341182224139419650", "316283334768459777"];
-
-let nodewar = require(nodewarPath);
 
 /**
  * NodeWar Handler
@@ -25,10 +22,10 @@ export function handleNodeWar(msg, client){
   const attendingRole = msg.member.guild.roles.find('name', 'Attending'); // Use roleID instead of the name
 
   if(msg.content.startsWith(keynodewar)){
-    NodeWarManager(msg, client, nodeWarChannel, attendingRole);
+    nodewarManager(msg, client, nodeWarChannel, attendingRole);
   }
   if(msg.content.startsWith(keylist)){
-    listAttendees(msg, nodeWarChannel, attendingRole);
+    listAttendingMembers(msg, nodeWarChannel, attendingRole);
   }
   if(msg.content.startsWith(keyattend)){
     attendNodeWar(msg, nodeWarChannel, attendingRole);
@@ -65,8 +62,14 @@ function cancelNodeWarAttendance(msg, channel, role){
    channel.send(msg.member.user.username + ' will not attend! Next time fosure though.');
 }
 
-// List all attendees for next nodewar
-function listAttendees(msg, channel, role) {
+/**
+ * List attending members.
+ * @param  {[type]} msg     [description]
+ * @param  {[type]} channel [description]
+ * @param  {[type]} role    [description]
+ * @return {[type]}         [description]
+ */
+function listAttendingMembers(msg, channel, role) {
     // Assign the cached members of the role 'Attending' to the variable
     let nwlist = msg.member.guild.roles.find('name', role.name).members;
     // Send the message, mentioning the member
@@ -86,17 +89,15 @@ function listAttendees(msg, channel, role) {
  * @param  {[type]} client [description]
  * @return {[type]}        [description]
  */
-
-function NodeWarManager(msg, client, nodeWarChannel, attendingRole){
-  console.log('UPSchan specific nodewar command');
+function nodewarManager(msg, client, nodeWarChannel, attendingRole){
+  console.log('UPSchan specific $nodewar commands');
   let channel = msg.channel;
   let args = msg.content.slice(1).trim().split(/ +/g);
   let command = args.shift().toLowerCase();
   let firstArg = args[0];
 
-
   console.log(JSON.stringify(args));
-
+  //Help
   if(firstArg === "help"){
     channel.send("**Welcome to the UPS nodewar system** \n *Admin commands :* \n   -'$nodewar date' creates a Nodewar event at the specified date. Today, tomorrow, sunday etc are considered valid dates. Otherwise you can use a regular dd/mm/yyyy format. \n   -'nodewar clear' Clears the current nodewar evenet. \n   *Regular commands :* \n  - '$attend' set your role to attending. \n  - '$cancel' remove yourself from the attending list. \n   - '$nwlist' list all the attending participants.");
     return;
@@ -108,16 +109,38 @@ function NodeWarManager(msg, client, nodeWarChannel, attendingRole){
   }
   //If only $nodewar is passed we do stuff
   if(args.length == 0){
-    if(!nodewar.date.length == 0){
-      msg.reply("When would you like to do a nodewar?");
-    }else{
-      msg.reply(`Nodewar scheduled for ${moment(nodewar.date).format('dddd, MMMM Do YYYY')}.`);
-    }
+    rethink.connect({host: 'localhost', port: 28015}).then(function(conn){
+      rethink.db('test').table('nodewar').filter({isActive: true}).run(conn, function(err, cursor){
+        if (err) throw err;
+        cursor.toArray(function(err, result){
+          if (err) throw err;
+          console.log(result);
+          if(result.length == 1){
+            msg.reply(`Nodewar scheduled for ${moment(result.date).format('dddd, MMMM Do YYYY')}.`)
+          }else{
+            msg.reply("When would you like to do a nodewar?");
+          }
+        })
+      })
+    });
     return;
   }
+
   //Clear command
-  if(firstArg === "clear"){
-    clearNodeWar(msg, nodeWarChannel, attendingRole);
+  if(firstArg === "cancel"){
+    cancelNodeWar(msg, nodeWarChannel, attendingRole);
+    return;
+  }
+
+  if(firstArg === "win"){
+    console.log('We won');
+    endNodeWar(msg, nodeWarChannel, attendingRole, firstArg);
+    return;
+  }
+
+  if(firstArg === "lose"){
+    console.log('We lost');
+    endNodeWar(msg, nodeWarChannel, attendingRole, firstArg);
     return;
   }
   //Assume that firstArg is a date, check if we're authorized to do so & that we have a date
@@ -126,10 +149,10 @@ function NodeWarManager(msg, client, nodeWarChannel, attendingRole){
     let sugarDate = Sugar.Date.create(firstArg);
     let tzDate = moment.tz(sugarDate, timezone);
     if(tzDate.isValid()){
-      msg.reply(`Greetings mylord, let's do a nodewar on the ${tzDate.format('dddd, MMMM Do YYYY')}`);
+      msg.reply(`Greetings Sir, let's do a nodewar on the ${tzDate.format('dddd, MMMM Do YYYY')}`);
       createNodeWar(msg, tzDate);
     }else{
-      msg.reply("I'm sorry mylord, the date you told me is invalid.")
+      msg.reply("I'm sorry Sir, the date you told me is invalid.")
     }
   }
 }
@@ -152,53 +175,117 @@ function canCreateNodeWar(member){
  */
 function createNodeWar(message, date){
   console.log('Creating nodewar');
+  let endDate = date.add({hours:10, minutes:30});
   let nwObject =
   {
+    "isActive": true,
+    "victory": false,
     "date" : date.format(),
-    "createdAt" : moment.tz(moment(), timezone),
-    "creatorId" :  message.member.id
+    "createdAt" : moment.tz(moment(), timezone).format(),
+    "creatorId" :  message.member.id,
+    "attendingMembers": 0
   };
-  let nwString = JSON.stringify(nwObject)
-  console.log(nwString);
-  fs.writeFile(nodewarPath, nwString, (err) => console.error);
-
-  let endDate = date.add({hours:10, minutes:30});
-  console.log(new Date(endDate.format()));
-  let scheduledNodewar = schedule.scheduleJob("Nodewar", new Date(endDate.format()), function(){
-    console.log('Scheduled clear.');
-    clearNodeWar(message);
+  // 1.Check that we have the table
+  // 2.Check that currrent nodewar is over
+  // 3. Create a nodewar Entry
+  rethink.connect({host: 'localhost', port: 28015}).then(function(conn){
+    rethink.db('test').tableList().run(conn).then(function(result){
+      console.log(result);
+      if(result.includes('nodewar')){
+        console.log('Letscheck');
+        checkIfNodeWarIsActive(conn);
+      }else{
+        console.log('Letscreate and check');
+        rethink.db('test').tableCreate('nodewar').run(conn).then((conn) => checkIfNodeWarIsActive(conn));
+      };
+    })
   });
 
-  // console.log(scheduledNodewar);
-  // let testDate = moment.tz(moment().add({seconds:5}), timezone);
-  // console.log(moment().format());
-  // console.log(testDate.format());
-  // let k = schedule.scheduleJob("Test", new Date(testDate.format()), function(){
-  //   console.log('ding');
-  //   message.reply('TEST OK');
-  // });
+  //Check if we have a nodewar
+  function checkIfNodeWarIsActive(conn){
+    rethink.db('test').table('nodewar').filter({isActive: true}).run(conn, function(err, cursor){
+      if (err) throw err;
+      cursor.toArray(function(err, result){
+        if (err) throw err;
+        if(result.length == 1){
+          updateCurrentNodeWar(conn);
+          message.reply(`Modifying the current nodewar`);
+        }
+        if(result.length == 0){
+          insertNewNodeWar(conn);
+          message.reply('Creating a new nodewar');
+        }
+        if(result.length > 1){
+          message.reply('DB ERROR, need to be resynced.');
+        }
+      })
+    })
+  }
 
-  // message.channel.send(`Nodewar on ${moment(nodewar.date).format('dddd, MMMM Do YYYY')}, scheduled to end at ${scheduledNodewar.nextInvocation().format('HH:mm')}.`)
+  //Update a node war
+  function updateCurrentNodeWar(conn){
+    rethink.db('test').table('nodewar').filter({isActive: true}).update({ date: date.format()}).run(conn, function(err, result){
+      if (err) throw err
+      console.log(JSON.stringify(result, null, 2));
+    });
+    console.log('Updated nodewar.')
+  }
 
-  message.reply(`TEMP:nodewar successfully created ${nwString}`);
+  //Insert a node war
+  function insertNewNodeWar(conn){
+    console.log(nwObject);
+    rethink.db('test').table('nodewar').insert(nwObject).run(conn, function(err, result){
+      if (err) throw err
+      console.log(JSON.stringify(result, null, 2));
+    });
+    console.log('Created nodewar');
+  }
 }
 
 /**
- * Clear a nodewar event from the filesystem.
+ * End a nodewar
+ * @param  {[Object]} message [The initial message]
+ * @param  {[Object]} channel [The Nodewar channel]
+ * @param  {[Object]} role    [The Attending Role]
+ * @param  {[String]} result  [Win or Lose]
+ * @return {[type]}         [description]
+ */
+function endNodeWar(message, channel, role, result){
+  //1.Fetch the current nodewar.
+  //2. Update it with the results
+  //3. Clear the attendingmembers.
+  let victory;
+  if(result == "win"){ victory = true }
+  if(result == "lose"){ victory = false}
+  let updatedNW = { isActive: false, victory: victory, attendingMembers: message.member.guild.roles.find('name', role.name).members.map(m => m.user.id)};
+  rethink.connect({host: 'localhost', port: 28015}).then(function(conn){
+    rethink.db('test').table('nodewar').filter({isActive: true}).update(updatedNW).run(conn, function(err, result){
+      if (err) throw err
+      console.log(JSON.stringify(result, null, 2));
+      if(victory){
+        message.channel.send(`Congratulations to @everyone for this insane win !!!`);
+      }else{
+        message.channel.send('NextTime 4sure.');
+      }
+      clearAttendingMembers(message, channel, role);
+    });
+  });
+}
+
+/**
+ * Cancel a nodewar event from the db.
  * @param  {[type]} message [description]
  * @return {[type]}         [description]
  */
-function clearNodeWar(message, channel, role){
-  let nwObject =
-  {
-    "date" : "",
-    "createdAt" : "",
-    "creatorId" : message.member.id
-  };
-  let nwString = JSON.stringify(nwObject)
-  clearAttendingMembers(message, channel, role);
-  fs.writeFile(nodewarPath, nwString, (err) => console.error);
-  message.reply(`TEMP:nodewar successfully cleared ${nwString}`);
+function cancelNodeWar(message, channel, role){
+  rethink.connect({host: 'localhost', port: 28015}).then(function(conn){
+    rethink.db('test').table('nodewar').filter({isActive: true}).delete().run(conn, function(err, result){
+      if (err) throw err
+      console.log(JSON.stringify(result, null, 2));
+      message.reply(`NodeWar successfully canceled.`);
+      clearAttendingMembers(message, channel, role);
+    });
+  });
 }
 
 /**
@@ -208,5 +295,5 @@ function clearNodeWar(message, channel, role){
  */
 function clearAttendingMembers(message, channel, role){
   message.member.guild.roles.find('name', role.name).members.forEach(member => member.removeRole(role).catch(console.error));
-  message.channel.send(`TEMP:Removed attending role for everyone`);
+  message.channel.send(`The attending roles have been correctly removed.`);
 }
