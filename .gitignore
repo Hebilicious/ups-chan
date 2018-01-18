@@ -1,5 +1,6 @@
 auth.json
 nodewar.json
+.cache/
 # Created by https://www.gitignore.io/api/node
 
 ### Node ###

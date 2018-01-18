@@ -13,7 +13,7 @@ import { handleNodeWar } from "./nodewar/index.js"
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 
-  client.user.setPresence({ game: { name: 'Waiting for Lahn Release', type: "WATCHING" } })
+  client.user.setPresence({ game: { name: 'Waiting for Lahn', type: "WATCHING" } })
 
 });
 
@@ -21,8 +21,8 @@ client.on('ready', () => {
  * The ping pong example.
  */
 client.on('message', msg => {
-  if (msg.content === 'ping') {
-    msg.reply('Pong!');
+  if (msg.content === 'I love you.') {
+    msg.reply('I know.');
   }
 });
 

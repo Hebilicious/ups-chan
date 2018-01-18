@@ -18,6 +18,16 @@ yarn install
 npm run dev
 ```
 
+To build:
+```sh
+npm run build
+```
+
+To build without webpack (should work better on windows):
+```sh
+npm run build-nowp
+```
+You will webpack installed globally ``` npm install -g webpack ```.
 If you do not have yarn ``` npm install -g yarn ``` or use npm instead.
 
 To use the nodewar functionnalities you need rethinkDB
