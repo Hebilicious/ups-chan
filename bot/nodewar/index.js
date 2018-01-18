@@ -44,7 +44,7 @@ function attendNodeWar(msg, channel, role){
     // Assign the role to the member
     msg.member.addRole(role).catch(console.error);
     // Send the message, mentioning the member
-    msg.reply('As your wish.');
+    msg.reply('As you wish.');
     channel.send(msg.member.user.username + ' will attend at the upcoming memewar!'); // TAG the user
 }
 
@@ -70,6 +70,12 @@ function cancelNodeWarAttendance(msg, channel, role){
  * @return {[type]}         [description]
  */
 function listAttendingMembers(msg, channel, role) {
+    //Check for roles
+    //If no auth we return early
+    if(!canCreateNodeWar(msg.member)) {
+      msg.reply("Ask one of your overlords.")
+      return;
+    }
     // Assign the cached members of the role 'Attending' to the variable
     let nwlist = msg.member.guild.roles.find('name', role.name).members;
     // Send the message, mentioning the member
@@ -81,6 +87,16 @@ function listAttendingMembers(msg, channel, role) {
     } else {
       msg.channel.send('There are no participants for the upcoming memewar yet.')
     }
+}
+
+/**
+ * Check if a member has specifics ids;
+ * @param  {[type]} member [description]
+ * @return {[type]}        [description]
+ */
+function canCreateNodeWar(member){
+  console.log("Can you ?");
+  return (member.roles.some(r=>authorizedRolesIds.includes(r.id)))?true:false;
 }
 
 /**
@@ -99,7 +115,9 @@ function nodewarManager(msg, client, nodeWarChannel, attendingRole){
   console.log(JSON.stringify(args));
   //Help
   if(firstArg === "help"){
-    channel.send("**Welcome to the UPS nodewar system** \n *Admin commands :* \n   -'$nodewar date' creates a Nodewar event at the specified date. Today, tomorrow, sunday etc are considered valid dates. Otherwise you can use a regular dd/mm/yyyy format. \n   -'nodewar clear' Clears the current nodewar evenet. \n   *Regular commands :* \n  - '$attend' set your role to attending. \n  - '$cancel' remove yourself from the attending list. \n   - '$nwlist' list all the attending participants.");
+    msg.member.user.createDM().then(function(DM){
+      DM.send("**Welcome to the UPS nodewar system** \n*Regular commands :* \n  - **$attend** set your role to attending. \n  - **$cancel** remove yourself from the attending list. \n*Admin commands :* \n   - **$nwlist** list all the attending participants.\n   -**$nodewar *date* ** creates a Nodewar event at the specified date. \n   -**nodewar cancel** Cancel the current nodewar. \n   -**$nodewar win** End the current nodewar with a win. \n   -**$nodewar lose** End the current nodewar with a lose.");
+    })
     return;
   }
   //If no auth we return early
@@ -155,16 +173,6 @@ function nodewarManager(msg, client, nodeWarChannel, attendingRole){
       msg.reply("I'm sorry Sir, the date you told me is invalid.")
     }
   }
-}
-
-/**
- * Check if a member has specifics ids;
- * @param  {[type]} member [description]
- * @return {[type]}        [description]
- */
-function canCreateNodeWar(member){
-  console.log("Can you ?");
-  return (member.roles.some(r=>authorizedRolesIds.includes(r.id)))?true:false;
 }
 
 /**

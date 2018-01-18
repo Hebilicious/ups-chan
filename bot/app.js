@@ -13,7 +13,7 @@ import { handleNodeWar } from "./nodewar/index.js"
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
 
-  client.user.setPresence({ game: { name: 'Waiting for Lahn', type: "WATCHING" } })
+  client.user.setPresence({ game: { name: 'Waiting for Lahn', url:"http://twitch.tv/fix8radio", type: "STREAMING" } })
 
 });
 
@@ -31,9 +31,12 @@ client.on('message', msg => {
  */
 client.on('message', (msg) => {
     // console.log(`New message : ${msg}`);
-    secretAlzy(msg);
-    pedoAge(msg, client);
-    handleNodeWar(msg, client)
+    // Check for dms
+    if(msg.member != null){
+      secretAlzy(msg);
+      pedoAge(msg, client);
+      handleNodeWar(msg, client)
+    }
 });
 // channel.send(msg.guild.roles.map(r => `Name:${r.name}, Position:${r.position}, ID: ${r.id}`));
 
