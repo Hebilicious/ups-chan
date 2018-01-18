@@ -6,8 +6,7 @@
   "author": "Hebilicious",
   "scripts": {
     "dev": "webpack --watch",
-    "build": "webpack -p",
-    "build-nowp": "babel bot -d dist"
+    "build": "webpack -p"
   },
   "license": "MIT",
   "dependencies": {
@@ -18,11 +17,13 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
-    "clean-webpack-plugin": "^0.1.17",
     "nodemon-webpack-plugin": "^0.1.6",
+    "webpack": "^3.10.0",
     "webpack-node-externals": "^1.6.0"
   }
 }

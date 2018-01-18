@@ -11,6 +11,8 @@ Create an auth.json at the directory root and paste your token like this :
 { "token" : "ThisIsYourBotToken" }
 ```
 
+You will probably neeed webpack installed globally ``` npm install -g webpack ```.
+
 Then on your terminal:
 
 ```sh
@@ -23,11 +25,6 @@ To build:
 npm run build
 ```
 
-To build without webpack (should work better on windows):
-```sh
-npm run build-nowp
-```
-You will webpack installed globally ``` npm install -g webpack ```.
 If you do not have yarn ``` npm install -g yarn ``` or use npm instead.
 
 To use the nodewar functionnalities you need rethinkDB
