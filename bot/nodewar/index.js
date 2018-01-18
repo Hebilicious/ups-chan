@@ -134,7 +134,8 @@ function nodewarManager(msg, client, nodeWarChannel, attendingRole){
           if (err) throw err;
           console.log(result);
           if(result.length == 1){
-            msg.reply(`Nodewar scheduled for ${moment.tz(result.date, timezone).format('dddd, MMMM Do YYYY')}.`)
+            console.log(result.date);
+            msg.reply(`Nodewar scheduled for ${result.date.format('dddd, MMMM Do YYYY')}.`)
           }else{
             msg.reply("When would you like to do a nodewar?");
           }
