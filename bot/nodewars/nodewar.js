@@ -80,7 +80,7 @@ function nodewarManager(msg, client, nodeWarChannel, attendingRole) {
             value: "**$nwlist** - list all the participants for the upcoming nodewar.\n**$nodewar date** - creates a nodewar event at the specified date.\n**$nodewar cancel** - cancel the current nodewar\n**$nodewar win** - end the current nodewar with a win.\n**$nodewar loss** - end the current nodewar with a loss."
           }
           ],
-          timestamp: new Date(),
+          timestamp: moment().tz(timezone),
           footer: {
             icon_url: client.user.avatarURL,
             text: client.user.username
