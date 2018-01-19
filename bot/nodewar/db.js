@@ -9,7 +9,7 @@ const timezone = "Europe/Paris"
  * @param  {[Object]} message [The initial message]
  * @param  {[Object]} channel [The Nodewar channel]
  * @param  {[Object]} role    [The Attending Role]
- * @param  {[String]} result  [Win or Lose]
+ * @param  {[String]} result  [Win or Loss]
  * @return {[type]}         [description]
  */
 export function endNodeWar(message, channel, role, result) {
@@ -20,7 +20,7 @@ export function endNodeWar(message, channel, role, result) {
   if (result == "win") {
     victory = true
   }
-  if (result == "lose") {
+  if (result == "loss") {
     victory = false
   }
   let updatedNW = {

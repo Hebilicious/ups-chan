@@ -66,9 +66,27 @@ function nodewarManager(msg, client, nodeWarChannel, attendingRole) {
   //Help
   if (firstArg === "help") {
     msg.member.user.createDM().then(function(DM) {
-      DM.send(
-        "**Welcome to the UPS nodewar system** \n*Regular commands :* \n  - **$attend** set your role to attending. \n  - **$cancel** remove yourself from the attending list. \n*Admin commands :* \n   - **$nwlist** list all the attending participants.\n   -**$nodewar *date* ** creates a Nodewar event at the specified date. \n   -**nodewar cancel** Cancel the current nodewar. \n   -**$nodewar win** End the current nodewar with a win. \n   -**$nodewar lose** End the current nodewar with a lose."
-      )
+      DM.send({embed: {
+        color: 16753920,
+        title: "Welcome to the UPS nodewar system!",
+        url: "https://www.ups.com",
+        description: "This is a list of all the commands related to nodewar.",
+        fields: [{
+            name: "__Regular commands__",
+            value: "**$attend** - set your role to *Attending*.\n**$cancel** - remove yourself from the *Attending* list.\n**$nodewar** - tells you the date for the the upcoming nodewar.",
+          },
+          {
+            name: "__Admin commands__",
+            value: "**$nwlist** - list all the participants for the upcoming nodewar.\n**$nodewar date** - creates a nodewar event at the specified date.\n**$nodewar cancel** - cancel the current nodewar\n**$nodewar win** - end the current nodewar with a win.\n**$nodewar loss** - end the current nodewar with a loss."
+          }
+          ],
+          timestamp: new Date(),
+          footer: {
+            icon_url: client.user.avatarURL,
+            text: client.user.username
+          }
+        }
+      })
     })
     return
   }
@@ -90,12 +108,12 @@ function nodewarManager(msg, client, nodeWarChannel, attendingRole) {
   }
   //Win command
   if (firstArg === "win") {
-    console.log("We won")
+    console.log("VI VON ZULUL")
     NodewarDB.endNodeWar(msg, nodeWarChannel, attendingRole, firstArg)
     return
   }
-  //Lose Command
-  if (firstArg === "lose") {
+  //Loss Command
+  if (firstArg === "loss") {
     console.log("We lost")
     NodewarDB.endNodeWar(msg, nodeWarChannel, attendingRole, firstArg)
     return
