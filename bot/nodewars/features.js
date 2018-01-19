@@ -1,3 +1,4 @@
+import * as Messages from "../verbose/messages.js"
 /**
  * Check if a member has specifics ids;
  * @param  {[type]} member [description]
@@ -30,7 +31,7 @@ export function attendNodeWar(msg, channel, role) {
   msg.member.addRole(role).catch(console.error)
   // Send the message, mentioning the member
   msg.member.user.createDM().then(function(DM) {
-    DM.send(getRandomOkMessage())
+    DM.send(Messages.getRandomOkMessage())
   })
   // msg.reply("As you wish.")
   channel.send(
@@ -48,31 +49,9 @@ export function cancelNodeWarAttendance(msg, channel, role) {
   msg.member.removeRole(role).catch(console.error)
   // Send the message, mentioning the member
   msg.member.user.createDM().then(function(DM) {
-    DM.send(getRandomOkMessage())
+    DM.send(Messages.getRandomOkMessage())
   })
   channel.send(
     msg.member.user.username + " will not attend! Next time fosure though."
   )
-}
-
-function getRandomOkMessage() {
-  const messages = [
-    "As you wish.",
-    "Your will, my hands.",
-    "Your wishes, my commands.",
-    "At your service.",
-    "Of course master.",
-    "I obey.",
-    "I'm yours to command.",
-    "Anything to please you my lord.",
-    "Yes please daddy.",
-    "Oh ye that's the spot baby...",
-    "I heard lib is a woman, is that true ?? Uh I'm sorry that's the wrong message !! I meant : Yes master.",
-    "Without hesitation.",
-    "Yes master.",
-    "Right away sir.",
-    "Sir, yes sir.",
-    "Rush b cyka blyat.. *enables english* Yes mylord."
-  ]
-  return messages[Math.floor(Math.random() * messages.length)]
 }
