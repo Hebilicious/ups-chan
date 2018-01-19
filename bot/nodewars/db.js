@@ -43,8 +43,10 @@ export function endNodeWar(message, channel, role, result) {
           message.channel.send(
             `Congratulations to @everyone for this insane win !!!`
           )
+          setNodewarTopic(message, "EZ game EZ win EZ")
         } else {
           message.channel.send("NextTime 4sure.")
+          setNodewarTopic(message, "We got unlucky.")
         }
         clearAttendingMembers(message, channel, role)
       })
@@ -52,7 +54,7 @@ export function endNodeWar(message, channel, role, result) {
 }
 
 /**
- * Cancel a nodewar event from the db.
+ * Cancel a nodewar event
  * @param  {[type]} message [description]
  * @return {[type]}         [description]
  */
@@ -67,6 +69,7 @@ export function cancelNodeWar(message, channel, role) {
         if (err) throw err
         console.log(JSON.stringify(result, null, 2))
         message.reply(`NodeWar successfully canceled.`)
+        setNodewarTopic(message, "UPS will prevail soon.")
         clearAttendingMembers(message, channel, role)
       })
   })
@@ -228,15 +231,20 @@ function checkIfTableExists(message) {
 
 //The actual response sent by the bot.
 function respondNodewar(message, result) {
-  console.log("Hey we're here")
   if (result.length == 1) {
-    console.log("Active OK")
-    message.reply(
-      `Nodewar scheduled for ${moment(result[0].date).format(
-        "dddd, MMMM Do YYYY"
-      )}.`
-    )
+    let fDate = moment(result[0].date).format("dddd, MMMM Do YYYY")
+    setNodewarTopic(message, `Nodewar => ${fDate} !`)
+    message.reply(`Nodewar scheduled for ${fDate}.`)
   } else {
     message.reply("When would you like to create a nodewar?")
   }
+}
+
+//Set the topic for the nw channel
+function setNodewarTopic(message, topic) {
+  const nodeWarChannel = message.member.guild.channels.find(
+    "name",
+    "memewar-discussion"
+  )
+  nodeWarChannel.setTopic(topic)
 }

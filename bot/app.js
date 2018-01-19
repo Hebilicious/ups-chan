@@ -3,7 +3,9 @@ const auth = require("../auth.json")
 const client = new Discord.Client()
 
 import * as commands from "./commands/secret-command.js"
-import {handleNodeWar} from "./nodewar/index.js"
+import {handleNodeWar} from "./nodewars/nodewar.js"
+import * as events from "./events/event.js"
+
 // import rethink from "rethinkdb"
 
 /**
@@ -31,6 +33,9 @@ client.on("message", msg => {
   }
 })
 
+client.on("guildMemberUpdate", (oldM, newM) => {
+  events.memberUpdate(oldM, newM)
+})
 /**
  * Call a custom command on each message.
  */
