@@ -24,5 +24,45 @@ export function listEmojis(message, client) {
   }
 }
 
-let mock =
-  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. In dapibus sapien augue, eget malesuada elit pretium rutrum. Nunc commodo enim non vestibulum aliquet."
+/**
+ * List Emojis the bot has access to.
+ * @param  {[type]}  message [description]
+ * @param  {[type]}  client  [description]
+ * @return {Boolean}         [description]
+ */
+export function listChannels(message, client) {
+  if (message.content === "$listChannels") {
+    console.log("listing channels")
+    const channelList = message.member.guild.channels
+      .sort((a, b) => {
+        a.position - b.position
+      })
+      .map(
+        c => `${c.position} - **$Name**: ${c.name}, **Type**: ${c.type}, **ID:** ${c.id}`
+      )
+    message.channel.send(channelList.join("\n"), { split: true })
+  }
+}
+
+/**
+ * List Emojis the bot has access to.
+ * @param  {[type]}  message [description]
+ * @param  {[type]}  client  [description]
+ * @return {Boolean}         [description]
+ */
+export function listRoles(message, client) {
+  if (message.content === "$listRoles") {
+    console.log("listing roles")
+    const roleList = message.member.guild.roles
+      .sort((a, b) => {
+        a.calculatedPosition - b.calculatedPosition
+      })
+      .map(
+        r =>
+          `${r.calculatedPosition} - **$Name**: ${r.name}, **Members**: ${
+            r.members.size
+          }, **ID:** ${r.id}`
+      )
+    message.channel.send(channelList.join("\n"), { split: true })
+  }
+}
