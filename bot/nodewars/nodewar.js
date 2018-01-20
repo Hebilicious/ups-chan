@@ -3,17 +3,11 @@ import Sugar from "sugar"
 import rethink from "rethinkdb"
 import * as Nodewar from "./features.js"
 import * as NodewarDB from "./db.js"
-
+import {authorizedRolesIds} from "../auth/authorization.js"
 // const schedule = require("node-schedule")
 
 const timezone = "Europe/Paris"
 //Mom&Dad,WeebOverlords,Lider,Test
-const authorizedRolesIds = [
-  "312317944417878016",
-  "341182224139419650",
-  "316283334768459777",
-  "248702697610412032"
-]
 
 /**
  * NodeWar Handler
@@ -66,19 +60,23 @@ function nodewarManager(msg, client, nodeWarChannel, attendingRole) {
   //Help
   if (firstArg === "help") {
     msg.member.user.createDM().then(function(DM) {
-      DM.send({embed: {
-        color: 16753920,
-        title: "Welcome to the UPS nodewar system!",
-        url: "https://www.ups.com",
-        description: "This is a list of all the commands related to nodewar.",
-        fields: [{
-            name: "__Regular commands__",
-            value: "**$attend** - set your role to *Attending*.\n**$cancel** - remove yourself from the *Attending* list.\n**$nodewar** - tells you the date for the the upcoming nodewar.",
-          },
-          {
-            name: "__Admin commands__",
-            value: "**$nwlist** - list all the participants for the upcoming nodewar.\n**$nodewar date** - creates a nodewar event at the specified date.\n**$nodewar cancel** - cancel the current nodewar\n**$nodewar win** - end the current nodewar with a win.\n**$nodewar loss** - end the current nodewar with a loss."
-          }
+      DM.send({
+        embed: {
+          color: 16753920,
+          title: "Welcome to the UPS nodewar system!",
+          url: "https://www.ups.com",
+          description: "This is a list of all the commands related to nodewar.",
+          fields: [
+            {
+              name: "__Regular commands__",
+              value:
+                "**$attend** - set your role to *Attending*.\n**$cancel** - remove yourself from the *Attending* list.\n**$nodewar** - tells you the date for the the upcoming nodewar."
+            },
+            {
+              name: "__Admin commands__",
+              value:
+                "**$nwlist** - list all the participants for the upcoming nodewar.\n**$nodewar date** - creates a nodewar event at the specified date.\n**$nodewar cancel** - cancel the current nodewar\n**$nodewar win** - end the current nodewar with a win.\n**$nodewar loss** - end the current nodewar with a loss."
+            }
           ],
           timestamp: moment().tz(timezone),
           footer: {
@@ -154,7 +152,7 @@ function listAttendingMembers(msg, channel, role) {
   let nwlist = msg.member.guild.roles.find("name", role.name).members
   // Send the message, mentioning the member
   let nameList = []
-  nwlist.forEach(m => nameList.push("- " + m.user.username))
+  nwlist.forEach(m => nameList.push("- " + m.displayName))
   console.log(nameList)
   nameList = nameList.join("\n ")
   if (nwlist.size > 0) {

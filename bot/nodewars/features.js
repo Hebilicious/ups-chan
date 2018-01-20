@@ -1,12 +1,13 @@
 import * as Messages from "../verbose/messages.js"
+import {checkMemberForRolesIds} from "../auth/authorization.js"
+
 /**
  * Check if a member has specifics ids;
  * @param  {[type]} member [description]
  * @return {[type]}        [description]
  */
 export function canCreateNodeWar(member, rolesIds) {
-  console.log("Can you ?")
-  return member.roles.some(r => rolesIds.includes(r.id)) ? true : false
+  return checkMemberForRolesIds(member, rolesIds)
 }
 
 /**

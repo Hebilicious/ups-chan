@@ -4,7 +4,7 @@ export function secretAlzy(msg) {
     // Send the message to a designated channel on a server:
     const channel = msg.member.guild.channels.find(
       "name",
-      "super-important-and-private-stuff"
+      "drama-super-important-and-private-stuff"
     )
     console.log(channel)
     // Do nothing if the channel wasn't found on this server
@@ -33,6 +33,6 @@ export function pedoAge(msg, client) {
 export function grammar(msg) {
   const ex = ["execpt", "excpet", "excetp", "except"]
   if (ex.some(w => msg.content.includes(w))) {
-    msg.reply("Expect. Expecting.")
+    msg.reply("Expect. Expecting. ")
   }
 }

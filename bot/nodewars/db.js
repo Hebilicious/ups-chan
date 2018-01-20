@@ -1,6 +1,7 @@
 import rethink from "rethinkdb"
 import moment from "moment-timezone"
 import {clearAttendingMembers} from "./features.js"
+import * as Messages from "../verbose/messages.js"
 
 const timezone = "Europe/Paris"
 
@@ -40,12 +41,10 @@ export function endNodeWar(message, channel, role, result) {
         if (err) throw err
         console.log(JSON.stringify(result, null, 2))
         if (victory) {
-          message.channel.send(
-            `Congratulations to @everyone for this insane win !!!`
-          )
+          message.channel.send(Messages.getRandomWinMessage())
           setNodewarTopic(message, "EZ game EZ win EZ")
         } else {
-          message.channel.send("NextTime 4sure.")
+          message.channel.send(Messages.getRandomLossMessage())
           setNodewarTopic(message, "We got unlucky.")
         }
         clearAttendingMembers(message, channel, role)
@@ -143,11 +142,13 @@ function checkIfNodeWarIsActive(conn, nwObject, message) {
         if (err) throw err
         if (result.length == 1) {
           updateCurrentNodeWar(conn, nwObject)
-          message.reply(`Modifying the current nodewar`)
+          message.reply(`Modified the current Nodewar.`)
+          setNodewarTopic(message, `Nodewar => ${fDate} !`)
         }
         if (result.length == 0) {
           insertNewNodeWar(conn, nwObject)
-          message.reply("Creating a new nodewar")
+          message.reply("New nodewar created !")
+          setNodewarTopic(message, `Nodewar => ${fDate} !`)
         }
         if (result.length > 1) {
           message.reply("DB ERROR, need to be resynced.")

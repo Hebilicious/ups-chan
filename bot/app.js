@@ -2,9 +2,11 @@ const Discord = require("discord.js")
 const auth = require("../auth.json")
 const client = new Discord.Client()
 
-import * as commands from "./commands/secret-command.js"
-import {handleNodeWar} from "./nodewars/nodewar.js"
+import * as sCommands from "./commands/secret-command.js"
+import * as aCommands from "./commands/admin-commands.js"
 import * as events from "./events/event.js"
+import {handleNodeWar} from "./nodewars/nodewar.js"
+import {spoilThisContent} from "./spoiler/spoiler.js"
 
 // import rethink from "rethinkdb"
 
@@ -28,7 +30,7 @@ client.on("ready", () => {
  */
 client.on("message", msg => {
   if (msg.content === "I love you.") {
-    console.log(msg.member.roles)
+    // console.log(msg.member.roles)
     msg.reply("I know.")
   }
 })
@@ -43,9 +45,10 @@ client.on("message", msg => {
   // console.log(`New message : ${msg}`);
   // Check for dms
   if (msg.member != null) {
-    commands.secretAlzy(msg)
-    commands.pedoAge(msg, client)
-    commands.grammar(msg)
+    //Pass the message to all the commands ES2016+ PogChamp.
+    const commands = {...sCommands, ...aCommands}
+    Object.entries(commands).forEach(([command, call]) => call(msg, client))
+    spoilThisContent(msg, client)
     handleNodeWar(msg, client)
   }
 })
