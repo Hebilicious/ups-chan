@@ -18,7 +18,7 @@ export function listEmojis(message, client) {
 
     let toSend = Meeseeks.superSplit(emojiList.join("\n"), 2000);
     // console.log(toSend);
-    emojiList.join("\n").forEach(el => message.channel.send(el.toString()));
+    emojiList.forEach(el => message.channel.send(el, { split: true });
     // Meeseeks.superArraySplit(Array(50).fill(mock), 500).forEach(el => console.log(el))
   }
 }
