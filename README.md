@@ -35,7 +35,6 @@ pm2 will watch the dist folder and autorestart on new builds.
 
 If you do not have yarn ``` npm install -g yarn ``` or use npm instead.
 
-To use the nodewar functionnalities you need rethinkDB
-Install instructions here are available on the official documentation.
-https://www.rethinkdb.com/docs/install/
+To use the nodewar functionnalities you need rethinkDB.
+Install instructions are available on the official documentation: https://www.rethinkdb.com/docs/install/
 Make sure that the service is running on the default port.
