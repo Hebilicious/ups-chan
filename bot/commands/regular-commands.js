@@ -1,3 +1,5 @@
+import moment from "moment-timezone"
+
 export function secretAlzy(msg) {
   if (msg.content === "alzy") {
     console.log("Alzy !!")
@@ -35,4 +37,34 @@ export function grammar(msg) {
   if (ex.some(w => msg.content.includes(w))) {
     msg.reply("Expect. Expecting. ")
   }
+}
+
+export function help(message, client) {
+  message.member.user.createDM().then(function(DM) {
+    DM.send({
+      embed: {
+        color: 16753920,
+        title: `${message.member.displayName} customized UPS-Chan help <3`,
+        url: "https://www.ups.com",
+        description: "This is a list of some of the commands.",
+        fields: [
+          {
+            name: "__Regular commands__",
+            value:
+              "**$nodewar help** - Gives you the nodewar help commands.\n*topic* **$spoiler** *content* - Creates a spoiler for your content.\n"
+          },
+          {
+            name: "__Admin commands__",
+            value:
+              "**$listEmojis** - List all the Emojis.\n**listRoles** - List all the Roles.\n**$listChannels** - List all the Channels.\n"
+          }
+        ],
+        timestamp: moment().tz(timezone),
+        footer: {
+          icon_url: client.user.avatarURL,
+          text: client.user.username
+        }
+      }
+    })
+  })
 }

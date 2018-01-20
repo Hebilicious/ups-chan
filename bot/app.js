@@ -2,11 +2,11 @@ const Discord = require("discord.js")
 const auth = require("../auth.json")
 const client = new Discord.Client()
 
-import * as sCommands from "./commands/secret-command.js"
+import * as rCommands from "./commands/regular-commands.js"
 import * as aCommands from "./commands/admin-commands.js"
 import * as events from "./events/event.js"
-import {handleNodeWar} from "./nodewars/nodewar.js"
-import {spoilThisContent} from "./spoiler/spoiler.js"
+import { handleNodeWar } from "./nodewars/nodewar.js"
+import { spoilThisContent } from "./spoiler/spoiler.js"
 
 // import rethink from "rethinkdb"
 
@@ -46,7 +46,7 @@ client.on("message", msg => {
   // Check for dms
   if (msg.member != null) {
     //Pass the message to all the commands ES2016+ PogChamp.
-    const commands = {...sCommands, ...aCommands}
+    const commands = { ...rCommands, ...aCommands }
     Object.entries(commands).forEach(([command, call]) => call(msg, client))
     spoilThisContent(msg, client)
     handleNodeWar(msg, client)
