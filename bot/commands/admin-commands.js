@@ -9,7 +9,11 @@ import * as Meeseeks from "../helpers.js"
 export function listEmojis(message, client) {
   if (message.content === "$listEmojis") {
     console.log("listing emojis")
-    const emojiList = client.emojis.map(e => `Name: ${e.name}, Identifier: ${e.identifier}, ID: ${e.id}`);
-    Meeseeks.superSplit(emojiList, 1000).forEach(el => message.channel.send(el.toString()) 
+    const emojiList = client.emojis.map(
+      e => `Name: ${e.name}, Identifier: ${e.identifier}, ID: ${e.id}`
+    )
+    Meeseeks.superSplit(emojiList, 1000).forEach(el =>
+      message.channel.send(el.toString())
+    )
   }
 }
