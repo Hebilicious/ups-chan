@@ -1,9 +1,13 @@
-// channel.send(msg.guild.roles.map(r => `Name:${r.name}, Position:${r.position}, ID: ${r.id}`));
-
+/**
+ * List Emojis the bot has access to.
+ * @param  {[type]}  message [description]
+ * @param  {[type]}  client  [description]
+ * @return {Boolean}         [description]
+ */
 export function listEmojis(message, client) {
   if (message.content === "$listEmojis") {
     console.log("listing emojis")
-    const emojiList = client.emojis.map(e => e.toString()).join(" ")
-    message.reply(emojiList)
+    const emojiList = client.emojis.map(e => `Name: ${e.name}, Identifier: ${e.identifier}, ID: ${e.id}`);
+    message.channel.send(emojiList)
   }
 }
