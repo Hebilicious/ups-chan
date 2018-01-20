@@ -1,5 +1,5 @@
-import {GifGenerator} from "./gifgenerator.js"
-import {getRandomDontSpoilMessage} from "../verbose/messages.js"
+import { GifGenerator } from "./gifgenerator.js"
+import { getRandomDontSpoilMessage } from "../verbose/messages.js"
 
 const fs = require("fs")
 
