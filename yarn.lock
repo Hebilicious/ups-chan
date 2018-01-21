@@ -918,12 +918,6 @@ canvas-prebuilt@^1.6.5-prerelease.1:
     parse-css-font "^2.0.2"
     units-css "^0.4.0"
 
-canvas@^1.6.9:
-  version "1.6.9"
-  resolved "https://registry.yarnpkg.com/canvas/-/canvas-1.6.9.tgz#e3f95cec7b16bf2d6f3fc725c02d940d3258f69b"
-  dependencies:
-    nan "^2.4.0"
-
 caseless@~0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
@@ -2189,7 +2183,7 @@ ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
 
-nan@^2.3.0, nan@^2.4.0:
+nan@^2.3.0:
   version "2.8.0"
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.8.0.tgz#ed715f3fe9de02b57a5e6252d90a96675e1f085a"
 
@@ -2515,6 +2509,10 @@ prepend-http@^1.0.0:
 preserve@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/preserve/-/preserve-0.2.0.tgz#815ed1f6ebc65926f865b310c0713bcb3315ce4b"
+
+prettier@^1.10.2:
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.10.2.tgz#1af8356d1842276a99a5b5529c82dd9e9ad3cc93"
 
 prism-media@^0.0.1:
   version "0.0.1"

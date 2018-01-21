@@ -1,0 +1,169 @@
+{
+  "armor": [
+    {
+        "name" : ["Boss", "Tree", "Armor", "Giath", "Griffon", "Helmet", "Muskan", "Urugon", "Shoes", "Bheg", "Gloves"],
+        "toDuo": {
+          "current" : "pri",
+          "minStack": 19,
+          "maxStack": 30
+        },
+        "toTri": {
+          "current" : "duo",
+          "minStack": 30,
+          "maxStack": 45
+        },
+        "toTet": {
+          "current" : "tri",
+          "minStack": 45,
+          "maxStack": 90
+        },
+        "toPen": {
+          "current" : "tet",
+          "minStack": 90,
+          "maxStack": 9000
+        }
+    }
+  ],
+  "weapons": [
+    {
+        "name" : ["Kzarka", "Mainhand"],
+        "toDuo": {
+          "current" : "pri",
+          "minStack": 19,
+          "maxStack": 30
+        },
+        "toTri": {
+          "current" : "duo",
+          "minStack": 30,
+          "maxStack": 45
+        },
+        "toTet": {
+          "current" : "tri",
+          "minStack": 45,
+          "maxStack": 90
+        },
+        "toPen": {
+          "current" : "tet",
+          "minStack": 90,
+          "maxStack": 9000
+        }
+    },
+    {
+        "name" : ["Kutum", "Nouver", "Offhand"],
+        "toDuo": {
+          "current" : "pri",
+          "minStack": 19,
+          "maxStack": 30
+        },
+        "toTri": {
+          "current" : "duo",
+          "minStack": 30,
+          "maxStack": 45
+        },
+        "toTet": {
+          "current" : "tri",
+          "minStack": 45,
+          "maxStack": 90
+        },
+        "toPen": {
+          "current" : "tet",
+          "minStack": 90,
+          "maxStack": 9000
+        }
+    }
+  ],
+  "accessories": [
+    {
+      "name" : ["Crescent", "Ring"],
+      "toDuo": {
+        "current" : "pri",
+        "minStack": 19,
+        "maxStack": 30
+      },
+      "toTri": {
+        "current" : "duo",
+        "minStack": 30,
+        "maxStack": 45
+      },
+      "toTet": {
+        "current" : "tri",
+        "minStack": 45,
+        "maxStack": 90
+      },
+      "toPen": {
+        "current" : "tet",
+        "minStack": 90,
+        "maxStack": 9000
+      }
+    },
+    {
+      "name" : ["Ogre", "Laytenn","Necklace"],
+      "toDuo": {
+        "current" : "pri",
+        "minStack": 19,
+        "maxStack": 30
+      },
+      "toTri": {
+        "current" : "duo",
+        "minStack": 30,
+        "maxStack": 45
+      },
+      "toTet": {
+        "current" : "tri",
+        "minStack": 45,
+        "maxStack": 90
+      },
+      "toPen": {
+        "current" : "tet",
+        "minStack": 90,
+        "maxStack": 9000
+      }
+    },
+    {
+      "name" : ["Basilisk", "Belt"],
+      "toDuo": {
+        "current" : "pri",
+        "minStack": 19,
+        "maxStack": 30
+      },
+      "toTri": {
+        "current" : "duo",
+        "minStack": 30,
+        "maxStack": 45
+      },
+      "toTet": {
+        "current" : "tri",
+        "minStack": 45,
+        "maxStack": 90
+      },
+      "toPen": {
+        "current" : "tet",
+        "minStack": 90,
+        "maxStack": 9000
+      }
+    },
+    {
+      "name" : ["Tungrad", "Earring"],
+      "toDuo": {
+        "current" : "pri",
+        "minStack": 19,
+        "maxStack": 30
+      },
+      "toTri": {
+        "current" : "duo",
+        "minStack": 30,
+        "maxStack": 45
+      },
+      "toTet": {
+        "current" : "tri",
+        "minStack": 45,
+        "maxStack": 90
+      },
+      "toPen": {
+        "current" : "tet",
+        "minStack": 90,
+        "maxStack": 9000
+      }
+    }
+  ]
+}
