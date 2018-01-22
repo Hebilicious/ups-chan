@@ -1,11 +1,5 @@
 #This List is awesome.
 ---
-target:
-  pri: base
-  duo: pri
-  tri: duo
-  tet: tri
-  pen: tet
 armor:
 - name:
   - Boss
@@ -38,6 +32,8 @@ armor:
 weapons:
 - name:
   - Kzarka
+  - Dandelion
+  - Dande
   - Mainhand
   toDuo:
     current: pri
@@ -79,93 +75,77 @@ accessories:
 - name:
   - Crescent
   - Ring
-  toPri:
-    current: base
-    minStack: 20
-    maxStack: 28
   toDuo:
     current: pri
-    minStack: 30
-    maxStack: 39
+    minStack: 19
+    maxStack: 30
   toTri:
     current: duo
-    minStack: 40
-    maxStack: 50
+    minStack: 30
+    maxStack: 45
   toTet:
     current: tri
-    minStack: 70
-    maxStack: 100
+    minStack: 45
+    maxStack: 90
   toPen:
     current: tet
-    minStack: 120
+    minStack: 90
     maxStack: 9000
 - name:
   - Ogre
   - Laytenn
   - Necklace
-  toPri:
-    current: base
-    minStack: 23
-    maxStack: 29
   toDuo:
     current: pri
-    minStack: 33
-    maxStack: 40
+    minStack: 19
+    maxStack: 30
   toTri:
     current: duo
-    minStack: 45
-    maxStack: 55
+    minStack: 30
+    maxStack: 45
   toTet:
     current: tri
-    minStack: 80
-    maxStack: 120
+    minStack: 45
+    maxStack: 90
   toPen:
     current: tet
-    minStack: 150
+    minStack: 90
     maxStack: 9000
 - name:
   - Basilisk
   - Belt
-  toPri:
-    current: base
-    minStack: 20
-    maxStack: 28
   toDuo:
     current: pri
-    minStack: 30
-    maxStack: 39
+    minStack: 19
+    maxStack: 30
   toTri:
     current: duo
-    minStack: 40
-    maxStack: 50
+    minStack: 30
+    maxStack: 45
   toTet:
     current: tri
-    minStack: 70
-    maxStack: 100
+    minStack: 45
+    maxStack: 90
   toPen:
     current: tet
-    minStack: 120
+    minStack: 90
     maxStack: 9000
 - name:
   - Tungrad
   - Earring
-  toPri:
-    current: base
-    minStack: 20
-    maxStack: 28
   toDuo:
     current: pri
-    minStack: 30
-    maxStack: 39
+    minStack: 19
+    maxStack: 30
   toTri:
     current: duo
-    minStack: 40
-    maxStack: 50
+    minStack: 30
+    maxStack: 45
   toTet:
     current: tri
-    minStack: 70
-    maxStack: 100
+    minStack: 45
+    maxStack: 90
   toPen:
     current: tet
-    minStack: 120
+    minStack: 90
     maxStack: 9000

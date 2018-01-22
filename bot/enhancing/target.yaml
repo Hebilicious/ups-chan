@@ -1,0 +1,8 @@
+#This List is awesome.
+---
+target:
+  pri: base
+  duo: pri
+  tri: duo
+  tet: tri
+  pen: tet
