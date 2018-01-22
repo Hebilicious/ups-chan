@@ -1,4 +1,6 @@
 import moment from "moment-timezone"
+import {sendEmbedHelpAsDM} from "../verbose/functions.js"
+const timezone = "Europe/Paris"
 
 export function secretAlzy(msg) {
   if (msg.content === "alzy") {
@@ -40,31 +42,29 @@ export function grammar(msg) {
 }
 
 export function help(message, client) {
-  message.member.user.createDM().then(function(DM) {
-    DM.send({
-      embed: {
-        color: 16753920,
-        title: `${message.member.displayName} customized UPS-Chan help <3`,
-        url: "https://www.ups.com",
-        description: "This is a list of some of the commands.",
-        fields: [
-          {
-            name: "__Regular commands__",
-            value:
-              "**$nodewar help** - Gives you the nodewar help commands.\n*topic* **$spoiler** *content* - Creates a spoiler for your content.\n"
-          },
-          {
-            name: "__Admin commands__",
-            value:
-              "**$listEmojis** - List all the Emojis.\n**listRoles** - List all the Roles.\n**$listChannels** - List all the Channels.\n"
-          }
-        ],
-        timestamp: moment().tz(timezone),
-        footer: {
-          icon_url: client.user.avatarURL,
-          text: client.user.username
-        }
+  if (message.content === "$help") {
+    const fields = [
+      {
+        name: "__Commands__",
+        value:
+          "- **$nodewar help** - Gives you the nodewar help commands.\n- *topic* **$spoiler** *content* - Creates a spoiler for your content.\n- **$fs *tet ogre* Tells you an appropriate failstack number to slam your gear on."
+      },
+      {
+        name: "__Nodewar commands__",
+        value:
+          "- **$attend** - set your role to *Attending*.\n- **$cancel** - remove yourself from the *Attending* list.\n- **$nodewar** - tells you the date for the the upcoming nodewar."
+      },
+      {
+        name: "__Admin commands__",
+        value:
+          "- **$listEmojis** - List all the Emojis.\n- **$listRoles** - List all the Roles.\n- **$listChannels** - List all the Channels.\n"
+      },
+      {
+        name: "__Admin Nodewar commands__",
+        value:
+          "- **$nwlist** - list all the participants for the upcoming nodewar.\n- **$nodewar *date*** - creates a nodewar event at the specified date.\n- **$nodewar cancel** - cancel the current nodewar\n- **$nodewar win** - end the current nodewar with a win.\n- **$nodewar loss** - end the current nodewar with a loss."
       }
-    })
-  })
+    ]
+    sendEmbedHelpAsDM(message, client, fields)
+  }
 }

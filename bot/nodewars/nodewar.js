@@ -4,6 +4,8 @@ import rethink from "rethinkdb"
 import * as Nodewar from "./features.js"
 import * as NodewarDB from "./db.js"
 import {authorizedRolesIds} from "../auth/authorization.js"
+import {sendEmbedHelpAsDM} from "../verbose/functions.js"
+
 // const schedule = require("node-schedule")
 
 const timezone = "Europe/Paris"
@@ -20,10 +22,7 @@ export function handleNodeWar(msg, client) {
   const keylist = "$nwlist"
   const keyattend = "$attend"
   const keycancel = "$cancel"
-  const nodeWarChannel = msg.member.guild.channels.find(
-    "name",
-    "memewar-discussion"
-  ) // Use channelID instead of name
+  const nodeWarChannel = msg.member.guild.channels.find("name", "memewar-discussion") // Use channelID instead of name
   const attendingRole = msg.member.guild.roles.find("name", "Attending") // Use roleID instead of the name
 
   if (msg.content.startsWith(keynodewar)) {
@@ -59,33 +58,19 @@ function nodewarManager(msg, client, nodeWarChannel, attendingRole) {
   console.log(JSON.stringify(args))
   //Help
   if (firstArg === "help") {
-    msg.member.user.createDM().then(function(DM) {
-      DM.send({
-        embed: {
-          color: 16753920,
-          title: "Welcome to the UPS nodewar system!",
-          url: "https://www.ups.com",
-          description: "This is a list of all the commands related to nodewar.",
-          fields: [
-            {
-              name: "__Regular commands__",
-              value:
-                "**$attend** - set your role to *Attending*.\n**$cancel** - remove yourself from the *Attending* list.\n**$nodewar** - tells you the date for the the upcoming nodewar."
-            },
-            {
-              name: "__Admin commands__",
-              value:
-                "**$nwlist** - list all the participants for the upcoming nodewar.\n**$nodewar date** - creates a nodewar event at the specified date.\n**$nodewar cancel** - cancel the current nodewar\n**$nodewar win** - end the current nodewar with a win.\n**$nodewar loss** - end the current nodewar with a loss."
-            }
-          ],
-          timestamp: moment().tz(timezone),
-          footer: {
-            icon_url: client.user.avatarURL,
-            text: client.user.username
-          }
-        }
-      })
-    })
+    const fields = [
+      {
+        name: "__Nodewar commands__",
+        value:
+          "- **$attend** - set your role to *Attending*.\n- **$cancel** - remove yourself from the *Attending* list.\n- **$nodewar** - tells you the date for the the upcoming nodewar."
+      },
+      {
+        name: "__Admin Nodewar commands__",
+        value:
+          "- **$nwlist** - list all the participants for the upcoming nodewar.\n- **$nodewar *date*** - creates a nodewar event at the specified date.\n- **$nodewar cancel** - cancel the current nodewar\n- **$nodewar win** - end the current nodewar with a win.\n- **$nodewar loss** - end the current nodewar with a loss."
+      }
+    ]
+    sendEmbedHelpAsDM(msg, client, fields)
     return
   }
   //If no auth we return early
@@ -123,9 +108,7 @@ function nodewarManager(msg, client, nodeWarChannel, attendingRole) {
     let tzDate = moment.tz(sugarDate, timezone)
     if (tzDate.isValid()) {
       msg.reply(
-        `Greetings Sir, let's do a nodewar on the ${tzDate.format(
-          "dddd, MMMM Do YYYY"
-        )}`
+        `Greetings Sir, let's do a nodewar on the ${tzDate.format("dddd, MMMM Do YYYY")}`
       )
       NodewarDB.createNodeWar(msg, tzDate)
     } else {

@@ -2,6 +2,26 @@ function randomMessage(messages) {
   return messages[Math.floor(Math.random() * messages.length)]
 }
 
+export function getRandomGoodLuckMessage() {
+  const messages = [
+    "I believe.",
+    "May the force be with you.",
+    "The force will be with you. Always.",
+    "Blessed be the RNG gods.",
+    "Lib would get it first try.",
+    "Alzy has done it twice.",
+    "DO IT.",
+    "Do you trust me?",
+    "You were made for this.",
+    "You can do it.",
+    "Yup. We're going for it.",
+    "We're doing it.",
+    "Evie would not hesitate.",
+    "Remember than someone failed TRI ogre 12 times tho..."
+  ]
+  return randomMessage(messages)
+}
+
 export function getRandomDontSpoilMessage() {
   const messages = [
     "Spoiler are the path to the dark side.",

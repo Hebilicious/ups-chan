@@ -4,7 +4,7 @@
  * @param  {[type]} newM [description]
  * @return {[type]}      [description]
  */
-export function memberUpdate(oldM, newM) {
+export function guildMemberUpdate(client, oldM, newM) {
   console.log("Member updated")
   let oldRoles = oldM.roles.map(r => r.name)
   let newRoles = newM.roles.map(r => r.name)
@@ -17,9 +17,9 @@ export function memberUpdate(oldM, newM) {
   let channel = oldM.guild.channels.find("name", "general")
   console.log(`Added ${added}, removed ${removed}`)
   if (removed.length > 0) {
-    channel.send(`${oldM.displayName} is no longer **${removed.toString()}**`)
+    channel.send(`${oldM.displayName} is no longer **${removed.toString()}**.`)
   }
   if (added.length > 0) {
-    channel.send(`${oldM.displayName} is now **${added.toString()}**`)
+    channel.send(`${oldM.displayName} is now **${added.toString()}**.`)
   }
 }

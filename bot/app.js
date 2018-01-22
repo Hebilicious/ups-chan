@@ -4,12 +4,10 @@ const client = new Discord.Client()
 
 import * as rCommands from "./commands/regular-commands.js"
 import * as aCommands from "./commands/admin-commands.js"
-import * as events from "./events/event.js"
-import { handleNodeWar } from "./nodewars/nodewar.js"
-import { spoilThisContent } from "./spoiler/spoiler.js"
-
-// import rethink from "rethinkdb"
-
+import * as events from "./events/events.js"
+import {handleNodeWar} from "./nodewars/nodewar.js"
+import {spoilThisContent} from "./spoiler/spoiler.js"
+import {handleEnhance} from "./enhancing/enhancing.js"
 /**
  * Here we have to call this to initiate the bot.
  */
@@ -26,33 +24,39 @@ client.on("ready", () => {
 })
 
 /**
- * The ping pong example.
+ * To our very special princess...
  */
-client.on("message", msg => {
-  if (msg.content === "I love you.") {
-    // console.log(msg.member.roles)
-    msg.reply("I know.")
+client.on("message", message => {
+  if (message.content === "I love you.") {
+    // console.log(message.member.roles)
+    message.reply("I know.")
   }
 })
 
-client.on("guildMemberUpdate", (oldM, newM) => {
-  events.memberUpdate(oldM, newM)
+/**
+ * Fancy event handler!
+ * @type {[type]}
+ */
+Object.entries(events).forEach(([key, imported]) => {
+  client.on(imported.name, (...args) => imported(client, ...args))
 })
+
 /**
  * Call a custom command on each message.
  */
-client.on("message", msg => {
-  // console.log(`New message : ${msg}`);
+client.on("message", message => {
+  // console.log(`New message : ${message}`);
   // Check for dms
-  if (msg.member != null) {
+  if (message.member != null) {
     //Pass the message to all the commands ES2016+ PogChamp.
-    const commands = { ...rCommands, ...aCommands }
-    Object.entries(commands).forEach(([command, call]) => call(msg, client))
-    spoilThisContent(msg, client)
-    handleNodeWar(msg, client)
+    const commands = {...rCommands, ...aCommands}
+    Object.entries(commands).forEach(([command, call]) => call(message, client))
+    spoilThisContent(message, client)
+    handleNodeWar(message, client)
+    handleEnhance(message, client)
   }
 })
-// channel.send(msg.guild.roles.map(r => `Name:${r.name}, Position:${r.position}, ID: ${r.id}`));
+// channel.send(message.guild.roles.map(r => `Name:${r.name}, Position:${r.position}, ID: ${r.id}`));
 
 /**
  * This logs the bot in with the token from auth.json

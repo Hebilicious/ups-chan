@@ -11,9 +11,12 @@
   "license": "MIT",
   "dependencies": {
     "discord.js": "^11.3.0",
+    "js-yaml": "^3.10.0",
+    "lodash": "^4.17.4",
     "moment-timezone": "^0.5.14",
     "prettier": "^1.10.2",
     "rethinkdb": "^2.3.3",
+    "rethinkdbdash": "^2.3.31",
     "sugar": "^2.0.4"
   },
   "devDependencies": {
