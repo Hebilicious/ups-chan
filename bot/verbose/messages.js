@@ -26,7 +26,8 @@ export function getRandomLossMessage() {
     "Bad round.",
     "Can we redo, I had to scratch my nose?",
     "Unlucky I guess.",
-    "GG boys... See you next week..."
+    "GG boys... See you next week...",
+    "Just numbers."
   ]
   return randomMessage(messages)
 }
