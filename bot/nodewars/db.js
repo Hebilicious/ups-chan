@@ -1,8 +1,8 @@
-import rethink from "rethinkdb"
 import moment from "moment-timezone"
 import {clearAttendingMembers} from "./features.js"
 import * as Messages from "../verbose/messages.js"
 
+const r = require("rethinkdbdash")({db: "test"})
 const timezone = "Europe/Paris"
 
 /**
@@ -31,25 +31,24 @@ export function endNodeWar(message, channel, role, result) {
       .find("name", role.name)
       .members.map(m => m.user.id)
   }
-  rethink.connect({host: "localhost", port: 28015}).then(function(conn) {
-    rethink
-      .db("test")
-      .table("nodewar")
-      .filter({isActive: true})
-      .update(updatedNW)
-      .run(conn, function(err, result) {
-        if (err) throw err
-        console.log(JSON.stringify(result, null, 2))
-        if (victory) {
-          message.channel.send(Messages.getRandomWinMessage())
-          setNodewarTopic(message, "EZ game EZ win EZ")
-        } else {
-          message.channel.send(Messages.getRandomLossMessage())
-          setNodewarTopic(message, "We got unlucky.")
-        }
-        clearAttendingMembers(message, channel, role)
-      })
-  })
+  r
+
+    .table("nodewar")
+    .filter({isActive: true})
+    .update(updatedNW)
+    .run()
+    .then((err, result) => {
+      if (err) throw err
+      console.log(JSON.stringify(result, null, 2))
+      if (victory) {
+        message.channel.send(Messages.getRandomWinMessage())
+        setNodewarTopic(message, "EZ game EZ win EZ")
+      } else {
+        message.channel.send(Messages.getRandomLossMessage())
+        setNodewarTopic(message, "We got unlucky.")
+      }
+      clearAttendingMembers(message, channel, role)
+    })
 }
 
 /**
@@ -58,20 +57,19 @@ export function endNodeWar(message, channel, role, result) {
  * @return {[type]}         [description]
  */
 export function cancelNodeWar(message, channel, role) {
-  rethink.connect({host: "localhost", port: 28015}).then(function(conn) {
-    rethink
-      .db("test")
-      .table("nodewar")
-      .filter({isActive: true})
-      .delete()
-      .run(conn, function(err, result) {
-        if (err) throw err
-        console.log(JSON.stringify(result, null, 2))
-        message.reply(`NodeWar successfully canceled.`)
-        setNodewarTopic(message, "UPS will prevail soon.")
-        clearAttendingMembers(message, channel, role)
-      })
-  })
+  r
+
+    .table("nodewar")
+    .filter({isActive: true})
+    .delete()
+    .run()
+    .then((err, result) => {
+      if (err) throw err
+      console.log(JSON.stringify(result, null, 2))
+      message.reply(`NodeWar successfully canceled.`)
+      setNodewarTopic(message, "UPS will prevail soon.")
+      clearAttendingMembers(message, channel, role)
+    })
 }
 
 /**
@@ -81,8 +79,9 @@ export function cancelNodeWar(message, channel, role) {
  * @return {[type]}         [description]
  */
 export function createNodeWar(message, date) {
-  console.log("Creating nodewar")
+  console.log("Trying to create a nodewar...")
   let endDate = date.add({hours: 10, minutes: 30})
+  let fDate = date.format("dddd, MMMM Do YYYY")
   let nwObject = {
     isActive: true,
     victory: false,
@@ -91,34 +90,25 @@ export function createNodeWar(message, date) {
     creatorId: message.member.id,
     attendingMembers: 0
   }
-  // 1.Check that we have the table
-  // 2.Check that currrent nodewar is over
-  // 3. Create a nodewar Entry
-  rethink.connect({host: "localhost", port: 28015}).then(function(conn) {
-    rethink
-      .db("test")
-      .tableList()
-      .run(conn)
-      .then(function(result) {
-        console.log(result)
-        if (result.includes("nodewar")) {
-          console.log("Letscheck")
-          // console.log(nwObject)
-          checkIfNodeWarIsActive(conn, nwObject, message)
-        } else {
-          //Refactor to remove that.
-          console.log("Letscreate and check")
-          rethink
-            .db("test")
-            .tableCreate("nodewar")
-            .run(conn)
-            .then(function(result) {
-              console.log(result)
-              checkIfNodeWarIsActive(conn, nwObject, message)
-            })
-        }
-      })
-  })
+  r
+    .table("nodewar")
+    .filter({isActive: true})
+    .run()
+    .then(result => {
+      if (result.length == 1) {
+        updateCurrentNodeWar(nwObject)
+        message.reply(`Modified the current Nodewar.`)
+        setNodewarTopic(message, `Nodewar => ${fDate} !`)
+      }
+      if (result.length == 0) {
+        insertNewNodeWar(nwObject)
+        message.reply("New nodewar created !")
+        setNodewarTopic(message, `Nodewar => ${fDate} !`)
+      }
+      if (result.length > 1) {
+        message.reply("DB ERROR, need to be resynced.")
+      }
+    })
 }
 
 /**
@@ -130,41 +120,15 @@ export function nodewarCheck(message) {
   checkIfTableExists(message)
 }
 
-//Check if we have a nodewar
-function checkIfNodeWarIsActive(conn, nwObject, message) {
-  rethink
-    .db("test")
-    .table("nodewar")
-    .filter({isActive: true})
-    .run(conn, function(err, cursor) {
-      if (err) throw err
-      cursor.toArray(function(err, result) {
-        if (err) throw err
-        if (result.length == 1) {
-          updateCurrentNodeWar(conn, nwObject)
-          message.reply(`Modified the current Nodewar.`)
-          setNodewarTopic(message, `Nodewar => ${fDate} !`)
-        }
-        if (result.length == 0) {
-          insertNewNodeWar(conn, nwObject)
-          message.reply("New nodewar created !")
-          setNodewarTopic(message, `Nodewar => ${fDate} !`)
-        }
-        if (result.length > 1) {
-          message.reply("DB ERROR, need to be resynced.")
-        }
-      })
-    })
-}
-
 //Update a node war
-function updateCurrentNodeWar(conn, nwObject) {
-  rethink
-    .db("test")
+function updateCurrentNodeWar(nwObject) {
+  r
+
     .table("nodewar")
     .filter({isActive: true})
     .update({date: nwObject.date})
-    .run(conn, function(err, result) {
+    .run()
+    .then((err, result) => {
       if (err) throw err
       console.log(JSON.stringify(result, null, 2))
     })
@@ -173,65 +137,58 @@ function updateCurrentNodeWar(conn, nwObject) {
 
 //Insert a node war
 function insertNewNodeWar(conn, nwObject) {
-  console.log(nwObject)
-  rethink
-    .db("test")
+  r
+
     .table("nodewar")
     .insert(nwObject)
-    .run(conn, function(err, result) {
+    .run()
+    .then((err, result) => {
       if (err) throw err
       console.log(JSON.stringify(result, null, 2))
     })
   console.log("Created nodewar")
 }
 
-//fetch the active nodewar, then respond to the message based on the result.
-function fetchActiveNodewar(message) {
-  return rethink.connect({host: "localhost", port: 28015}).then(function(conn) {
-    rethink
-      .db("test")
-      .table("nodewar")
-      .filter({isActive: true})
-      .run(conn, function(err, cursor) {
-        if (err) throw err
-        cursor.toArray(function(err, result) {
-          if (err) throw err
-          console.log("fetchActiveNodewar result")
-          respondNodewar(message, result)
-        })
-      })
-  })
-}
-
 //Create nodewar table if we don't have it, then fetch the active nodewar.
 function checkIfTableExists(message) {
-  return rethink.connect({host: "localhost", port: 28015}).then(function(conn) {
-    rethink
-      .db("test")
-      .tableList()
-      .run(conn)
-      .then(function(result) {
-        console.log(result)
-        if (result.includes("nodewar")) {
-          console.log("We got nodewar")
-          fetchActiveNodewar(message)
-        } else {
-          console.log("We create nodewar")
-          rethink
-            .db("test")
-            .tableCreate("nodewar")
-            .run(conn)
-            .then(function(result) {
-              console.log(result)
-              fetchActiveNodewar(message)
-            })
-        }
-      })
-  })
+  r
+    .tableList()
+    .run()
+    .then(function(result) {
+      console.log(result)
+      if (result.includes("nodewar")) {
+        console.log("We got nodewar")
+        fetchActiveNodewar(message)
+      } else {
+        console.log("We create nodewar")
+        r
+          .tableCreate("nodewar")
+          .run()
+          .then(function(result) {
+            console.log(result)
+            fetchActiveNodewar(message)
+          })
+      }
+    })
+}
+
+//fetch the active nodewar, then respond to the message based on the result.
+function fetchActiveNodewar(message) {
+  console.log("Hello")
+  r
+    .table("nodewar")
+    .filter({isActive: true})
+    .run()
+    .then(function(result) {
+      console.log(result)
+      console.log("fetchActiveNodewar result")
+      respondNodewar(message, result)
+    })
 }
 
 //The actual response sent by the bot.
 function respondNodewar(message, result) {
+  console.log(message.member)
   if (result.length == 1) {
     let fDate = moment(result[0].date).format("dddd, MMMM Do YYYY")
     setNodewarTopic(message, `Nodewar => ${fDate} !`)
@@ -243,9 +200,7 @@ function respondNodewar(message, result) {
 
 //Set the topic for the nw channel
 function setNodewarTopic(message, topic) {
-  const nodeWarChannel = message.member.guild.channels.find(
-    "name",
-    "memewar-discussion"
-  )
+  console.log("Setting topic")
+  const nodeWarChannel = message.member.guild.channels.find("name", "memewar-discussion")
   nodeWarChannel.setTopic(topic)
 }
