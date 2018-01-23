@@ -75,77 +75,93 @@ accessories:
 - name:
   - Crescent
   - Ring
+  toPri:
+    current: base
+    minStack: 20
+    maxStack: 28
   toDuo:
     current: pri
-    minStack: 19
-    maxStack: 30
+    minStack: 30
+    maxStack: 39
   toTri:
     current: duo
-    minStack: 30
-    maxStack: 45
+    minStack: 40
+    maxStack: 50
   toTet:
     current: tri
-    minStack: 45
-    maxStack: 90
+    minStack: 70
+    maxStack: 100
   toPen:
     current: tet
-    minStack: 90
+    minStack: 120
     maxStack: 9000
 - name:
   - Ogre
   - Laytenn
   - Necklace
+  toPri:
+    current: base
+    minStack: 23
+    maxStack: 29
   toDuo:
     current: pri
-    minStack: 19
-    maxStack: 30
+    minStack: 33
+    maxStack: 40
   toTri:
     current: duo
-    minStack: 30
-    maxStack: 45
+    minStack: 45
+    maxStack: 55
   toTet:
     current: tri
-    minStack: 45
-    maxStack: 90
+    minStack: 80
+    maxStack: 120
   toPen:
     current: tet
-    minStack: 90
+    minStack: 150
     maxStack: 9000
 - name:
   - Basilisk
   - Belt
+  toPri:
+    current: base
+    minStack: 20
+    maxStack: 28
   toDuo:
     current: pri
-    minStack: 19
-    maxStack: 30
+    minStack: 30
+    maxStack: 39
   toTri:
     current: duo
-    minStack: 30
-    maxStack: 45
+    minStack: 40
+    maxStack: 50
   toTet:
     current: tri
-    minStack: 45
-    maxStack: 90
+    minStack: 70
+    maxStack: 100
   toPen:
     current: tet
-    minStack: 90
+    minStack: 120
     maxStack: 9000
 - name:
   - Tungrad
   - Earring
+  toPri:
+    current: base
+    minStack: 20
+    maxStack: 28
   toDuo:
     current: pri
-    minStack: 19
-    maxStack: 30
+    minStack: 30
+    maxStack: 39
   toTri:
     current: duo
-    minStack: 30
-    maxStack: 45
+    minStack: 40
+    maxStack: 50
   toTet:
     current: tri
-    minStack: 45
-    maxStack: 90
+    minStack: 70
+    maxStack: 100
   toPen:
     current: tet
-    minStack: 90
+    minStack: 120
     maxStack: 9000
