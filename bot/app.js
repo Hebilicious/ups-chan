@@ -49,7 +49,7 @@ Object.entries(events).forEach(([key, event]) => {
  */
 client.on("message", message => {
   // console.log(`New message : ${message}`);
-  // Check for dms
+  // console.log(`User:${message.author.username}, ID: ${message.author.id}`)
   if (message.member != null) {
     //Pass the message to all the commands ES2016+ PogChamp.
     const commands = {...rCommands, ...aCommands}

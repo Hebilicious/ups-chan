@@ -2,6 +2,17 @@ function randomMessage(messages) {
   return messages[Math.floor(Math.random() * messages.length)]
 }
 
+export function getRandomMeeseeksInteraction() {
+  const messages = [
+    "👋 Hey Mr Meeseeks, look at me !! 👋",
+    "I'm 10 times better than you!",
+    "I didn't do this!",
+    "You bringed me into this!",
+    "I could do the same thing.",
+    "Is that all you can do ?"
+  ]
+  return randomMessage(messages)
+}
 export function getRandomGoodLuckMessage() {
   const messages = [
     "I believe.",

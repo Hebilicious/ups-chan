@@ -1,6 +1,18 @@
 import moment from "moment-timezone"
 import {sendEmbedHelpAsDM} from "../verbose/functions.js"
+import {getRandomMeeseeksInteraction} from "../verbose/messages.js"
 const timezone = "Europe/Paris"
+
+export function meeseeksAnswer(message, client) {
+  //MeeseeksBOT ID
+  if (message.author.id == "159985870458322944") {
+    message.channel.send(getRandomMeeseeksInteraction()).then(m => {
+      setTimeout(() => {
+        m.delete()
+      }, 1000)
+    })
+  }
+}
 
 export function ups(message, client) {
   const regex = /(\bups\b)+/gim
