@@ -16,6 +16,7 @@ export function ups(message, client) {
       .catch(() => console.error("One of the emojis failed to react.")) // message.react("316287767648927744")
   }
 }
+
 export function secretAlzy(msg) {
   if (msg.content === "alzy") {
     console.log("Alzy !!")

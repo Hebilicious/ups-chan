@@ -46,6 +46,10 @@ export class guildMemberUpdate extends Event {
   }
 }
 
+/**
+ * React to stuff
+ * @type {String}
+ */
 export class messageReactionAdd extends Event {
   constructor() {
     super()
@@ -54,8 +58,20 @@ export class messageReactionAdd extends Event {
   }
 
   handleEvent(client, messageReaction, user) {
-    if (user.client != client) {
+    const emojiKey = messageReaction.emoji.id
+      ? `${messageReaction.emoji.name}:${messageReaction.emoji.id}`
+      : messageReaction.emoji.name
+
+    // Send :heartpulse: to everyone
+    if (user.id != client.user.id) {
       messageReaction.message.react("💗")
+    }
+
+    //Send LUL when LUL
+    const lul = messageReaction.message.guild.emojis.find("name", "LUL")
+    if (messageReaction.emoji == lul) {
+      console.log("Found specific reaction")
+      messageReaction.message.react(lul)
     }
   }
 }
