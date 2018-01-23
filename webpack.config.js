@@ -1,17 +1,20 @@
-const webpack = require('webpack');
-const path = require('path');
-const fs = require('fs');
+const webpack = require("webpack")
+const path = require("path")
+const fs = require("fs")
 //Use nodemon to livereload our bot.
-const NodemonPlugin = require('nodemon-webpack-plugin');
+const NodemonPlugin = require("nodemon-webpack-plugin")
 //Ignore node externals
-const nodeExternals = require('webpack-node-externals');
-
+const nodeExternals = require("webpack-node-externals")
 
 module.exports = {
-  entry: './bot/app.js',
+  entry: "./bot/app.js",
   plugins: [
     new NodemonPlugin(),
-    new webpack.BannerPlugin({banner:'require("source-map-support").install();',  raw: true, entryOnly: false })
+    new webpack.BannerPlugin({
+      banner: 'require("source-map-support").install();',
+      raw: true,
+      entryOnly: false
+    })
   ],
   module: {
     rules: [
@@ -19,19 +22,19 @@ module.exports = {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
         use: {
-          loader: 'babel-loader'
+          loader: "babel-loader"
         }
       }
     ]
   },
-  target: 'node',
-  node:{
-    console:true
+  target: "node",
+  node: {
+    console: true
   },
   output: {
-    filename: 'app.js',
-    path: path.resolve(__dirname, 'dist')
+    filename: "app.js",
+    path: path.resolve(__dirname, "dist")
   },
   externals: nodeExternals(),
-  devtool: 'sourcemap'
-};
+  devtool: "sourcemap"
+}

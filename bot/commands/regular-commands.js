@@ -2,6 +2,19 @@ import moment from "moment-timezone"
 import {sendEmbedHelpAsDM} from "../verbose/functions.js"
 const timezone = "Europe/Paris"
 
+export function ups(message, client) {
+  if (message.content.includes("ups")) {
+    message
+      .react("🇺")
+      .then(() => message.react("🇵"))
+      .then(() => message.react("🇸"))
+      .then(() => {
+        const emoji = message.guild.emojis.find("name", "PagChomp")
+        message.react(emoji)
+      })
+      .catch(() => console.error("One of the emojis failed to react.")) // message.react("316287767648927744")
+  }
+}
 export function secretAlzy(msg) {
   if (msg.content === "alzy") {
     console.log("Alzy !!")
@@ -24,7 +37,7 @@ export function pedoAge(msg, client) {
   const regex = /(\bunderage\b|\bage\b)+/gim
   let m
   // console.log("I'm a bot ? " + msg.author.bot);
-  if (msg.author.bot == false && (m = regex.exec(msg)) !== null) {
+  if (msg.author.bot == false && (m = regex.exec(msg.content)) !== null) {
     console.log("Matched age somewhere...")
     const ePedoBear = client.emojis.find("name", "PedoBear")
     const eKappa = client.emojis.find("name", "Kappa")

@@ -29,7 +29,7 @@ client.on("ready", () => {
 client.on("message", message => {
   if (message.content === "I love you.") {
     // console.log(message.member.roles)
-    message.reply("I know.")
+    message.reply("I know. f")
   }
 })
 
@@ -37,10 +37,10 @@ client.on("message", message => {
  * Fancy event handler!
  * @type {[type]}
  */
-Object.entries(events).forEach(([key, imported]) => {
-  console.log(imported.name)
-  client.on(imported.name, (...args) => {
-    imported(client, ...args)
+Object.entries(events).forEach(([key, event]) => {
+  let e = new event()
+  client.on(e.eventName, (...args) => {
+    e.handleEvent(client, ...args)
   })
 })
 
