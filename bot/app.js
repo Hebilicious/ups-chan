@@ -38,7 +38,10 @@ client.on("message", message => {
  * @type {[type]}
  */
 Object.entries(events).forEach(([key, imported]) => {
-  client.on(imported.name, (...args) => imported(client, ...args))
+  console.log(imported.name)
+  client.on(imported.name, (...args) => {
+    imported(client, ...args)
+  })
 })
 
 /**
