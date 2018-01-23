@@ -54,6 +54,8 @@ export class messageReactionAdd extends Event {
   }
 
   handleEvent(client, messageReaction, user) {
-    messageReaction.message.react("💗")
+    if (user.client != client) {
+      messageReaction.message.react("💗")
+    }
   }
 }

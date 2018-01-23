@@ -3,7 +3,8 @@ import {sendEmbedHelpAsDM} from "../verbose/functions.js"
 const timezone = "Europe/Paris"
 
 export function ups(message, client) {
-  if (message.content.includes("ups")) {
+  const regex = /(\bups\b)+/gim
+  if (regex.test(message.content)) {
     message
       .react("🇺")
       .then(() => message.react("🇵"))
