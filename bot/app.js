@@ -35,7 +35,6 @@ client.on("message", message => {
 
 /**
  * Fancy event handler!
- * @type {[type]}
  */
 Object.entries(events).forEach(([key, event]) => {
   let e = new event()
@@ -53,7 +52,7 @@ client.on("message", message => {
   if (message.member != null) {
     //Pass the message to all the commands ES2016+ PogChamp.
     const commands = {...rCommands, ...aCommands}
-    Object.entries(commands).forEach(([command, call]) => call(message, client))
+    Object.entries(commands).forEach(([key, command]) => command(message, client))
     spoilThisContent(message, client)
     handleNodeWar(message, client)
     handleEnhance(message, client)

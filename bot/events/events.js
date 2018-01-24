@@ -1,5 +1,5 @@
 /**
- * A base event class with some prototype methods.
+ * A base event class.
  */
 class Event {
   constructor() {
@@ -8,9 +8,6 @@ class Event {
 
   instantiate() {
     console.log("Event instancied")
-    Array.prototype.diff = function(array) {
-      return this.filter(x => !array.includes(x))
-    }
   }
 }
 
@@ -29,13 +26,18 @@ export class guildMemberUpdate extends Event {
 
   handleEvent(client, oldM, newM) {
     console.log("Handling " + this.eventName)
-
+    Array.prototype.diff = function(array) {
+      return this.filter(x => !array.includes(x))
+    }
+    //Mapping role names
     let oldRoles = oldM.roles.map(r => r.name)
     let newRoles = newM.roles.map(r => r.name)
+    //Ignored roles
     let ignore = ["Attending"]
+    //Channel
+    let channel = oldM.guild.channels.find("name", "general")
     let removed = oldRoles.diff(newRoles).diff(ignore)
     let added = newRoles.diff(oldRoles).diff(ignore)
-    let channel = oldM.guild.channels.find("name", "general")
     console.log(`Added ${added}, removed ${removed}`)
     if (removed.length > 0) {
       channel.send(`${oldM.displayName} is no longer **${removed.toString()}**.`)
