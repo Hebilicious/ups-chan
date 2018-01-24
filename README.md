@@ -5,6 +5,9 @@ UPS Black Desert Online guild discord bot.
 
 ## How to use
 
+### Disclaimer
+This bot has a lot of stuff specific to the UPS guild, like hardcoded ids/emojis. You'll need to refactor it a bit.
+
 Create an auth.json at the directory root and paste your token like this :
 
 ```json

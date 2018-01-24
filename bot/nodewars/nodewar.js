@@ -3,8 +3,8 @@ import Sugar from "sugar"
 import rethink from "rethinkdb"
 import * as Nodewar from "./features.js"
 import * as NodewarDB from "./db.js"
-import {authorizedRolesIds} from "../auth/authorization.js"
-import {sendEmbedHelpAsDM} from "../verbose/functions.js"
+import * as DB from "./database/database.js"
+import { sendEmbedHelpAsDM } from "../verbose/functions.js"
 
 // const schedule = require("node-schedule")
 
@@ -22,9 +22,23 @@ export function handleNodeWar(msg, client) {
   const keylist = "$nwlist"
   const keyattend = "$attend"
   const keycancel = "$cancel"
-  const nodeWarChannel = msg.member.guild.channels.find("name", "memewar-discussion") // Use channelID instead of name
-  const attendingRole = msg.member.guild.roles.find("name", "Attending") // Use roleID instead of the name
+  //Find the name of the nodewar channel for the guild
+  //Find the name of the Attending role and create it if it doesn't exist
+  DB.connect(guild)
+    .table("configuration")
+    .get(0)
+    .then(result => {
+      const conf = result
+    })
+  const nodeWarChannel = conf.nodeWarChannel
+    ? msg.member.guild.channels.find("name", conf.nodeWarChannel)
+    : askForChannel() // Must Return a channel
 
+  const attendingRole = conf.attendingRole
+    ? msg.member.guild.roles.find("name", conf.attendingRole)
+    : askForAttending() //Must return a role
+
+  if (!nodeWarChannel || !attendingRole) return
   if (msg.content.startsWith(keynodewar)) {
     nodewarManager(msg, client, nodeWarChannel, attendingRole)
   }
@@ -37,6 +51,13 @@ export function handleNodeWar(msg, client) {
   if (msg.content.startsWith(keycancel)) {
     Nodewar.cancelNodeWarAttendance(msg, nodeWarChannel, attendingRole)
   }
+}
+
+function askForChannel() {
+  console.log("Asking for channel")
+}
+function askForRole() {
+  console.log("Asking for role")
 }
 
 /**
@@ -74,7 +95,7 @@ function nodewarManager(msg, client, nodeWarChannel, attendingRole) {
     return
   }
   //If no auth we return early
-  if (!Nodewar.canCreateNodeWar(msg.member, authorizedRolesIds)) {
+  if (!Nodewar.canCreateNodeWar(msg.member)) {
     msg.reply("Gtfo scrub.")
     return
   }
@@ -102,17 +123,17 @@ function nodewarManager(msg, client, nodeWarChannel, attendingRole) {
     return
   }
   //Assume that firstArg is a date, check if we're authorized to do so & that we have a date
-  if (Nodewar.canCreateNodeWar(msg.member, authorizedRolesIds) && firstArg) {
+  if (Nodewar.canCreateNodeWar(msg.member) && firstArg) {
     Sugar.Date.setLocale("en-GB")
     let sugarDate = Sugar.Date.create(firstArg)
     let tzDate = moment.tz(sugarDate, timezone)
     if (tzDate.isValid()) {
       msg.reply(
-        `Greetings Sir, let's do a nodewar on the ${tzDate.format("dddd, MMMM Do YYYY")}`
+        `Well met! Let's do a nodewar on the ${tzDate.format("dddd, MMMM Do YYYY")}`
       )
       NodewarDB.createNodeWar(msg, tzDate)
     } else {
-      msg.reply("I'm sorry Sir, the date you told me is invalid.")
+      msg.reply("I'm sorry, the date you told me is invalid. :(")
     }
   }
 }
@@ -127,7 +148,7 @@ function nodewarManager(msg, client, nodeWarChannel, attendingRole) {
 function listAttendingMembers(msg, channel, role) {
   //Check for roles
   //If no auth we return early
-  if (!Nodewar.canCreateNodeWar(msg.member, authorizedRolesIds)) {
+  if (!Nodewar.canCreateNodeWar(msg.member)) {
     msg.reply("Ask one of your overlords.")
     return
   }
@@ -140,11 +161,11 @@ function listAttendingMembers(msg, channel, role) {
   nameList = nameList.join("\n ")
   if (nwlist.size > 0) {
     msg.channel.send(
-      `**Here is a list of all attendees for the upcoming memewar :**\n ${nameList} \n That is a total of **${
+      `**Here's everyone attending the upcoming nodewar :**\n ${nameList} \n That is a total of **${
         nwlist.size
       }** people.`
     )
   } else {
-    msg.channel.send("There are no participants for the upcoming memewar yet.")
+    msg.channel.send("There are no participants for the upcoming nodewar yet.")
   }
 }

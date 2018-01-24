@@ -1,6 +1,6 @@
 import moment from "moment-timezone"
-import {sendEmbedHelpAsDM} from "../verbose/functions.js"
-import {getRandomMeeseeksInteraction} from "../verbose/messages.js"
+import { sendEmbedHelpAsDM } from "../verbose/functions.js"
+import { getRandomMeeseeksInteraction } from "../verbose/messages.js"
 const timezone = "Europe/Paris"
 
 export function meeseeksAnswer(message, client) {
@@ -9,7 +9,7 @@ export function meeseeksAnswer(message, client) {
     message.channel.send(getRandomMeeseeksInteraction()).then(m => {
       setTimeout(() => {
         m.delete()
-      }, 1000)
+      }, 1500)
     })
   }
 }

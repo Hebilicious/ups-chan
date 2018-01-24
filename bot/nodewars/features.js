@@ -1,13 +1,16 @@
 import * as Messages from "../verbose/messages.js"
-import {checkMemberForRolesIds} from "../auth/authorization.js"
+import { checkMemberForRolesIds } from "../auth/authorization.js"
+import { authorizedRolesIds } from "../auth/authorization.js"
 
 /**
- * Check if a member has specifics ids;
+ * Check if a member can create a nodewar
  * @param  {[type]} member [description]
  * @return {[type]}        [description]
  */
-export function canCreateNodeWar(member, rolesIds) {
-  return checkMemberForRolesIds(member, rolesIds)
+export function canCreateNodeWar(member) {
+  return
+  checkMemberForRolesIds(member, authorizedRolesIds) ||
+    member.permissions.has("ADMINISTRATOR")
 }
 
 /**
@@ -35,9 +38,7 @@ export function attendNodeWar(msg, channel, role) {
     DM.send(Messages.getRandomOkMessage())
   })
   // msg.reply("As you wish.")
-  channel.send(
-    msg.member.user.username + " will attend at the upcoming memewar!"
-  ) // TAG the user
+  channel.send(msg.member.user.username + " will attend at the upcoming memewar!") // TAG the user
 }
 
 /**
@@ -52,7 +53,5 @@ export function cancelNodeWarAttendance(msg, channel, role) {
   msg.member.user.createDM().then(function(DM) {
     DM.send(Messages.getRandomOkMessage())
   })
-  channel.send(
-    msg.member.user.username + " will not attend! Next time fosure though."
-  )
+  channel.send(msg.member.user.username + " will not attend! Next time fosure though.")
 }

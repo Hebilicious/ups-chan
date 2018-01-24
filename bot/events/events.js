@@ -16,9 +16,6 @@ class Event {
 
 /**
  * Outputs something on a role change.
- * @param  {[type]} oldM [description]
- * @param  {[type]} newM [description]
- * @return {[type]}      [description]
  */
 export class guildMemberUpdate extends Event {
   constructor() {
@@ -62,8 +59,9 @@ export class messageReactionAdd extends Event {
       ? `${messageReaction.emoji.name}:${messageReaction.emoji.id}`
       : messageReaction.emoji.name
 
-    // Send :heartpulse: to everyone
-    if (user.id != client.user.id) {
+    // Send :heartpulse: randomly on reactions
+    let randomly = Math.floor(Math.random() * 3)
+    if (user.id != client.user.id && randomly == 1) {
       messageReaction.message.react("💗")
     }
 
