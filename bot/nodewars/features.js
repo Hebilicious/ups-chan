@@ -13,7 +13,7 @@ export function sendHelp(message, client) {
     {
       name: "__Nodewar administrator commands__",
       value:
-        "- **$nwlist** - list all the participants for the upcoming nodewar.\n- **$nodewar *date*** - creates a nodewar event at the specified date.\n- **$nodewar cancel** - cancel the current nodewar\n- **$nodewar win** - end the current nodewar with a win.\n- **$nodewar loss** - end the current nodewar with a loss."
+        "- **$nwlist** - list all the participants for the upcoming nodewar.\n- **$nodewar *date*** - creates a nodewar event at the specified date.\n- **$nodewar cancel** - cancel the current nodewar\n- **$nodewar win** - end the current nodewar with a win.\n- **$nodewar loss** - end the current nodewar with a loss.\n- **$nodewar @slacker *message*** - Send a message to everyone who's not attending."
     },
     {
       name: "__ServerAdmin Nodewar commands__",
@@ -32,8 +32,7 @@ export function canCreateNodeWar(member, rolesIds) {
   console.log("is admin ? : " + member.permissions.has("ADMINISTRATOR"))
   console.log("roles Ids :" + rolesIds.toString())
   return (
-    member.permissions.has("ADMINISTRATOR") ||
-    checkMemberForRolesIds(member, rolesIds)
+    member.permissions.has("ADMINISTRATOR") || checkMemberForRolesIds(member, rolesIds)
   )
 }
 
@@ -62,9 +61,7 @@ export function attendNodeWar(msg, channel, role) {
     DM.send(Messages.getRandomOkMessage())
   })
   // msg.reply("As you wish.")
-  channel.send(
-    msg.member.user.username + " will attend at the upcoming memewar!"
-  ) // TAG the user
+  channel.send(msg.member.user.username + " will attend at the upcoming memewar!") // TAG the user
 }
 
 /**
@@ -79,9 +76,7 @@ export function cancelNodeWarAttendance(msg, channel, role) {
   msg.member.user.createDM().then(function(DM) {
     DM.send(Messages.getRandomOkMessage())
   })
-  channel.send(
-    msg.member.user.username + " will not attend! Next time fosure though."
-  )
+  channel.send(msg.member.user.username + " will not attend! Next time fosure though.")
 }
 
 /**
@@ -112,8 +107,24 @@ export function listAttendingMembers(message, channel, role, conf) {
       }** people.`
     )
   } else {
-    message.channel.send(
-      "There are no participants for the upcoming nodewar yet."
-    )
+    message.channel.send("There are no participants for the upcoming nodewar yet.")
   }
+}
+
+export function messageToSlackers(message, attendingRole, args, conf) {
+  if (!canCreateNodeWar(message.member, conf.adminRolesIds)) {
+    message.reply("You wish.")
+    return
+  }
+  let text = args
+  text.splice(0, 1)
+  const slackers = message.guild.members
+    .filter(member => {
+      // console.log(member.roles) member.roles.some(r => rolesIds.includes(r.id)
+      return member.roles.some(role => role.id == attendingRole.id)
+    })
+    .map(member => `<@${member.user.id}>,`)
+  message.channel.send(
+    `**From <@${message.member.user.id}> :** ${slackers.join(" ")} **${text.join(" ")}**`
+  )
 }

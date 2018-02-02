@@ -171,6 +171,13 @@ function nodewarManager(message, client, nodeWarChannel, attendingRole, conf) {
     return
   }
 
+  //Message to the slackers.
+  if (firstArg === "@slacker") {
+    console.log("Message to the slackers")
+    Nodewar.messageToSlackers(message, attendingRole, args, conf)
+    return
+  }
+
   //Changing NW Channel command
   if (firstArg === "channel" && message.member.permissions.has("ADMINISTRATOR")) {
     let c =
