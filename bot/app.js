@@ -17,6 +17,7 @@ import { handleEnhance } from "./enhancing/enhancing.js"
  */
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`)
+  //Sync the DB with every server.
   DB.syncConnectedServers(client)
   client.user.setPresence({
     game: {
@@ -28,7 +29,7 @@ client.on("ready", () => {
 })
 
 /**
- * Make Sure the DB is synced at all times.
+ * Sync the DB when we join a new server.
  */
 client.on("guildCreate", () => DB.syncConnectedServers(client))
 
@@ -38,7 +39,7 @@ client.on("guildCreate", () => DB.syncConnectedServers(client))
 client.on("message", message => {
   if (message.content === "I love you.") {
     // console.log(message.member.roles)
-    message.reply("I know. f")
+    message.reply("I know.")
   }
 })
 
@@ -57,15 +58,17 @@ Object.entries(events).forEach(([key, event]) => {
  * Call a custom command on each message.
  */
 client.on("message", message => {
-  // console.log(`New message : ${message}`);
+  // console.log(`New message : ${message}`)
   // console.log(`User:${message.author.username}, ID: ${message.author.id}`)
-  if (message.member != null) {
+  if (message.member != null && message.guild != null) {
     //Pass the message to all the commands ES2016+ PogChamp.
     const commands = { ...rCommands, ...aCommands }
     Object.entries(commands).forEach(([command, call]) => call(message, client))
     spoilThisContent(message, client)
     handleNodeWar(message, client)
     handleEnhance(message, client)
+  } else {
+    console.log("No member or no guild")
   }
 })
 // channel.send(message.guild.roles.map(r => `Name:${r.name}, Position:${r.position}, ID: ${r.id}`));

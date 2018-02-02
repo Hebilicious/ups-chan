@@ -9,14 +9,15 @@ export function meeseeksAnswer(message, client) {
     message.channel.send(getRandomMeeseeksInteraction()).then(m => {
       setTimeout(() => {
         m.delete()
-      }, 1500)
+      }, 2500)
     })
   }
 }
 
 export function ups(message, client) {
   const regex = /(\bups\b)+/gim
-  if (regex.test(message.content)) {
+  let randomly = Math.floor(Math.random() * 4)
+  if (regex.test(message.content) && randomly == 1) {
     message
       .react("🇺")
       .then(() => message.react("🇵"))
@@ -51,10 +52,15 @@ export function pedoAge(msg, client) {
   const regex = /(\bunderage\b|\bage\b)+/gim
   let m
   // console.log("I'm a bot ? " + msg.author.bot);
-  if (msg.author.bot == false && (m = regex.exec(msg.content)) !== null) {
+  let randomly = Math.floor(Math.random() * 2)
+  if (
+    randomly == 1 &&
+    msg.author.bot == false &&
+    (m = regex.exec(msg.content)) !== null
+  ) {
     console.log("Matched age somewhere...")
-    const ePedoBear = client.emojis.find("name", "PedoBear")
-    const eKappa = client.emojis.find("name", "Kappa")
+    const ePedoBear = client.emojis.find("name", "PedoBear") || ":)"
+    const eKappa = client.emojis.find("name", "Kappa") || ":3"
     const reply = `${ePedoBear} Age is nothing but a number ... ${eKappa}`
     // console.log(reply);
     msg.reply(reply)
@@ -62,7 +68,7 @@ export function pedoAge(msg, client) {
 }
 
 export function grammar(msg) {
-  const ex = ["execpt", "excpet", "excetp", "except"]
+  const ex = ["execpt", "exectp", "excpet", "excetp", "except", "excpect"]
   if (ex.some(w => msg.content.includes(w))) {
     msg.reply("Expect. Expecting. ")
   }

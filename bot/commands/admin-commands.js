@@ -1,4 +1,5 @@
-import * as Meeseeks from "../helpers.js"
+// import * as Meeseeks from "../helpers.js"
+import { isPrivileged } from "../auth/authorization.js"
 
 /**
  * List Emojis the bot has access to.
@@ -8,6 +9,7 @@ import * as Meeseeks from "../helpers.js"
  */
 export function listEmojis(message, client) {
   if (message.content === "$listEmojis") {
+    if (!isPrivileged(message.member)) return
     console.log("listing emojis")
     const emojiList = client.emojis.map(
       e =>
@@ -17,7 +19,7 @@ export function listEmojis(message, client) {
     )
 
     // let toSend = Meeseeks.superSplit(emojiList.join("\n"), 2000)
-    message.channel.send(emojiList.join("\n"), {split: true})
+    message.channel.send(emojiList.join("\n"), { split: true })
     // console.log(toSend);
     // emojiList.forEach(el => message.channel.send(el, { split: true }))
     // Meeseeks.superArraySplit(Array(50).fill(mock), 500).forEach(el => console.log(el))
@@ -36,12 +38,12 @@ export function listChannels(message, client) {
     const channelList = message.member.guild.channels.map(
       c => `**$Name**: ${c.name}, **Type**: ${c.type}, **ID:** ${c.id}`
     )
-    message.channel.send(channelList.join("\n"), {split: true})
+    message.channel.send(channelList.join("\n"), { split: true })
   }
 }
 
 /**
- * List Emojis the bot has access to.
+ * List channels the bot has access to.
  * @param  {[type]}  message [description]
  * @param  {[type]}  client  [description]
  * @return {Boolean}         [description]
@@ -50,8 +52,9 @@ export function listRoles(message, client) {
   if (message.content === "$listRoles") {
     console.log("listing roles")
     const roleList = message.member.guild.roles.map(
-      r => `**$Name**: ${r.name}, **Members**: ${r.members.size}, **ID:** ${r.id}`
+      r =>
+        `**$Name**: ${r.name}, **Members**: ${r.members.size}, **ID:** ${r.id}`
     )
-    message.channel.send(roleList.join("\n"), {split: true})
+    message.channel.send(roleList.join("\n"), { split: true })
   }
 }

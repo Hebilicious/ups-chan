@@ -5,7 +5,7 @@ export function sendEmbedHelpAsDM(message, client, fields) {
   sendDM(message, client, {
     embed: {
       color: 16753920,
-      title: `${message.member.displayName} customized UPS-Chan help <3`,
+      title: `${message.member.displayName} customized UPS-Chan help 💗`,
       url: "https://www.ups.com",
       description: "This is a list of all the commands.",
       fields: fields,

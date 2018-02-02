@@ -4,7 +4,14 @@ import _ from "lodash"
 const fs = require("fs")
 const path = require("path")
 
-import {getRandomGoodLuckMessage} from "../verbose/messages.js"
+import { getRandomGoodLuckMessage } from "../verbose/messages.js"
+import { isWordInList } from "../helpers.js"
+
+/**
+ * Handle what we do when we get the keyword related to ehnancing.
+ * @param {Message} message Message Object from DiscordJS
+ * @param {Client} client DiscordJS client.
+ */
 export function handleEnhance(message, client) {
   const keyFs = "$fs"
   if (message.content.startsWith(keyFs)) {
@@ -12,6 +19,11 @@ export function handleEnhance(message, client) {
   }
 }
 
+/**
+ * Failstack logic.
+ * @param {Message} message Message Object from DiscordJS
+ * @param {Client} client DiscordJS client.
+ */
 function failstackManager(message, client) {
   let args = message.content
     .slice(1)
@@ -23,6 +35,7 @@ function failstackManager(message, client) {
   let failstacks
   let target
   let names = []
+  let notHelping = true
 
   //Parse the failstacks.yaml
   try {
@@ -37,7 +50,7 @@ function failstackManager(message, client) {
     console.log(e)
   }
   target = target.target
-  const grade = Object.keys(target)
+  const grades = Object.keys(target)
   //Get all the object names
   Object.entries(failstacks).forEach(([key, ...type]) => {
     _.flattenDeep(type).forEach(o => names.push(o.name))
@@ -45,10 +58,11 @@ function failstackManager(message, client) {
   names = _.flattenDeep(names)
 
   if (!firstArg || !secondArg) {
-    return message.reply(`Please use the command correctly. Refer to **$help**.`)
+    return message.reply(
+      `Please use the command correctly. Refer to **$help**.`
+    )
   }
-  let notHelping = true
-  if (isWordInList(firstArg, grade) && isWordInList(secondArg, names)) {
+  if (isWordInList(firstArg, grades) && isWordInList(secondArg, names)) {
     //Iterate over failstacks file.
     Object.entries(failstacks).forEach(([key, ...obj]) => {
       //Iterate over each flatten subdivision
@@ -75,12 +89,8 @@ function failstackManager(message, client) {
         )
       : null
   } else {
-    message.reply(`I don't know what a ${firstArg} ${secondArg} is, I'm sorry :'(`)
-  }
-}
-
-function isWordInList(word, list) {
-  if (list.length > 0) {
-    return list.some(w => w.toLowerCase() == word.toLowerCase())
+    message.reply(
+      `I don't know what a ${firstArg} ${secondArg} is, I'm sorry :'(`
+    )
   }
 }

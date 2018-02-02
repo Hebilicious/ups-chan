@@ -14,3 +14,9 @@ export function superArraySplit(array, n) {
 export function regexSplit(string, n) {
   return string.match(new RegExp(`[\\s\\S]{1,${n}}`, "g")) || []
 }
+
+export function isWordInList(word, list) {
+  if (list.length > 0) {
+    return list.some(w => w.toLowerCase() == word.toLowerCase())
+  }
+}

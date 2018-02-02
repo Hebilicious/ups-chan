@@ -37,11 +37,11 @@ export function getRandomDontSpoilMessage() {
   const messages = [
     "Spoiler are the path to the dark side.",
     "For the night is long, and full of spoilers.",
-    "This is 10% luck, 20 % skill, 5% pleasure, 50% pain And 100% spoiler. Or not.",
+    "10% luck, 20 % skill, 5% pleasure, 0% spoiler",
     "Dumbledore is dead.",
     "I AM your father!",
     "No spoiler here.",
-    "Another day at the job son. No spoiler.",
+    "Another day on the job son. No spoiler.",
     "You shall not spoil !",
     "If I live, spoiler shall die!",
     "Get down !!!",
