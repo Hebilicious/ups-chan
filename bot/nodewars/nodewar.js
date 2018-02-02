@@ -67,9 +67,7 @@ export async function handleNodeWar(message, client) {
               message.member.guild
                 .createChannel(nwChannel, "text")
                 .then(c => console.log(`Created new nodewar channel ${c}.`))
-                .then(() =>
-                  handleRouting(message, client, key, conf, nwChannel)
-                )
+                .then(() => handleRouting(message, client, key, conf, nwChannel))
             } else {
               handleRouting(message, client, key, conf, nwChannel)
             }
@@ -86,15 +84,10 @@ function handleRouting(message, client, key, conf, channelName) {
   let nodeWarChannel = message.member.guild.channels.find("name", channelName)
   if (!nodeWarChannel || !conf.nodeWarChannel) {
     console.log("Updating configuration")
-    DB.UpdateConfiguration(message.guild, { nodeWarChannel: channelName }).then(
-      () => {
-        let nodeWarChannel = message.member.guild.channels.find(
-          "name",
-          channelName
-        )
-        message.channel.send(channelName + " is now the nodewar channel.")
-      }
-    )
+    DB.UpdateConfiguration(message.guild, { nodeWarChannel: channelName }).then(() => {
+      let nodeWarChannel = message.member.guild.channels.find("name", channelName)
+      message.channel.send(channelName + " is now the nodewar channel.")
+    })
   }
 
   if (!conf.attendingRole) {
@@ -141,6 +134,7 @@ function nodewarManager(message, client, nodeWarChannel, attendingRole, conf) {
   let command = args.shift().toLowerCase()
   let firstArg = args[0]
   let secondArg = args[1]
+  let thirdArg = args[2]
 
   console.log(JSON.stringify(args))
   //Help
@@ -178,11 +172,10 @@ function nodewarManager(message, client, nodeWarChannel, attendingRole, conf) {
   }
 
   //Changing NW Channel command
-  if (
-    firstArg === "channel" &&
-    message.member.permissions.has("ADMINISTRATOR")
-  ) {
-    let c = message.member.guild.channels.find("name", secondArg)
+  if (firstArg === "channel" && message.member.permissions.has("ADMINISTRATOR")) {
+    let c =
+      message.member.guild.channels.find("name", secondArg) ||
+      message.member.guild.channels.find("id", thirdArg)
     if (!c) return
     DB.UpdateConfiguration(message.guild, { nodeWarChannel: c.name })
     message.reply("Nodewar channel successfully set.")
@@ -192,7 +185,9 @@ function nodewarManager(message, client, nodeWarChannel, attendingRole, conf) {
   //Changing Privileged roles command
   if (firstArg === "role" && message.member.permissions.has("ADMINISTRATOR")) {
     console.log("Updating role")
-    let r = message.member.guild.roles.find("name", args[2])
+    let r =
+      message.member.guild.roles.find("name", thirdArg) ||
+      message.member.guild.roles.find("id", thirdArg)
     if (!r) return
     if (secondArg === "add") {
       DB.UpdateConfigurationArray(message.guild, "adminRolesIds", r.id, false)
@@ -206,18 +201,13 @@ function nodewarManager(message, client, nodeWarChannel, attendingRole, conf) {
   }
 
   //Assume that firstArg is a date, check if we're authorized to do so & that we have a date
-  if (
-    Nodewar.canCreateNodeWar(message.member, conf.adminRolesIds) &&
-    firstArg
-  ) {
+  if (Nodewar.canCreateNodeWar(message.member, conf.adminRolesIds) && firstArg) {
     Sugar.Date.setLocale("en-GB")
     let sugarDate = Sugar.Date.create(firstArg)
     let tzDate = moment.tz(sugarDate, timezone)
     if (tzDate.isValid()) {
       message.reply(
-        `Well met! Let's do a nodewar on the ${tzDate.format(
-          "dddd, MMMM Do YYYY"
-        )}`
+        `Well met! Let's do a nodewar on the ${tzDate.format("dddd, MMMM Do YYYY")}`
       )
       NodewarDB.createNodeWar(message, tzDate)
     } else {
