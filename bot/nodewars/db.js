@@ -1,8 +1,10 @@
 import moment from "moment-timezone"
-import {clearAttendingMembers} from "./features.js"
-import * as Messages from "../verbose/messages.js"
 
-const r = require("rethinkdbdash")({db: "test"})
+import * as Messages from "../verbose/messages.js"
+import * as DB from "../database/database.js"
+
+import { clearAttendingMembers } from "./features.js"
+// const r = require("rethinkdbdash")({db: "test"})
 const timezone = "Europe/Paris"
 
 /**
@@ -31,14 +33,12 @@ export function endNodeWar(message, channel, role, result) {
       .find("name", role.name)
       .members.map(m => m.user.id)
   }
-  r
-
+  DB.Connect(message.guild)
     .table("nodewar")
-    .filter({isActive: true})
+    .filter({ isActive: true })
     .update(updatedNW)
     .run()
-    .then((err, result) => {
-      if (err) throw err
+    .then(result => {
       console.log(JSON.stringify(result, null, 2))
       if (victory) {
         message.channel.send(Messages.getRandomWinMessage())
@@ -57,14 +57,14 @@ export function endNodeWar(message, channel, role, result) {
  * @return {[type]}         [description]
  */
 export function cancelNodeWar(message, channel, role) {
-  r
-
+  console.log("Cancelling nodewar...")
+  console.log(role)
+  DB.Connect(message.guild)
     .table("nodewar")
-    .filter({isActive: true})
+    .filter({ isActive: true })
     .delete()
     .run()
-    .then((err, result) => {
-      if (err) throw err
+    .then(result => {
       console.log(JSON.stringify(result, null, 2))
       message.reply(`NodeWar successfully canceled.`)
       setNodewarTopic(message, "UPS will prevail soon.")
@@ -80,7 +80,7 @@ export function cancelNodeWar(message, channel, role) {
  */
 export function createNodeWar(message, date) {
   console.log("Trying to create a nodewar...")
-  let endDate = date.add({hours: 10, minutes: 30})
+  let endDate = date.add({ hours: 10, minutes: 30 })
   let fDate = date.format("dddd, MMMM Do YYYY")
   let nwObject = {
     isActive: true,
@@ -90,18 +90,18 @@ export function createNodeWar(message, date) {
     creatorId: message.member.id,
     attendingMembers: 0
   }
-  r
+  DB.Connect(message.guild)
     .table("nodewar")
-    .filter({isActive: true})
+    .filter({ isActive: true })
     .run()
     .then(result => {
       if (result.length == 1) {
-        updateCurrentNodeWar(nwObject)
+        updateCurrentNodeWar(nwObject, message)
         message.reply(`Modified the current Nodewar.`)
         setNodewarTopic(message, `Nodewar => ${fDate} !`)
       }
       if (result.length == 0) {
-        insertNewNodeWar(nwObject)
+        insertNewNodeWar(nwObject, message)
         message.reply("New nodewar created !")
         setNodewarTopic(message, `Nodewar => ${fDate} !`)
       }
@@ -117,78 +117,44 @@ export function createNodeWar(message, date) {
  * @return {[type]}         [description]
  */
 export function nodewarCheck(message) {
-  checkIfTableExists(message)
+  console.log("Hello")
+  DB.Connect(message.guild)
+    .table("nodewar")
+    .filter({ isActive: true })
+    .run()
+    .then(result => {
+      console.log("fetchActiveNodewar result")
+      respondNodewar(message, result)
+    })
 }
 
 //Update a node war
-function updateCurrentNodeWar(nwObject) {
-  r
-
+function updateCurrentNodeWar(nwObject, message) {
+  DB.Connect(message.guild)
     .table("nodewar")
-    .filter({isActive: true})
-    .update({date: nwObject.date})
+    .filter({ isActive: true })
+    .update({ date: nwObject.date })
     .run()
-    .then((err, result) => {
-      if (err) throw err
+    .then(result => {
       console.log(JSON.stringify(result, null, 2))
     })
   console.log("Updated nodewar.")
 }
 
 //Insert a node war
-function insertNewNodeWar(conn, nwObject) {
-  r
-
+function insertNewNodeWar(nwObject, message) {
+  DB.Connect(message.guild)
     .table("nodewar")
     .insert(nwObject)
     .run()
-    .then((err, result) => {
-      if (err) throw err
+    .then(result => {
       console.log(JSON.stringify(result, null, 2))
     })
   console.log("Created nodewar")
 }
 
-//Create nodewar table if we don't have it, then fetch the active nodewar.
-function checkIfTableExists(message) {
-  r
-    .tableList()
-    .run()
-    .then(function(result) {
-      console.log(result)
-      if (result.includes("nodewar")) {
-        console.log("We got nodewar")
-        fetchActiveNodewar(message)
-      } else {
-        console.log("We create nodewar")
-        r
-          .tableCreate("nodewar")
-          .run()
-          .then(function(result) {
-            console.log(result)
-            fetchActiveNodewar(message)
-          })
-      }
-    })
-}
-
-//fetch the active nodewar, then respond to the message based on the result.
-function fetchActiveNodewar(message) {
-  console.log("Hello")
-  r
-    .table("nodewar")
-    .filter({isActive: true})
-    .run()
-    .then(function(result) {
-      console.log(result)
-      console.log("fetchActiveNodewar result")
-      respondNodewar(message, result)
-    })
-}
-
 //The actual response sent by the bot.
 function respondNodewar(message, result) {
-  console.log(message.member)
   if (result.length == 1) {
     let fDate = moment(result[0].date).format("dddd, MMMM Do YYYY")
     setNodewarTopic(message, `Nodewar => ${fDate} !`)
@@ -199,8 +165,15 @@ function respondNodewar(message, result) {
 }
 
 //Set the topic for the nw channel
-function setNodewarTopic(message, topic) {
+async function setNodewarTopic(message, topic) {
   console.log("Setting topic")
-  const nodeWarChannel = message.member.guild.channels.find("name", "memewar-discussion")
+  const conf = await DB.Connect(message.guild)
+    .table("configuration")
+    .get(0)
+    .run()
+  const nodeWarChannel = message.member.guild.channels.find(
+    "name",
+    conf.nodeWarChannel
+  )
   nodeWarChannel.setTopic(topic)
 }
