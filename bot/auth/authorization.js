@@ -14,7 +14,7 @@ export function checkMemberForRolesIds(member, rolesIds) {
 }
 
 export async function isPrivileged(member) {
-  const conf = await DB.Connect(message.guild)
+  const conf = await DB.Connect(member.guild)
     .table("configuration")
     .get(0)
     .run()

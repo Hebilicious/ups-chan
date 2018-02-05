@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: "UPS-Chan",
-      script: "dist/dist.js",
+      script: "dist/ups-chan.js",
       watch: ["dist"],
       env: {
         NODE_ENV: "production"

@@ -1,7 +1,7 @@
 import Canvas from "canvas-prebuilt"
 import GIFEncoder from "gifencoder"
 import sanitize from "sanitize-filename"
-import {getRandomDontSpoilMessage} from "../verbose/messages.js"
+import { getRandomDontSpoilMessage } from "../verbose/messages.js"
 
 const path = require("path")
 const fs = require("fs")
@@ -10,7 +10,10 @@ const Font = Canvas.Font
 const GIF_PATH = "assets/gifs"
 const FONT_PATH = "assets/fonts"
 const SOURCE_SANS_PRO = Font
-  ? new Font("SourceSansPro", path.join("assets/fonts", "SourceSansPro-Regular.ttf"))
+  ? new Font(
+      "SourceSansPro",
+      path.join("assets/fonts", "SourceSansPro-Regular.ttf")
+    )
   : null
 
 /**
@@ -183,7 +186,12 @@ export class GifGenerator {
     for (let i = 0; i < lines.length; i++) {
       let line = lines[i]
       let marginTop = this.config.lineHeight / 2 * (i + 1)
-      this.renderTextToContext(context, marginTop, line, this.config.colours.text)
+      this.renderTextToContext(
+        context,
+        marginTop,
+        line,
+        this.config.colours.text
+      )
     }
     encoder.addFrame(context)
   }
@@ -198,7 +206,8 @@ export class GifGenerator {
     if (SOURCE_SANS_PRO !== null) {
       context.addFont(SOURCE_SANS_PRO)
     }
-    let fontName = SOURCE_SANS_PRO !== null ? "aSourceSansPro" : '"Lucida Sans Unicode"'
+    let fontName =
+      SOURCE_SANS_PRO !== null ? "aSourceSansPro" : '"Lucida Sans Unicode"'
     context.font = `${this.config.fontSize} ${fontName}`
     return context
   }

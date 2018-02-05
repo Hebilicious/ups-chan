@@ -25,7 +25,7 @@ module.exports = {
     rules: [
       {
         test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /(node_modules)/,
         use: ["babel-loader"]
       }
     ]
@@ -33,7 +33,7 @@ module.exports = {
   target: "node",
   devtool: "sourcemap",
   output: {
-    filename: "dist.js",
+    filename: "ups-chan.js",
     path: path.resolve(__dirname, "../dist")
   }
 }

@@ -71,7 +71,6 @@ client.on("message", message => {
     console.log("No member or no guild found!")
   }
 })
-// channel.send(message.guild.roles.map(r => `Name:${r.name}, Position:${r.position}, ID: ${r.id}`));
 
 /**
  * This logs the bot in with the token from auth.json
