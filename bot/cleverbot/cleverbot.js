@@ -25,9 +25,9 @@ export function cleverAnswer(message, client) {
         bot
           .ask(message.content)
           .then(response => message.reply(response))
-          .catch(err => console.error(er))
+          .catch(error => console.error(error))
       })
-      .catch(err => console.error(er))
+      .catch(error => console.error(error))
   }
 }
 
@@ -47,7 +47,7 @@ export function cleverDM(message) {
           // setTimeout(() => {
           // }, Math.random() * (1 - 3) + 1 * 1000)
         })
-        .catch(err => console.error(er))
+        .catch(error => console.error(error))
     })
-    .catch(err => console.error(er))
+    .catch(error => console.error(error))
 }
