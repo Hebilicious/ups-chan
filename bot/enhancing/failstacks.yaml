@@ -122,6 +122,7 @@ accessories:
 - name:
   - Basilisk
   - Belt
+  - Basi
   toPri:
     current: base
     minStack: 20

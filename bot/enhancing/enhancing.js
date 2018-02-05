@@ -90,7 +90,7 @@ function failstackManager(message, client) {
       : null
   } else {
     message.reply(
-      `I don't know what a ${firstArg} ${secondArg} is, I'm sorry :'(`
+      `I don't know what a ${firstArg} ${secondArg} is, I'm sorry :(`
     )
   }
 }
