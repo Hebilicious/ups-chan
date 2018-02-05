@@ -19,9 +19,7 @@ export function UpdateConfiguration(guild, updates) {
 }
 
 export function UpdateConfigurationArray(guild, key, updates, remove = false) {
-  console.log(key)
-  console.log(updates)
-  console.log(remove)
+  console.log("Updating configuration array...")
   return remove
     ? Connect(guild)
         .table("configuration")

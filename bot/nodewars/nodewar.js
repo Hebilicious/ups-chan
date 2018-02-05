@@ -141,6 +141,7 @@ function nodewarManager(message, client, nodeWarChannel, attendingRole, conf) {
   let command = args.shift().toLowerCase()
   let firstArg = args[0]
   let secondArg = args[1]
+  let thirdArg = args[2]
 
   console.log(JSON.stringify(args))
   //Help
@@ -177,12 +178,21 @@ function nodewarManager(message, client, nodeWarChannel, attendingRole, conf) {
     return
   }
 
+  //Message to the slackers.
+  if (firstArg === "@slacker") {
+    console.log("Message to the slackers")
+    Nodewar.messageToSlackers(message, attendingRole, args, conf)
+    return
+  }
+
   //Changing NW Channel command
   if (
     firstArg === "channel" &&
     message.member.permissions.has("ADMINISTRATOR")
   ) {
-    let c = message.member.guild.channels.find("name", secondArg)
+    let c =
+      message.member.guild.channels.find("name", secondArg) ||
+      message.member.guild.channels.find("id", thirdArg)
     if (!c) return
     DB.UpdateConfiguration(message.guild, { nodeWarChannel: c.name })
     message.reply("Nodewar channel successfully set.")
@@ -192,7 +202,9 @@ function nodewarManager(message, client, nodeWarChannel, attendingRole, conf) {
   //Changing Privileged roles command
   if (firstArg === "role" && message.member.permissions.has("ADMINISTRATOR")) {
     console.log("Updating role")
-    let r = message.member.guild.roles.find("name", args[2])
+    let r =
+      message.member.guild.roles.find("name", thirdArg) ||
+      message.member.guild.roles.find("id", thirdArg)
     if (!r) return
     if (secondArg === "add") {
       DB.UpdateConfigurationArray(message.guild, "adminRolesIds", r.id, false)

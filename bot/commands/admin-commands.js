@@ -1,6 +1,6 @@
 // import * as Meeseeks from "../helpers.js"
 import { isPrivileged } from "../auth/authorization.js"
-
+import * as DB from "../database/database.js"
 /**
  * List Emojis the bot has access to.
  * @param  {[type]}  message [description]
@@ -34,6 +34,7 @@ export function listEmojis(message, client) {
  */
 export function listChannels(message, client) {
   if (message.content === "$listChannels") {
+    if (!isPrivileged(message.member)) return
     console.log("listing channels")
     const channelList = message.member.guild.channels.map(
       c => `**$Name**: ${c.name}, **Type**: ${c.type}, **ID:** ${c.id}`
@@ -50,11 +51,27 @@ export function listChannels(message, client) {
  */
 export function listRoles(message, client) {
   if (message.content === "$listRoles") {
+    if (!isPrivileged(message.member)) return
     console.log("listing roles")
     const roleList = message.member.guild.roles.map(
       r =>
         `**$Name**: ${r.name}, **Members**: ${r.members.size}, **ID:** ${r.id}`
     )
     message.channel.send(roleList.join("\n"), { split: true })
+  }
+}
+
+export function dumpConf(message, client) {
+  if (message.content === "$getConfiguration") {
+    if (!isPrivileged(message.member)) return
+    console.log("Dumping conf")
+    DB.Connect(message.guild)
+      .table("configuration")
+      .get(0)
+      .then(conf =>
+        message.channel.send(
+          "Current configuration :" + JSON.stringify(conf, null, 4)
+        )
+      )
   }
 }

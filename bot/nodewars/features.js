@@ -13,7 +13,7 @@ export function sendHelp(message, client) {
     {
       name: "__Nodewar administrator commands__",
       value:
-        "- **$nwlist** - list all the participants for the upcoming nodewar.\n- **$nodewar *date*** - creates a nodewar event at the specified date.\n- **$nodewar cancel** - cancel the current nodewar\n- **$nodewar win** - end the current nodewar with a win.\n- **$nodewar loss** - end the current nodewar with a loss."
+        "- **$nwlist** - list all the participants for the upcoming nodewar.\n- **$nodewar *date*** - creates a nodewar event at the specified date.\n- **$nodewar cancel** - cancel the current nodewar\n- **$nodewar win** - end the current nodewar with a win.\n- **$nodewar loss** - end the current nodewar with a loss.\n- **$nodewar @slacker *message*** - Send a message to everyone who's not attending."
     },
     {
       name: "__ServerAdmin Nodewar commands__",
@@ -116,4 +116,24 @@ export function listAttendingMembers(message, channel, role, conf) {
       "There are no participants for the upcoming nodewar yet."
     )
   }
+}
+
+export function messageToSlackers(message, attendingRole, args, conf) {
+  if (!canCreateNodeWar(message.member, conf.adminRolesIds)) {
+    message.reply("You wish.")
+    return
+  }
+  let text = args
+  text.splice(0, 1)
+  const slackers = message.guild.members
+    .filter(member => {
+      // console.log(member.roles) member.roles.some(r => rolesIds.includes(r.id)
+      return member.roles.some(role => role.id == attendingRole.id)
+    })
+    .map(member => `<@${member.user.id}>,`)
+  message.channel.send(
+    `**From <@${message.member.user.id}> :** ${slackers.join(
+      " "
+    )} **${text.join(" ")}**`
+  )
 }
