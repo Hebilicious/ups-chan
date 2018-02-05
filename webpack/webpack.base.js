@@ -31,9 +31,5 @@ module.exports = {
     ]
   },
   target: "node",
-  devtool: "sourcemap",
-  output: {
-    filename: "ups-chan.js",
-    path: path.resolve(__dirname, "../dist")
-  }
+  devtool: "sourcemap"
 }

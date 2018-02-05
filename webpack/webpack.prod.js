@@ -4,5 +4,9 @@ const path = require("path")
 const base = require("./webpack.base.js")
 const UglifyJSPlugin = require("uglifyjs-webpack-plugin")
 module.exports = merge(base, {
-  plugins: [new UglifyJSPlugin({ sourceMap: true })]
+  plugins: [new UglifyJSPlugin({ sourceMap: true })],
+  output: {
+    filename: "ups-chan.js",
+    path: path.resolve(__dirname, "../dist")
+  }
 })
