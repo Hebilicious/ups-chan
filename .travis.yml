@@ -15,7 +15,7 @@ before_install:
   - sudo apt-get install rethinkdb
 before_script:
     - rethinkdb --daemon
-    - echo '{ "token": "my-super-secret-token" }' > auth.json
+    - mv auth.example.json auth.json
 install:
   - yarn
 script:
