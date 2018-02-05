@@ -4,11 +4,13 @@
       "@babel/preset-env",
       {
         "targets": {
-          "node": "current",
-          "browsers": ["last 2 versions"]
+          "node": "current"
         }
       }
     ]
   ],
-  "plugins": ["@babel/transform-runtime", "@babel/plugin-proposal-object-rest-spread"]
+  "plugins": [
+    "@babel/transform-runtime",
+    "@babel/plugin-proposal-object-rest-spread"
+  ]
 }
