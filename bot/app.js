@@ -8,6 +8,7 @@ import * as rCommands from "./commands/regular-commands.js"
 import * as aCommands from "./commands/admin-commands.js"
 
 import * as events from "./events/events.js"
+import * as cleverBot from "./cleverbot/cleverbot.js"
 
 import { handleNodeWar } from "./nodewars/nodewar.js"
 import { spoilThisContent } from "./spoiler/spoiler.js"
@@ -60,15 +61,21 @@ Object.entries(events).forEach(([key, event]) => {
 client.on("message", message => {
   // console.log(`New message : ${message}`)
   // console.log(`User:${message.author.username}, ID: ${message.author.id}`)
-  if (message.member != null && message.guild != null) {
+  if (message.author.id != client.user.id) {
+    //DM only
+    if (message.guild == null) {
+      // console.log("No guild...")
+      cleverBot.cleverDM(message, client)
+    }
     //Pass the message to all the commands ES2016+ PogChamp.
     const commands = { ...rCommands, ...aCommands }
     Object.entries(commands).forEach(([command, call]) => call(message, client))
     spoilThisContent(message, client)
     handleNodeWar(message, client)
     handleEnhance(message, client)
+    cleverBot.cleverAnswer(message, client)
   } else {
-    console.log("No member or no guild found!")
+    // console.log("Don't talk with yourself!")
   }
 })
 

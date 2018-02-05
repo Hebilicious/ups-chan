@@ -6,7 +6,7 @@ UPS Black Desert Online guild discord bot.
 
 ## TODO
 
-* Cleverbot.io integration
+...
 
 > This bot might have some hardcoded ids/emojis. You'll need to refactor it a bit.
 
@@ -22,6 +22,8 @@ Create an auth.json at the directory root and paste your token like this :
 ```json
 { "token": "ThisIsYourBotToken" }
 ```
+
+Look for the auth.example.json and paste your other service user/keys there.
 
 Then on your terminal:
 

@@ -15,6 +15,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "better-cleverbot-io": "^1.0.2",
     "canvas-prebuilt": "^1.6.5-prerelease.1",
     "discord.js": "^11.3.0",
     "gifencoder": "^1.1.0",
