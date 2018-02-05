@@ -6,7 +6,6 @@
   "author": "Hebilicious",
   "scripts": {
     "dev": "webpack --watch --config webpack/webpack.dev.js",
-    "debug": "webpack --watch --config webpack/webpack.debug.js",
     "lint": "prettier --write {bot,webpack}/**/**.js",
     "build": "npm run lint && webpack --config webpack/webpack.prod.js"
   },
