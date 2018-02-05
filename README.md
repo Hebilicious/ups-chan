@@ -1,30 +1,26 @@
 <p align="center"><a href="" target="_blank"><img width="100" src="https://cdn.discordapp.com/attachments/312317025357791242/403003504886546433/upschan.png" alt="UPS logo"></a></p>
 
-# UPS-chan
+# UPS-chan [![Build Status](https://travis-ci.org/Hebilicious/ups-chan.svg?branch=master)](https://travis-ci.org/Hebilicious/ups-chan)
 
 UPS Black Desert Online guild discord bot.
 
 ## TODO
 
-- Write tests.
-- Cleverbot.io integration
+* Cleverbot.io integration
 
-### Disclaimer
-
-This bot might have some hardcoded ids/emojis. You'll need to refactor it a bit.
+> This bot might have some hardcoded ids/emojis. You'll need to refactor it a bit.
 
 ## How to use
 
 Make sure you have a working node.js environment.
 Install rethinkdb => Official instructions [here](https://www.rethinkdb.com/docs/install/).
 Make sure that the service is running on the default port.
-If you do not have yarn ```npm install -g yarn``` or use npm instead.
-You will probably need webpack installed globally ```npm install -g webpack```.
+If you do not have yarn `npm install -g yarn` or use npm instead.
 
 Create an auth.json at the directory root and paste your token like this :
 
 ```json
-{ "token" : "ThisIsYourBotToken" }
+{ "token": "ThisIsYourBotToken" }
 ```
 
 Then on your terminal:
@@ -47,6 +43,7 @@ If you want to run the bot as a background task with pm2:
 
 ```sh
 npm install -g pm2
+npm run build
 pm2 start ecosystem.config.js
 ```
 
