@@ -80,22 +80,17 @@ export function help(message, client) {
       {
         name: "__Commands__",
         value:
-          "- **$nodewar help** - Gives you the nodewar help commands.\n- *topic* **$spoiler** *content* - Creates a spoiler for your content.\n- **$fs *tet ogre* Tells you an appropriate failstack number to slam your gear on."
-      },
-      {
-        name: "__Nodewar commands__",
-        value:
-          "- **$attend** - set your role to *Attending*.\n- **$cancel** - remove yourself from the *Attending* list.\n- **$nodewar** - tells you the date for the the upcoming nodewar."
+          "- **$nodewar help** - Check that one out to learn how to use the nodewar feature.\n- *topic* **$spoiler** *content* - Creates a GIF that prevent spoiler for your content.\n- **$fs** *tet ogre* Tells you an appropriate failstack number to slam your gear on.\n- Mention me and I'll talk to you!"
       },
       {
         name: "__Admin commands__",
         value:
-          "- **$listEmojis** - List all the Emojis.\n- **$listRoles** - List all the Roles.\n- **$listChannels** - List all the Channels.\n"
+          "- **$listEmojis** - List the emojis I can use.\n- **$listRoles** - List the server roles.\n- **$listChannels** - List the channels.\n"
       },
       {
-        name: "__Admin Nodewar commands__",
+        name: "__ServerAdmin commands__",
         value:
-          "- **$nwlist** - list all the participants for the upcoming nodewar.\n- **$nodewar *date*** - creates a nodewar event at the specified date.\n- **$nodewar cancel** - cancel the current nodewar\n- **$nodewar win** - end the current nodewar with a win.\n- **$nodewar loss** - end the current nodewar with a loss."
+          "- **$getConfiguration** - Dump the configuration related to the current server."
       }
     ]
     sendEmbedHelpAsDM(message, client, fields)

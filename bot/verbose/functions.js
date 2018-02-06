@@ -12,7 +12,8 @@ export function sendEmbedHelpAsDM(message, client, fields) {
       timestamp: moment().tz(timezone),
       footer: {
         icon_url: client.user.avatarURL,
-        text: client.user.username
+        text:
+          client.user.username + " - Contact ➡ Hebilicious#3910 on Discord 🎯."
       }
     }
   })

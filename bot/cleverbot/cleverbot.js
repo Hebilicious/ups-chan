@@ -38,12 +38,12 @@ export function cleverDM(message) {
   bot
     .create()
     .then(() => {
+      message.channel.startTyping()
+      message.channel.stopTyping()
       bot
         .ask(message.content)
         .then(response => {
           let res = response
-          message.channel.startTyping()
-          message.channel.stopTyping()
           message.channel.send(res)
           // setTimeout(() => {
           // }, Math.random() * (1 - 3) + 1 * 1000)
