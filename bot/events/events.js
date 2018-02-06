@@ -21,7 +21,7 @@ export class guildMemberUpdate extends Event {
     super()
     console.log("guildMemberUpdate ready")
     this.eventName = "guildMemberUpdate"
-    Array.prototype.diff = function(array) {
+    Array.prototype.diff = function (array) {
       return this.filter(x => !array.includes(x))
     }
   }
@@ -41,6 +41,7 @@ export class guildMemberUpdate extends Event {
     let removed = oldRoles.diff(newRoles).diff(ignore)
     let added = newRoles.diff(oldRoles).diff(ignore)
     let channel = oldM.guild.channels.find("name", "general")
+    if (!channel) return
     console.log(`Added ${added}, removed ${removed}`)
     if (removed.length > 0) {
       channel.send(

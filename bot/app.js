@@ -55,11 +55,16 @@ Object.entries(events).forEach(([key, event]) => {
   })
 })
 
+// client.on('message', async message => {
+//   let app = await client.fetchApplication()
+//   console.log(app.owner.id)
+// })
+
 /**
  * Call a custom command on each message.
  */
 client.on("message", message => {
-  // console.log(`New message : ${message}`)
+  // console.log(`New message : ${message.author.id}`)
   // console.log(`User:${message.author.username}, ID: ${message.author.id}`)
   if (message.author.id != client.user.id) {
     //DM only

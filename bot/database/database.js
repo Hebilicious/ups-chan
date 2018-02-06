@@ -22,15 +22,30 @@ export function UpdateConfigurationArray(guild, key, updates, remove = false) {
   console.log("Updating configuration array...")
   return remove
     ? Connect(guild)
-        .table("configuration")
-        .get(0)
-        .update({ [key]: r.row(key).difference(updates) })
-        .run()
+      .table("configuration")
+      .get(0)
+      .update({ [key]: r.row(key).difference(updates) })
+      .run()
     : Connect(guild)
-        .table("configuration")
-        .get(0)
-        .update({ [key]: r.row(key).append(updates) })
-        .run()
+      .table("configuration")
+      .get(0)
+      .update({ [key]: r.row(key).append(updates) })
+      .run()
+}
+export async function addServerNametoDB(client) {
+  let dbList = await r.dbList().run()
+  client.guilds.forEach(guild => {
+    if (dbList.includes(guild.id)) { }
+    console.log("Fixing db for " + guild.name)
+    r
+      .db(guild.id)
+      .table("configuration")
+      .get(0)
+      .update({ serverName: guild.name })
+      .run()
+      .then(async result =>
+        console.log(await r.db(guild.id).table("configuration").get(0)))
+  })
 }
 /**
  * Sync the connected guilds (servers) with the db backend by creating
@@ -63,6 +78,7 @@ export async function syncConnectedServers(client) {
                 .table("configuration")
                 .insert({
                   id: 0,
+                  serverName: guild.name,
                   nodeWarChannel: "",
                   attendingRole: "Attending",
                   adminRolesIds: []

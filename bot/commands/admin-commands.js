@@ -14,7 +14,7 @@ export function listEmojis(message, client) {
     const emojiList = client.emojis.map(
       e =>
         `**${client.emojis.get(e.id)} Name**: ${e.name}, **Identifier**: ${
-          e.identifier
+        e.identifier
         }, **ID:** ${e.id}`
     )
 
@@ -73,5 +73,18 @@ export function dumpConf(message, client) {
           "Current configuration :" + JSON.stringify(conf, null, 4)
         )
       )
+  }
+}
+
+export async function fixDB(message, client) {
+  if (message.content === "$fixServerNameDB") {
+    let app = await client.fetchApplication()
+    if (app.owner.id == message.author.id) {
+      console.log('Hi master')
+      DB.addServerNametoDB(client)
+      message.reply("Done master.")
+    } else {
+      console.log("Nice try.")
+    }
   }
 }
