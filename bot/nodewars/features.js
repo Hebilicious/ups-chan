@@ -13,7 +13,7 @@ export function sendHelp(message, client) {
     {
       name: "__Nodewar administrator commands__",
       value:
-        "- **$nwlist** - list all the participants for the upcoming nodewar.\n- **$nodewar *date*** - creates a nodewar event at the specified date.\n- **$nodewar cancel** - cancel the current nodewar\n- **$nodewar win** - end the current nodewar with a win.\n- **$nodewar loss** - end the current nodewar with a loss.\n- **$nodewar @slacker *message*** - Send a message to everyone who's not attending."
+        "- **$nwlist** - list all the participants for the upcoming nodewar.\n- **$nodewar *date*** - creates a nodewar event at the specified date.\n- **$nodewar cancel** - cancel the current nodewar\n- **$nodewar win** - end the current nodewar with a win.\n- **$nodewar loss** - end the current nodewar with a loss.\n- **$nodewar slacker *message*** - Send a message to everyone who's not attending."
     },
     {
       name: "__ServerAdmin Nodewar commands__",

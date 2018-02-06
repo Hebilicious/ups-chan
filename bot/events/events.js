@@ -21,7 +21,7 @@ export class guildMemberUpdate extends Event {
     super()
     console.log("guildMemberUpdate ready")
     this.eventName = "guildMemberUpdate"
-    Array.prototype.diff = function (array) {
+    Array.prototype.diff = function(array) {
       return this.filter(x => !array.includes(x))
     }
   }
