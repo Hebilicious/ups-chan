@@ -36,7 +36,7 @@ export async function handleNodeWar(message, client) {
   let nodewarChannel = conf.nodeWarChannel
   let attendingRole = conf.attendingRole
 
-  const filter = function(m) {
+  const filter = function (m) {
     //Check that we have the same author and only 1 word
     if (m.author.id == message.author.id && m.content.split(" ".length == 1)) {
       console.log("Valid Answer")
@@ -48,10 +48,10 @@ export async function handleNodeWar(message, client) {
     //Handle auth
     message.channel
       .send(
-        `Please type-in the name of the channel you want to use for the nodewar features. \n **Existing channels** : \n${message.member.guild.channels
-          .filter(c => c.type == "text")
-          .map(c => `**-** ${c.name}`)
-          .join("\n")}`
+      `Please type-in the name of the channel you want to use for the nodewar features. \n **Existing channels** : \n${message.member.guild.channels
+        .filter(c => c.type == "text")
+        .map(c => `**-** ${c.name}`)
+        .join("\n")}`
       )
       .then(() => {
         message.channel
@@ -179,9 +179,9 @@ function nodewarManager(message, client, nodeWarChannel, attendingRole, conf) {
   }
 
   //Message to the slackers.
-  if (firstArg === "@slacker") {
+  if (firstArg === "slacker") {
     console.log("Message to the slackers")
-    Nodewar.messageToSlackers(message, attendingRole, args, conf)
+    Nodewar.messageToSlackers(message, nodeWarChannel, attendingRole, args, conf)
     return
   }
 

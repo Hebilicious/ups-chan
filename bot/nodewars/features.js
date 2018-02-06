@@ -58,7 +58,7 @@ export function attendNodeWar(msg, channel, role) {
   // Assign the role to the member
   msg.member.addRole(role).catch(console.error)
   // Send the message, mentioning the member
-  msg.member.user.createDM().then(function(DM) {
+  msg.member.user.createDM().then(function (DM) {
     DM.send(Messages.getRandomOkMessage())
   })
   // msg.reply("As you wish.")
@@ -76,7 +76,7 @@ export function cancelNodeWarAttendance(msg, channel, role) {
   // Remove the role from the member
   msg.member.removeRole(role).catch(console.error)
   // Send the message, mentioning the member
-  msg.member.user.createDM().then(function(DM) {
+  msg.member.user.createDM().then(function (DM) {
     DM.send(Messages.getRandomOkMessage())
   })
   channel.send(
@@ -108,7 +108,7 @@ export function listAttendingMembers(message, channel, role, conf) {
   if (nwlist.size > 0) {
     message.channel.send(
       `**Here's a list of everyone who's attending to the upcoming nodewar :**\n ${nameList} \n That is a total of **${
-        nwlist.size
+      nwlist.size
       }** people.`
     )
   } else {
@@ -118,20 +118,21 @@ export function listAttendingMembers(message, channel, role, conf) {
   }
 }
 
-export function messageToSlackers(message, attendingRole, args, conf) {
+export function messageToSlackers(message, channel, attendingRole, args, conf) {
   if (!canCreateNodeWar(message.member, conf.adminRolesIds)) {
     message.reply("You wish.")
     return
   }
   let text = args
   text.splice(0, 1)
-  const slackers = message.guild.members
+  const slackers = channel.members
     .filter(member => {
-      // console.log(member.roles) member.roles.some(r => rolesIds.includes(r.id)
-      return member.roles.some(role => role.id == attendingRole.id)
+      if (!member.roles.map(r => r.id).includes(attendingRole.id)) {
+        return member
+      }
     })
     .map(member => `<@${member.user.id}>,`)
-  message.channel.send(
+  channel.send(
     `**From <@${message.member.user.id}> :** ${slackers.join(
       " "
     )} **${text.join(" ")}**`
