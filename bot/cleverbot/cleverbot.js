@@ -1,4 +1,4 @@
-const Cleverbot = require("better-cleverbot-io")
+import { Cleverbot } from "./api"
 const auth = require("../../auth.json")
 
 function createBot(session) {
@@ -41,9 +41,10 @@ export function cleverDM(message) {
       bot
         .ask(message.content)
         .then(response => {
+          let res = response
           message.channel.startTyping()
           message.channel.stopTyping()
-          message.channel.send(response)
+          message.channel.send(res)
           // setTimeout(() => {
           // }, Math.random() * (1 - 3) + 1 * 1000)
         })
