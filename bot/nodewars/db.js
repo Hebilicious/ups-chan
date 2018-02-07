@@ -3,7 +3,7 @@ import moment from "moment-timezone"
 import * as Messages from "../verbose/messages.js"
 import * as DB from "../database/database.js"
 
-import { clearAttendingMembers } from "./features.js"
+import { clearAttendingMembers, updateParticipantTopic } from "./features.js"
 const timezone = "Europe/Paris"
 
 /**
@@ -115,7 +115,7 @@ export function createNodeWar(message, date) {
  * @param  {[type]} message [description]
  * @return {[type]}         [description]
  */
-export function nodewarCheck(message) {
+export function nodewarCheck(message, chanel, role) {
   console.log("Hello")
   DB.Connect(message.guild)
     .table("nodewar")
@@ -123,7 +123,7 @@ export function nodewarCheck(message) {
     .run()
     .then(result => {
       console.log("fetchActiveNodewar result")
-      respondNodewar(message, result)
+      respondNodewar(message, chanel, role, result)
     })
 }
 
@@ -165,10 +165,11 @@ function insertNewNodeWar(nwObject, message) {
 }
 
 //The actual response sent by the bot.
-function respondNodewar(message, result) {
+function respondNodewar(message, channel, role, result) {
   if (result.length == 1) {
     let fDate = moment(result[0].date).format("dddd, MMMM Do YYYY")
-    setNodewarTopic(message, `Nodewar => ${fDate} !`)
+    setNodewarTopic(message, `Nodewar => ${fDate} !`).then(r => updateParticipantTopic(message, channel, role))
+
     message.reply(`Nodewar scheduled for ${fDate}.`)
   } else {
     message.reply("When would you like to create a nodewar?")
@@ -186,5 +187,5 @@ async function setNodewarTopic(message, topic) {
     "name",
     conf.nodeWarChannel
   )
-  nodeWarChannel.setTopic(topic)
+  return nodeWarChannel.setTopic(topic)
 }
