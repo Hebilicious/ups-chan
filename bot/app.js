@@ -39,7 +39,6 @@ client.on("guildCreate", () => DB.syncConnectedServers(client))
  */
 client.on("message", message => {
   if (message.content === "I love you.") {
-    // console.log(message.member.roles)
     message.reply("I know.")
   }
 })
@@ -54,11 +53,6 @@ Object.entries(events).forEach(([key, event]) => {
     e.handleEvent(client, ...args)
   })
 })
-
-// client.on('message', async message => {
-//   let app = await client.fetchApplication()
-//   console.log(app.owner.id)
-// })
 
 /**
  * Call a custom command on each message.
@@ -75,6 +69,7 @@ client.on("message", message => {
     //Pass the message to all the commands ES2016+ PogChamp.
     const commands = { ...rCommands, ...aCommands }
     Object.entries(commands).forEach(([command, call]) => call(message, client))
+    //List of feature.
     spoilThisContent(message, client)
     handleNodeWar(message, client)
     handleEnhance(message, client)

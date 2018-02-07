@@ -4,12 +4,13 @@ import * as DB from "../database/database.js"
  * A base event class with some prototype methods.
  */
 class Event {
-  constructor() {
-    this.instantiate()
+  constructor(name) {
+    this.instantiate(name)
   }
 
-  instantiate() {
-    console.log("Event instancied")
+  instantiate(name) {
+    this.eventName = name
+    console.log(`Event ${this.eventName} instantiated.`)
   }
 }
 
@@ -18,9 +19,7 @@ class Event {
  */
 export class guildMemberUpdate extends Event {
   constructor() {
-    super()
-    console.log("guildMemberUpdate ready")
-    this.eventName = "guildMemberUpdate"
+    super("guildMemberUpdate")
     Array.prototype.diff = function(array) {
       return this.filter(x => !array.includes(x))
     }
@@ -60,9 +59,7 @@ export class guildMemberUpdate extends Event {
  */
 export class messageReactionAdd extends Event {
   constructor() {
-    super()
-    console.log("messageReactionAdd ready")
-    this.eventName = "messageReactionAdd"
+    super("messageReactionAdd")
   }
 
   handleEvent(client, messageReaction, user) {

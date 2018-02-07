@@ -9,8 +9,13 @@ export function Connect(guild) {
   return r.db(guild.id)
 }
 
+/**
+ * Update/Add a configuration property.
+ * @param {Guild} guild
+ * @param {Object} updates Contains key:value to update/add.
+ */
 export function UpdateConfiguration(guild, updates) {
-  console.log("Updating Configuration....")
+  console.log(`Updating ${guild.name} configuration...`)
   return Connect(guild)
     .table("configuration")
     .get(0)
@@ -18,8 +23,15 @@ export function UpdateConfiguration(guild, updates) {
     .run()
 }
 
+/**
+ * Update a configuration property array.
+ * @param {Guild} guild
+ * @param {String} key Key of the configuration to update.
+ * @param {String | Array} updates Value to add/update.
+ * @param {Boolean} remove Wether we diff or append.
+ */
 export function UpdateConfigurationArray(guild, key, updates, remove = false) {
-  console.log("Updating configuration array...")
+  console.log(`Updating ${guild.name} configuration array...`)
   return remove
     ? Connect(guild)
         .table("configuration")
@@ -32,6 +44,11 @@ export function UpdateConfigurationArray(guild, key, updates, remove = false) {
         .update({ [key]: r.row(key).append(updates) })
         .run()
 }
+
+/**
+ * Add serverName to the configuration.
+ * @param {Client} client
+ */
 export async function addServerNametoDB(client) {
   let dbList = await r.dbList().run()
   client.guilds.forEach(guild => {
@@ -54,6 +71,7 @@ export async function addServerNametoDB(client) {
       )
   })
 }
+
 /**
  * Sync the connected guilds (servers) with the db backend by creating
  * the tables if they don't exist.
