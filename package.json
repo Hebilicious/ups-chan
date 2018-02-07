@@ -9,9 +9,14 @@
     "debug": "webpack --watch --config webpack/webpack.debug.js",
     "lint": "prettier --write {bot,webpack}/**/**.js",
     "test": "mocha --require @babel/register --slow 0",
-    "prod": "webpack --config webpack/webpack.prod.js",
-    "build": "npm run test && npm run lint && npm run prod",
-    "prepush": "npm run lint"
+    "build": "webpack --config webpack/webpack.prod.js",
+    "prod": "npm run test && npm run build"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run test"
+    }
   },
   "license": "MIT",
   "dependencies": {
