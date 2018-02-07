@@ -4,7 +4,6 @@ import * as Messages from "../verbose/messages.js"
 import * as DB from "../database/database.js"
 
 import { clearAttendingMembers } from "./features.js"
-// const r = require("rethinkdbdash")({db: "test"})
 const timezone = "Europe/Paris"
 
 /**
@@ -126,6 +125,18 @@ export function nodewarCheck(message) {
       console.log("fetchActiveNodewar result")
       respondNodewar(message, result)
     })
+}
+
+/**
+ * Check if we have an active nodewar.
+ * @param  {Message} message [description]
+ * @return {Boolean}         [description]
+ */
+export async function isNodeWarActive(message) {
+  let activeNw = await DB.Connect(message.guild)
+    .table("nodewar")
+    .filter({ isActive: true })
+  activeNw.length == 1 ? true : false
 }
 
 //Update a node war

@@ -2,6 +2,7 @@ import * as Messages from "../verbose/messages.js"
 
 import { checkMemberForRolesIds } from "../auth/authorization.js"
 import { sendEmbedHelpAsDM } from "../verbose/functions.js"
+import { isNodeWarActive } from "./db.js"
 
 export function sendHelp(message, client) {
   const fields = [
@@ -51,39 +52,68 @@ export function clearAttendingMembers(message, channel, role) {
 
 /**
  * Attend a Nodewar
- * @param  {[type]} msg [description]
+ * @param  {[type]} message [description]
  * @return {[type]}     [description]
  */
-export function attendNodeWar(msg, channel, role) {
+export function attendNodeWar(message, channel, role) {
+  if (!isNodeWarActive(message)) {
+    channel.send("There's no active Nodewar.")
+    return
+  }
   // Assign the role to the member
-  msg.member.addRole(role).catch(console.error)
+  message.member
+    .addRole(role)
+    .then(r => updateParticipantTopic(message, channel, role))
+    .catch(console.error)
   // Send the message, mentioning the member
-  msg.member.user.createDM().then(function (DM) {
+  message.member.user.createDM().then(function(DM) {
     DM.send(Messages.getRandomOkMessage())
   })
-  // msg.reply("As you wish.")
   channel.send(
-    msg.member.user.username + " will attend at the upcoming memewar!"
-  ) // TAG the user
+    message.member.user.username + " will attend at the upcoming memewar!"
+  )
 }
 
 /**
  * Cancel an attendance to a NodeWar
- * @param  {[type]} msg [description]
+ * @param  {[type]} message [description]
  * @return {[type]}     [description]
  */
-export function cancelNodeWarAttendance(msg, channel, role) {
+export function cancelNodeWarAttendance(message, channel, role) {
+  if (!isNodeWarActive(message)) {
+    channel.send("There's no active Nodewar.")
+    return
+  }
   // Remove the role from the member
-  msg.member.removeRole(role).catch(console.error)
+  message.member
+    .removeRole(role)
+    .then(r => updateParticipantTopic(message, channel, role))
+    .catch(console.error)
   // Send the message, mentioning the member
-  msg.member.user.createDM().then(function (DM) {
+  message.member.user.createDM().then(function(DM) {
     DM.send(Messages.getRandomOkMessage())
   })
   channel.send(
-    msg.member.user.username + " will not attend! Next time fosure though."
+    message.member.user.username + " will not attend! Next time fosure though."
   )
 }
 
+/**
+ * Add / Edit the number of participants to the Nodewar string.
+ * @param {Message} message
+ * @param {Channel} channel Nodewar Channel
+ * @param {Role} role Attending role.
+ */
+function updateParticipantTopic(message, channel, role) {
+  let totalMembers = message.guild.members.filter(member => {
+    if (member.roles.map(r => r.id).includes(role.id)) {
+      return member
+    }
+  })
+  let topic = channel.topic
+  let cleanTopic = topic.substring(0, topic.indexOf("!") + 1)
+  channel.setTopic(`${cleanTopic} Participants : ${totalMembers.size}`)
+}
 /**
  * List attending members.
  * @param  {[type]} message     [description]
@@ -108,7 +138,7 @@ export function listAttendingMembers(message, channel, role, conf) {
   if (nwlist.size > 0) {
     message.channel.send(
       `**Here's a list of everyone who's attending to the upcoming nodewar :**\n ${nameList} \n That is a total of **${
-      nwlist.size
+        nwlist.size
       }** people.`
     )
   } else {
