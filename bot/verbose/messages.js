@@ -1,3 +1,8 @@
+/**
+ *  This file contains most of the messages strings that
+ *  makes our bot feels alive.
+ *_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _*/
+
 function randomMessage(messages) {
   return messages[Math.floor(Math.random() * messages.length)]
 }

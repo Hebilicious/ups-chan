@@ -1,6 +1,12 @@
 import moment from "moment-timezone"
 const timezone = "Europe/Paris"
 
+/**
+ * Send an embed as a DM
+ * @param {Message} message
+ * @param {Client} client
+ * @param {Object} fields The content of the message.
+ */
 export function sendEmbedHelpAsDM(message, client, fields) {
   sendDM(message, client, {
     embed: {

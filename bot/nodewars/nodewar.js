@@ -111,9 +111,9 @@ function handleRouting(message, client, key, conf, channelName) {
       .then(role => message.channel.send(`Created role ${role.name}.`))
       .catch(console.error)
   }
-  if (message.content.startsWith(key.nodewar)) {
+  if (message.content.startsWith(key.nodewar))
     nodewarManager(message, client, nodeWarChannel, role, conf)
-  }
+
   if (message.content.startsWith(key.list)) {
     Nodewar.listAttendingMembers(message, nodeWarChannel, role, conf)
   }

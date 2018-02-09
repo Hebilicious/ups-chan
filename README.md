@@ -6,7 +6,11 @@ UPS Black Desert Online guild discord bot.
 
 ## TODO
 
-...
+Tweak the spoiler to use hastebin/markdownshare instead of gifs.
+
+```bash
+haste() { a=$(cat); curl -X POST -s -d "$a" https://hastebin.com/documents | awk -F '"' '{print "https://hastebin.com/"$4}'; }
+```
 
 > This bot might have some hardcoded ids/emojis. You'll need to refactor it a bit.
 

@@ -1,3 +1,8 @@
+/**
+ *  This file contains a helpers methods unrelated to the bot
+ *  logic.
+ *_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _*/
+
 export function superSplit(string, n) {
   return Array(Math.ceil(string.length / n))
     .fill()

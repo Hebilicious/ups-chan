@@ -72,7 +72,7 @@ export function cancelNodeWar(message, channel, role) {
 }
 
 /**
- * Write a nodewar event to the filesystem.
+ * Write a nodewar event to the database.
  * @param  {[type]} message [description]
  * @param  {[type]} date    [description]
  * @return {[type]}         [description]
@@ -111,7 +111,7 @@ export function createNodeWar(message, date) {
 }
 
 /**
- * Initiate the async sequence for answering to $nodewar
+ * Initiate the sequence  to answer $nodewar
  * @param  {[type]} message [description]
  * @return {[type]}         [description]
  */
@@ -171,7 +171,6 @@ function respondNodewar(message, channel, role, result) {
     setNodewarTopic(message, `Nodewar => ${fDate} !`).then(r =>
       updateParticipantTopic(message, channel, role)
     )
-
     message.reply(`Nodewar scheduled for ${fDate}.`)
   } else {
     message.reply("When would you like to create a nodewar?")

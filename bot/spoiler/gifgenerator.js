@@ -17,6 +17,7 @@ const SOURCE_SANS_PRO = Font
   : null
 
 /**
+ * A class that generates a gif.
  * With the courtesy of @TimboKZ https://github.com/TimboKZ/discord-spoiler-bot/blob/master/src/GifGenerator.js
  */
 export class GifGenerator {

@@ -1,16 +1,11 @@
 import { Cleverbot } from "./api"
 const auth = require("../../auth.json")
 
-function createBot(session) {
-  return new Cleverbot({
-    user: auth.cleverBotUser,
-    key: auth.cleverBotKey,
-    nick: session
-  })
-}
-function checkForApiKeys() {
-  return auth.cleverBotUser && auth.cleverBotKey ? true : false
-}
+/**
+ * Answer a message in a text channel using cleverbot.io.
+ * @param {Message} message
+ * @param {Client} client
+ */
 export function cleverAnswer(message, client) {
   //exit if we have no mention
   if (!message.mentions.members || !checkForApiKeys()) return
@@ -31,8 +26,11 @@ export function cleverAnswer(message, client) {
   }
 }
 
+/**
+ * Answer a DM using cleverbot.io
+ * @param {Message} message
+ */
 export function cleverDM(message) {
-  console.log(checkForApiKeys())
   if (!message.channel.type === "dm" || !checkForApiKeys()) return
   const bot = createBot(message.author.id)
   bot
@@ -51,4 +49,18 @@ export function cleverDM(message) {
         .catch(error => console.error(error))
     })
     .catch(error => console.error(error))
+}
+
+//Create an api client.
+function createBot(session) {
+  return new Cleverbot({
+    user: auth.cleverBotUser,
+    key: auth.cleverBotKey,
+    nick: session
+  })
+}
+
+//Check that the config file has api logs.
+function checkForApiKeys() {
+  return auth.cleverBotUser && auth.cleverBotKey ? true : false
 }

@@ -4,6 +4,11 @@ import { checkMemberForRolesIds } from "../auth/authorization.js"
 import { sendEmbedHelpAsDM } from "../verbose/functions.js"
 import { isNodeWarActive } from "./db.js"
 
+/**
+ * Send Nodewar Help.
+ * @param {Message} message
+ * @param {Client} client
+ */
 export function sendHelp(message, client) {
   const fields = [
     {
@@ -116,10 +121,9 @@ export function updateParticipantTopic(message, channel, role) {
 }
 /**
  * List attending members.
- * @param  {[type]} message     [description]
- * @param  {[type]} channel [description]
- * @param  {[type]} role    [description]
- * @return {[type]}         [description]
+ * @param  {Message} message     [description]
+ * @param  {Channel} channel [description]
+ * @param  {Role} role    [description]
  */
 export function listAttendingMembers(message, channel, role, conf) {
   //Check for roles
@@ -148,6 +152,14 @@ export function listAttendingMembers(message, channel, role, conf) {
   }
 }
 
+/**
+ * Send a message to all the slackers in the nodewar channel.
+ * @param {Message} message
+ * @param {Channel} channel
+ * @param {Role} attendingRole
+ * @param {Array} args Argument from the command.
+ * @param {Object} conf Configuration of the current guild.
+ */
 export function messageToSlackers(message, channel, attendingRole, args, conf) {
   if (!canCreateNodeWar(message.member, conf.adminRolesIds)) {
     message.reply("You wish.")

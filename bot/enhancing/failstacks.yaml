@@ -2,7 +2,6 @@
 ---
 armor:
 - name:
-  - Boss
   - Tree
   - Armor
   - Giath
@@ -13,6 +12,7 @@ armor:
   - Shoes
   - Bheg
   - Gloves
+  - Red Nose
   toDuo:
     current: pri
     minStack: 19
@@ -99,6 +99,7 @@ accessories:
   - Ogre
   - Laytenn
   - Necklace
+  - Valtarra
   toPri:
     current: base
     minStack: 23
@@ -109,8 +110,8 @@ accessories:
     maxStack: 40
   toTri:
     current: duo
-    minStack: 45
-    maxStack: 55
+    minStack: 50
+    maxStack: 65
   toTet:
     current: tri
     minStack: 80
@@ -146,6 +147,7 @@ accessories:
 - name:
   - Tungrad
   - Earring
+  - Sicil
   toPri:
     current: base
     minStack: 20

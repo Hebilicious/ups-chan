@@ -76,6 +76,7 @@ export async function addServerNametoDB(client) {
  * Sync the connected guilds (servers) with the db backend by creating
  * the tables if they don't exist.
  * @param {Client} client
+ * @returns {Promise}
  */
 export async function syncConnectedServers(client) {
   // console.log(r.dbList())

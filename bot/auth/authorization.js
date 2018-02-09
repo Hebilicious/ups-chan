@@ -17,7 +17,7 @@ export async function isPrivileged(member) {
   const conf = await DB.Connect(member.guild)
     .table("configuration")
     .get(0)
-    .run()
+
   return (
     member.permissions.has("ADMINISTRATOR") ||
     checkMemberForRolesIds(member, conf.adminRolesIds)

@@ -35,12 +35,14 @@ class BossEvent extends EventEmitter {
  */
 export function handleBoss(client) {
   //Should be called once to init the boss feature
+  console.log("Initializing Boss Spawns...")
   const Emitter = new BossEvent()
   retrieveBossData(Emitter)
 
   //On new data, fetch again 10s later.
   Emitter.on("fetchingBossData", data => {
-    setTimeout(() => retrieveBossData(Emitter), 20000)
+    retrieveBossData(Emitter)
+    // setTimeout(() => retrieveBossData(Emitter), 10000)
     //TEST
     client.guilds.forEach(async guild => {
       let conf = await DB.Connect(guild)
@@ -99,6 +101,8 @@ function retrieveBossData(Emitter) {
     na: "http://urzasarchives.com/bdo/wbtbdo/wbtna/"
   }
   //Obtain Boss Spawn Data
+  setTimeout(() => Emitter.sendEvent("fetchingBossData", bossData), 10000)
+
   Promise.all([axios(url.eu), axios(url.na)])
     .then(responses => {
       //Iterating...
@@ -120,7 +124,6 @@ function retrieveBossData(Emitter) {
       }
     })
     .catch(error => console.error(error))
-  Emitter.sendEvent("fetchingBossData", bossData)
 }
 
 /**

@@ -14,8 +14,11 @@ import * as cleverBot from "./cleverbot/cleverbot.js"
 import { handleNodeWar } from "./nodewars/nodewar.js"
 import { spoilThisContent } from "./spoiler/spoiler.js"
 import { handleEnhance } from "./enhancing/enhancing.js"
+
 /**
  * Here we have to call this to initiate the bot.
+ * This will setup the DB and load what need to
+ * be autoloaded.
  */
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`)

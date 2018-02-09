@@ -33,11 +33,9 @@ export function spoilThisContent(message, client) {
     let parts = message.content.split("$spoiler")
     let spoiler = new Spoiler(message, parts[0], parts[1])
     message.delete()
-    message.channel.send(`**${getRandomDontSpoilMessage()}**`).then(m => {
-      setTimeout(() => {
-        m.delete()
-      }, 3000)
-    })
+    message.channel
+      .send(`**${getRandomDontSpoilMessage()}**`)
+      .then(m => setTimeout(() => m.delete(), 3000))
 
     // message.channel.send("New content")
     printSpoiler(spoiler)

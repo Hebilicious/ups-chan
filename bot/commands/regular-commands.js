@@ -3,6 +3,11 @@ import { sendEmbedHelpAsDM } from "../verbose/functions.js"
 import { getRandomMeeseeksInteraction } from "../verbose/messages.js"
 const timezone = "Europe/Paris"
 
+/**
+ * Talks to Mr meeseeks.
+ * @param {Message} message
+ * @param {Client} client
+ */
 export function meeseeksAnswer(message, client) {
   //MeeseeksBOT ID
   if (message.author.id == "159985870458322944") {
@@ -14,6 +19,11 @@ export function meeseeksAnswer(message, client) {
   }
 }
 
+/**
+ * Be proud of yourself.
+ * @param {Message} message
+ * @param {Client} client
+ */
 export function ups(message, client) {
   const regex = /(\bups\b)+/gim
   let randomly = Math.floor(Math.random() * 4)
@@ -30,11 +40,15 @@ export function ups(message, client) {
   }
 }
 
-export function secretAlzy(msg) {
-  if (msg.content === "alzy") {
+/**
+ * Alzy easter egg.
+ * @param {Message} message
+ */
+export function secretAlzy(message) {
+  if (message.content === "alzy") {
     console.log("Alzy !!")
     // Send the message to a designated channel on a server:
-    const channel = msg.member.guild.channels.find(
+    const channel = message.member.guild.channels.find(
       "name",
       "drama-super-important-and-private-stuff"
     )
@@ -48,32 +62,46 @@ export function secretAlzy(msg) {
   }
 }
 
-export function pedoAge(msg, client) {
+/**
+ * Age easter egg.
+ * @param {Message} message
+ * @param {Client} client
+ */
+export function pedoAge(message, client) {
   const regex = /(\bunderage\b|\bage\b)+/gim
   let m
-  // console.log("I'm a bot ? " + msg.author.bot);
+  // console.log("I'm a bot ? " + message.author.bot);
   let randomly = Math.floor(Math.random() * 2)
   if (
     randomly == 1 &&
-    msg.author.bot == false &&
-    (m = regex.exec(msg.content)) !== null
+    message.author.bot == false &&
+    (m = regex.exec(message.content)) !== null
   ) {
     console.log("Matched age somewhere...")
     const ePedoBear = client.emojis.find("name", "PedoBear") || ":)"
     const eKappa = client.emojis.find("name", "Kappa") || ":3"
     const reply = `${ePedoBear} Age is nothing but a number ... ${eKappa}`
     // console.log(reply);
-    msg.reply(reply)
+    message.reply(reply)
   }
 }
 
-export function grammar(msg) {
+/**
+ * Expect grammar.
+ * @param {Message} message
+ */
+export function grammar(message) {
   const ex = ["execpt", "exectp", "excpet", "excetp", "except", "excpect"]
-  if (ex.some(w => msg.content.includes(w))) {
-    msg.reply("Expect. Expecting. ")
+  if (ex.some(w => message.content.includes(w))) {
+    message.reply("Expect. Expecting. ")
   }
 }
 
+/**
+ * Send the help.
+ * @param {Message} message
+ * @param {Client} client
+ */
 export function help(message, client) {
   if (message.content === "$help") {
     const fields = [
