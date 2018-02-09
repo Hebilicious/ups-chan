@@ -10,11 +10,19 @@ import { getRandomBossTopic } from "../verbose/messages"
 
 // Inspired by https://github.com/Hermitter/BDO-Boss-Alerts/
 
+/**
+ * A Boss Event emitter.
+ */
 class BossEvent extends EventEmitter {
   constructor() {
     super()
   }
-
+  /**
+   *
+   * @param {String} type Type of the event.
+   * @param {Object} data The boss from boss-data.
+   * @param {String} region Eu or Na
+   */
   sendEvent(type, data, region = "eu") {
     this.emit(type, data, region)
     console.log("BossEvent: " + new Date().toTimeString() + type)
@@ -29,6 +37,7 @@ export function handleBoss(client) {
   //Should be called once to init the boss feature
   const Emitter = new BossEvent()
   retrieveBossData(Emitter)
+
   //On new data, fetch again 10s later.
   Emitter.on("fetchingBossData", data => {
     setTimeout(() => retrieveBossData(Emitter), 20000)
@@ -56,8 +65,6 @@ export function handleBoss(client) {
       .setColor(0x00ae86)
       .setTimestamp()
       .setImage(boss.img)
-
-    console.log("Creating embed")
     client.guilds.forEach(async guild => {
       let conf = await DB.Connect(guild)
         .table("configuration")
@@ -81,7 +88,10 @@ export function handleBoss(client) {
 //////////////////////////////////////
 //Boss Data Holders: Ordered by how they appear on http://urzasarchives.com/bdo/wbtbdo/wbtna/ is mandatory
 
-//Scrape website for boss data
+/**
+ * Scrape the website for data.
+ * @param {BossEvent} Emitter BossEvent Emitter
+ */
 function retrieveBossData(Emitter) {
   //Url for boss spawn data
   const url = {
@@ -89,29 +99,38 @@ function retrieveBossData(Emitter) {
     na: "http://urzasarchives.com/bdo/wbtbdo/wbtna/"
   }
   //Obtain Boss Spawn Data
-  Promise.all([axios(url.eu), axios(url.na)]).then(responses => {
-    //Iterating...
-    for (let i = 0; i < responses.length; i++) {
-      let $ = cheerio.load(responses[i].data) //html body
-      //   console.log("Status: " + responses[i].status)
-      //Attempt Obtain And Assign Boss Spawn Data
-      try {
-        //find each boss spawn
-        let counter = 0
-        //   console.log(bossData)
-        for (let boss in bossData) {
-          readBossData(bossData[boss], counter, $("table"), Emitter, i)
-          counter++
+  Promise.all([axios(url.eu), axios(url.na)])
+    .then(responses => {
+      //Iterating...
+      for (let i = 0; i < responses.length; i++) {
+        let $ = cheerio.load(responses[i].data) //html body
+        //   console.log("Status: " + responses[i].status)
+        //Attempt Obtain And Assign Boss Spawn Data
+        try {
+          //find each boss spawn
+          let counter = 0
+          //   console.log(bossData)
+          for (let boss in bossData) {
+            readBossData(bossData[boss], counter, $("table"), Emitter, i)
+            counter++
+          }
+        } catch (e) {
+          console.log(e)
         }
-      } catch (e) {
-        console.log(e)
       }
-    }
-    Emitter.sendEvent("fetchingBossData", bossData)
-  })
+    })
+    .catch(error => console.error(error))
+  Emitter.sendEvent("fetchingBossData", bossData)
 }
 
-//Looks for appropriate boss table
+/**
+ * Read the boss data and send an event if it did spawn.
+ * @param {Object} boss Boss from boss data.
+ * @param {Number} tableNumber Where the boss is on the table.
+ * @param {Object} table Cheerio table.
+ * @param {BossEvent} Emitter Boss Event Emitter
+ * @param {Number} itr Represents wether it's eu or na.
+ */
 function readBossData(boss, tableNumber, table, Emitter, itr) {
   let region = itr == 0 ? "eu" : itr == 1 ? "na" : ""
   let selector = table //initial html table element
