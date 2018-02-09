@@ -168,7 +168,9 @@ function insertNewNodeWar(nwObject, message) {
 function respondNodewar(message, channel, role, result) {
   if (result.length == 1) {
     let fDate = moment(result[0].date).format("dddd, MMMM Do YYYY")
-    setNodewarTopic(message, `Nodewar => ${fDate} !`).then(r => updateParticipantTopic(message, channel, role))
+    setNodewarTopic(message, `Nodewar => ${fDate} !`).then(r =>
+      updateParticipantTopic(message, channel, role)
+    )
 
     message.reply(`Nodewar scheduled for ${fDate}.`)
   } else {

@@ -66,7 +66,7 @@ export function attendNodeWar(message, channel, role) {
     .then(r => updateParticipantTopic(message, channel, role))
     .catch(console.error)
   // Send the message, mentioning the member
-  message.member.user.createDM().then(function (DM) {
+  message.member.user.createDM().then(function(DM) {
     DM.send(Messages.getRandomOkMessage())
   })
   channel.send(
@@ -90,7 +90,7 @@ export function cancelNodeWarAttendance(message, channel, role) {
     .then(r => updateParticipantTopic(message, channel, role))
     .catch(console.error)
   // Send the message, mentioning the member
-  message.member.user.createDM().then(function (DM) {
+  message.member.user.createDM().then(function(DM) {
     DM.send(Messages.getRandomOkMessage())
   })
   channel.send(
@@ -138,7 +138,7 @@ export function listAttendingMembers(message, channel, role, conf) {
   if (nwlist.size > 0) {
     message.channel.send(
       `**Here's a list of everyone who's attending to the upcoming nodewar :**\n ${nameList} \n That is a total of **${
-      nwlist.size
+        nwlist.size
       }** people.`
     )
   } else {

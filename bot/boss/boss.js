@@ -17,7 +17,7 @@ class BossEvent extends EventEmitter {
 
   sendEvent(type, data, region = "eu") {
     this.emit(type, data, region)
-    console.log("BossEvent: " + type)
+    console.log("BossEvent: " + new Date().toTimeString() + type)
   }
 }
 
@@ -83,7 +83,6 @@ export function handleBoss(client) {
 
 //Scrape website for boss data
 function retrieveBossData(Emitter) {
-  console.log("Retrieving boss data...")
   //Url for boss spawn data
   const url = {
     eu: "http://urzasarchives.com/bdo/wbtbdo/wbteu/",
@@ -94,7 +93,7 @@ function retrieveBossData(Emitter) {
     //Iterating...
     for (let i = 0; i < responses.length; i++) {
       let $ = cheerio.load(responses[i].data) //html body
-      console.log("Status: " + responses[i].status)
+      //   console.log("Status: " + responses[i].status)
       //Attempt Obtain And Assign Boss Spawn Data
       try {
         //find each boss spawn
@@ -135,9 +134,9 @@ function readBossData(boss, tableNumber, table, Emitter, itr) {
   if (
     lastSpawn != null &&
     lastSpawn[region] &&
-    lastSpawn[region] !== boss.lastSpawn
+    lastSpawn[region] !== lastSpawn
   ) {
-    // console.log("BOSS SPAWNED")
+    console.log("BOSS SPAWNED")
     Emitter.sendEvent("bossSpawn", boss, region) //alert if spawned
   }
   boss.lastSpawn[region] = lastSpawn //update last boss spawn in the bossData object
