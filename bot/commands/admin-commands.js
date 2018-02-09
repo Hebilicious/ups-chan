@@ -76,6 +76,53 @@ export function dumpConf(message, client) {
   }
 }
 
+export function bossMod(message, client) {
+  if (!isPrivileged(message.member)) return
+  if (message.content.startsWith("$bossMod")) {
+    let args = message.content
+      .slice(1)
+      .trim()
+      .split(/ +/g)
+    let command = args.shift().toLowerCase()
+    let firstArg = args[0]
+    let secondArg = args[1]
+
+    if (firstArg === "on") {
+      DB.UpdateConfiguration(message.guild, { bossMod: true })
+      message.reply("BossMod is on!")
+    }
+    if (firstArg === "off") {
+      DB.UpdateConfiguration(message.guild, { bossMod: false })
+      message.reply("BossMod is off!")
+    }
+    if (firstArg === "channel" && secondArg) {
+      DB.UpdateConfiguration(message.guild, { bossChannel: secondArg })
+      message.reply("Boss Channel set to " + secondArg)
+    }
+  }
+}
+
+export function setRegion(message, client) {
+  if (!isPrivileged(message.member)) return
+  if (message.content.startsWith("$setRegion")) {
+    let args = message.content
+      .slice(1)
+      .trim()
+      .split(/ +/g)
+    let command = args.shift().toLowerCase()
+    let firstArg = args[0]
+
+    if (firstArg === "eu") {
+      DB.UpdateConfiguration(message.guild, { region: "eu" })
+      message.reply("Region set to EU!")
+    }
+    if (firstArg === "na") {
+      DB.UpdateConfiguration(message.guild, { region: "na" })
+      message.reply("Region set to NA!")
+    }
+  }
+}
+
 export async function fixDB(message, client) {
   if (message.content === "$fixServerNameDB") {
     let app = await client.fetchApplication()

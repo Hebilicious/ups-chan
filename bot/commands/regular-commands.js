@@ -85,7 +85,7 @@ export function help(message, client) {
       {
         name: "__Admin commands__",
         value:
-          "- **$listEmojis** - List the emojis I can use.\n- **$listRoles** - List the server roles.\n- **$listChannels** - List the channels.\n"
+          "-**$setRegion *eu/na*** - Set the region to EU or NA.\n-**$bossMod on** - Enable the boss feature.\n-**$bossMod off** - Disable the boss feature.\n-**$bossMod on** - Enable the boss feature.\n-**$bossMod channel *boss*** - Set the boss chanel name to 'boss'.\n- **$listEmojis** - List the emojis I can use.\n- **$listRoles** - List the server roles.\n- **$listChannels** - List the channels.\n"
       },
       {
         name: "__ServerAdmin commands__",
