@@ -133,8 +133,8 @@ function readBossData(boss, tableNumber, table, Emitter, itr) {
   //check if boss spawned
   if (
     lastSpawn != null &&
-    lastSpawn[region] &&
-    lastSpawn[region] !== lastSpawn
+    boss.lastSpawn[region] &&
+    boss.lastSpawn[region] !== lastSpawn
   ) {
     console.log("BOSS SPAWNED")
     Emitter.sendEvent("bossSpawn", boss, region) //alert if spawned
