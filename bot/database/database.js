@@ -81,43 +81,50 @@ export async function syncConnectedServers(client) {
   // console.log(r.dbList())
   let dbList = await r.dbList().run()
   console.log(dbList)
-  client.guilds.forEach(guild => {
-    // console.log(guild.id)
-    if (!dbList.includes(guild.id)) {
-      console.log(`Creating DB ${guild.id} (${guild.name}).`)
-      r
-        .dbCreate(guild.id)
-        .run()
-        .then(result => {
-          r
-            .db(guild.id)
-            .tableCreate("nodewar")
-            .run()
-          r
-            .db(guild.id)
-            .tableCreate("configuration")
-            .run()
-            .then(result => {
-              r
-                .db(guild.id)
-                .table("configuration")
-                .insert({
-                  id: 0,
-                  serverName: guild.name,
-                  nodeWarChannel: "",
-                  attendingRole: "Attending",
-                  adminRolesIds: []
-                })
-                .run()
-                .then(result =>
-                  console.log(
-                    `The fresh DB ${guild.id} (${guild.name}) is ready.`
-                  )
-                )
-            })
-        })
-    } else {
-      console.log(`Found DB ${guild.id} (${guild.name}), ready to use.`)
-    }
+  return new Promise((resolve, reject) => {
+    client.guilds.forEach(guild => {
+      // console.log(guild.id)
+      if (!dbList.includes(guild.id)) {
+        console.log(`Creating DB ${guild.id} (${guild.name}).`)
+        r
+          .dbCreate(guild.id)
+          .run()
+          .then(result => {
+            r
+              .db(guild.id)
+              .tableCreate("nodewar")
+              .run()
+            r
+              .db(guild.id)
+              .tableCreate("configuration")
+              .run()
+              .then(result => {
+                r
+                  .db(guild.id)
+                  .table("configuration")
+                  .insert({
+                    id: 0,
+                    serverName: guild.name,
+                    nodeWarChannel: "",
+                    bossMod: false,
+                    bossChannel: "",
+                    attendingRole: "Attending",
+                    region: "eu",
+                    adminRolesIds: []
+                  })
+                  .run()
+                  .then(result => {
+                    console.log(
+                      `The fresh DB ${guild.id} (${guild.name}) is ready.`
+                    )
+                    resolve()
+                  })
+              })
+          })
+      } else {
+        console.log(`Found DB ${guild.id} (${guild.name}), ready to use.`)
+        resolve()
+      }
+    })
   })
 }

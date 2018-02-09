@@ -2,6 +2,19 @@ function randomMessage(messages) {
   return messages[Math.floor(Math.random() * messages.length)]
 }
 
+export function getRandomBossTopic() {
+  const messages = [
+    "I'm looking for bosses.",
+    "I feel like Karanda is gonna give me a box today...",
+    "Come on Kzarka, where are you?",
+    "Should I really tell you about Red Nose guys?",
+    "Still looking, don't worry.",
+    "Come out, come out, wherever you are ❤",
+    "Where the hell did I store my Kutum auras ??",
+    "Ugh, I don't feel like going in the desert today."
+  ]
+  return randomMessage(messages)
+}
 export function getRandomMeeseeksInteraction() {
   const messages = [
     "👋 Hey Mr Meeseeks, look at me !! 👋",

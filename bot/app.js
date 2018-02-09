@@ -4,12 +4,13 @@ const client = new Discord.Client()
 
 import * as DB from "./database/database.js"
 
+import * as Boss from "./boss/boss.js"
+
 import * as rCommands from "./commands/regular-commands.js"
 import * as aCommands from "./commands/admin-commands.js"
 
 import * as events from "./events/events.js"
 import * as cleverBot from "./cleverbot/cleverbot.js"
-
 import { handleNodeWar } from "./nodewars/nodewar.js"
 import { spoilThisContent } from "./spoiler/spoiler.js"
 import { handleEnhance } from "./enhancing/enhancing.js"
@@ -19,7 +20,7 @@ import { handleEnhance } from "./enhancing/enhancing.js"
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`)
   //Sync the DB with every server.
-  DB.syncConnectedServers(client)
+  DB.syncConnectedServers(client).then(Boss.handleBoss(client))
   client.user.setPresence({
     game: {
       name: "Waiting for Lahn",

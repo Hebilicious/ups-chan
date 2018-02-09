@@ -21,10 +21,8 @@ export async function handleNodeWar(message, client) {
     cancel: "$cancel"
   }
 
-  if (!Object.values(key).some(k => message.content.startsWith(k))) {
-    console.log("No nodewar")
-    return
-  }
+  if (!Object.values(key).some(k => message.content.startsWith(k))) return
+
   const conf = await DB.Connect(message.guild)
     .table("configuration")
     .get(0)
@@ -32,7 +30,7 @@ export async function handleNodeWar(message, client) {
   let nodewarChannel = conf.nodeWarChannel
   let attendingRole = conf.attendingRole
   //Filter for our collector
-  const filter = function (m) {
+  const filter = function(m) {
     //Check that we have the same author and only 1 word
     if (m.author.id == message.author.id && m.content.split(" ".length == 1)) {
       console.log("Valid Answer")
@@ -44,10 +42,10 @@ export async function handleNodeWar(message, client) {
     //Handle auth
     message.channel
       .send(
-      `Please type-in the name of the channel you want to use for the nodewar features. \n **Existing channels** : \n${message.member.guild.channels
-        .filter(c => c.type == "text")
-        .map(c => `**-** ${c.name}`)
-        .join("\n")}`
+        `Please type-in the name of the channel you want to use for the nodewar features. \n **Existing channels** : \n${message.member.guild.channels
+          .filter(c => c.type == "text")
+          .map(c => `**-** ${c.name}`)
+          .join("\n")}`
       )
       .then(() => {
         message.channel
