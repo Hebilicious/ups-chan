@@ -20,6 +20,22 @@ export function meeseeksAnswer(message, client) {
 }
 
 /**
+ * Toggle a specific role.
+ * @param {Message} message
+ */
+export function toggleRole(message) {
+  if (message.content === ".summon") {
+    const role = message.guild.roles.find("name", "Summon")
+    if (!role) return
+    if (!message.member.roles.some(r => r.id == role.id)) {
+      message.member.addRole(role)
+    }
+    if (message.member.roles.some(r => r.id == role.id)) {
+      message.member.removeRole(role)
+    }
+  }
+}
+/**
  * Be proud of yourself.
  * @param {Message} message
  * @param {Client} client
