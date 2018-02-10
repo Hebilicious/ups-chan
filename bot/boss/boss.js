@@ -25,7 +25,9 @@ class BossEvent extends EventEmitter {
    */
   sendEvent(type, data, region = "eu") {
     this.emit(type, data, region)
-    console.log("BossEvent: " + new Date().toTimeString() + type)
+    console.log(
+      "BossEvent: " + new Date().toTimeString() + type + JSON.stringify(data)
+    )
   }
 }
 
@@ -66,18 +68,20 @@ export function handleBoss(client) {
       .setAuthor("UPS Boss Alert", boss.img)
       .setColor(0x00ae86)
       .setTimestamp()
-      .setImage(boss.img)
+      .setThumbnail(boss.img)
     client.guilds.forEach(async guild => {
       let conf = await DB.Connect(guild)
         .table("configuration")
         .get(0)
-      console.log(region)
       if (!conf.bossMod) return
       if (conf.bossChannel && conf.region && conf.bossChannel.length > 0) {
         let cName = conf.bossChannel
         let channel = guild.channels.find("name", cName)
         if (channel && conf.region == region) {
-          embed.setTitle(`${boss.alert} (${conf.region.toUpperCase()})`)
+          console.log(region + " " + boss.alert)
+          embed.setTitle(boss.name)
+          embed.setDescription(boss.alert)
+          embed.setFooter(conf.region.toUpperCase())
           channel.send({ embed })
         }
       }
@@ -101,7 +105,7 @@ function retrieveBossData(Emitter) {
     na: "http://urzasarchives.com/bdo/wbtbdo/wbtna/"
   }
   //Obtain Boss Spawn Data
-  setTimeout(() => Emitter.sendEvent("fetchingBossData", bossData), 10000)
+  setTimeout(() => Emitter.sendEvent("fetchingBossData", {}), 10000)
 
   Promise.all([axios(url.eu), axios(url.na)])
     .then(responses => {
@@ -161,5 +165,6 @@ function readBossData(boss, tableNumber, table, Emitter, itr) {
     console.log("BOSS SPAWNED")
     Emitter.sendEvent("bossSpawn", boss, region) //alert if spawned
   }
+  Emitter.sendEvent("bossSpawn", boss, region) //alert if spawned
   boss.lastSpawn[region] = lastSpawn //update last boss spawn in the bossData object
 }
