@@ -19,4 +19,4 @@ before_script:
 install:
   - yarn
 script:
-  - yarn build
+  - yarn prod

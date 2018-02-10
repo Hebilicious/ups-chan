@@ -23,11 +23,11 @@ Refer to $help after the bot is in your server.
 
 ### For self hosting
 
-> This bot might have some hardcoded ids/emojis. You'll need to refactor it a bit.
-> Make sure you have a working node.js environment.
-> Install rethinkdb => Official instructions [here](https://www.rethinkdb.com/docs/install/).
-> Make sure that the service is running on the default port.
-> If you do not have yarn `npm install -g yarn` or use npm instead.
+> * This bot might have some hardcoded ids/emojis. You'll need to refactor it a bit.
+> * Make sure you have a working node.js environment.
+> * Install rethinkdb => Official instructions [here](https://www.rethinkdb.com/docs/install/).
+> * Make sure that the service is running on the default port.
+> * If you do not have yarn `npm install -g yarn` or use npm instead.
 
 Create an auth.json at the directory root and paste your token like this :
 
@@ -41,13 +41,14 @@ Then on your terminal:
 
 ```sh
 yarn install
-npm run dev
+yarn test
+yarn dev
 ```
 
 To build and run:
 
 ```sh
-npm run build
+yarn build
 node dist/app.js
 ```
 
@@ -57,7 +58,7 @@ If you want to run the bot as a background task with pm2:
 
 ```sh
 npm install -g pm2
-npm run build
+yarn prod
 pm2 start ecosystem.config.js
 ```
 
@@ -65,11 +66,13 @@ pm2 will watch the dist folder and autorestart the bot on a new build or when it
 
 ## TODO
 
-Tweak the spoiler to use hastebin/markdownshare instead of gifs since discord changed how the gifs are displayed.
+* Tweak the spoiler to use hastebin/markdownshare instead of gifs since discord changed how the gifs are displayed.
 
 ```bash
 haste() { a=$(cat); curl -X POST -s -d "$a" https://hastebin.com/documents | awk -F '"' '{print "https://hastebin.com/"$4}'; }
 ```
+
+* Write more tests
 
 ## Contact
 
