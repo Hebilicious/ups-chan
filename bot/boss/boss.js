@@ -165,6 +165,5 @@ function readBossData(boss, tableNumber, table, Emitter, itr) {
     console.log("BOSS SPAWNED")
     Emitter.sendEvent("bossSpawn", boss, region) //alert if spawned
   }
-  Emitter.sendEvent("bossSpawn", boss, region) //alert if spawned
   boss.lastSpawn[region] = lastSpawn //update last boss spawn in the bossData object
 }
