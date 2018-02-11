@@ -79,7 +79,12 @@ export function handleBoss(client) {
         let channel = guild.channels.find("name", cName)
         if (channel && conf.region == region) {
           console.log(region + " " + boss.alert)
-          embed.setTitle(boss.name)
+          if (!role) {
+            embed.setTitle(boss.name)
+          } 
+          if (role) {
+            embed.setTitle(guild.roles.find('name', boss.name))
+          }
           embed.setDescription(boss.alert)
           embed.setFooter(conf.region.toUpperCase())
           channel.send({ embed })
