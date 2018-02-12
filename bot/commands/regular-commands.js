@@ -40,36 +40,36 @@ export function toggleRole(message) {
   }
   let roleFound = false
   if (
-    !message.content.startsWith(".") &&
+    message.content.startsWith(".") &&
     message.content.split(" ").length == 1
-  )
-    return
-  Object.entries(roleObj).forEach(([command, roleName]) => {
-    if (message.content.toLowerCase() === `.${command}`) {
-      roleFound = true
-      const role = message.guild.roles.find("name", roleName)
-      if (!role) {
-        message.guild
-          .createRole({ name: roleName, color: "PURPLE" })
-          .then(role => {
-            message.channel.send(`Created role ${roleName}.`)
-            handleRole(role)
-          })
-          .catch(console.error)
-      } else {
-        handleRole(role)
+  ) {
+    Object.entries(roleObj).forEach(([command, roleName]) => {
+      if (message.content.toLowerCase() === `.${command}`) {
+        roleFound = true
+        const role = message.guild.roles.find("name", roleName)
+        if (!role) {
+          message.guild
+            .createRole({ name: roleName, color: "PURPLE" })
+            .then(role => {
+              message.channel.send(`Created role ${roleName}.`)
+              handleRole(role)
+            })
+            .catch(console.error)
+        } else {
+          handleRole(role)
+        }
       }
-    }
-  })
+    })
 
-  if (!roleFound)
-    message.reply("This role is either non-existent or not assignable.")
+    if (!roleFound)
+      message.reply("This role is either non-existent or not assignable.")
 
-  function handleRole(role) {
-    if (!message.member.roles.some(r => r.id == role.id)) {
-      message.member.addRole(role)
-    } else if (message.member.roles.some(r => r.id == role.id)) {
-      message.member.removeRole(role)
+    function handleRole(role) {
+      if (!message.member.roles.some(r => r.id == role.id)) {
+        message.member.addRole(role)
+      } else if (message.member.roles.some(r => r.id == role.id)) {
+        message.member.removeRole(role)
+      }
     }
   }
 }
