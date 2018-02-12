@@ -24,15 +24,48 @@ export function meeseeksAnswer(message, client) {
  * @param {Message} message
  */
 export function toggleRole(message) {
-  if (message.content === ".summon") {
-    const role = message.guild.roles.find("name", "Summon")
-    if (!role) return
-    if (!message.member.roles.some(r => r.id == role.id)) {
-      message.member.addRole(role)
+  // Roles which can be toggled by regular members
+  const roleObj = {
+    summon: 'Summon', 
+    kzarka: 'Kzarka', 
+    kutum: 'Kutum', 
+    karanda: 'Karanda',
+    nouver: 'Nouver',
+    bheg: 'Bheg',
+    mud: 'Mudster',
+    red: 'Red Nose',
+    dim: 'Dim Tree',
+    ogre: 'Ogre Muraka',
+    troll: 'Troll Quint'
+  }
+    let roleFound = false
+  Object.entries(roleObj).forEach(([command, roleName]) => {
+    if (message.content.toLowerCase() === `.${command}`) {
+        roleFound = true
+      const role = message.guild.roles.find("name", roleName)
+      if (!role) {
+        message.guild
+          .createRole({ name: roleName, color: "PURPLE" })
+          .then(role => {
+            message.channel.send(`Created role ${roleName}.`)
+            handleRole(role)
+          })
+          .catch(console.error)
+      } else {
+        handleRole(role)
+      }
     }
-    if (message.member.roles.some(r => r.id == role.id)) {
-      message.member.removeRole(role)
-    }
+  })
+  
+  if (!roleFound) message.reply('This role is either non-existent or not assignable.')
+  
+ function handleRole(role){
+        if (!message.member.roles.some(r => r.id == role.id)) {
+        message.member.addRole(role)
+      }
+      else if (message.member.roles.some(r => r.id == role.id)) {
+        message.member.removeRole(role)
+      }
   }
 }
 /**
