@@ -9,42 +9,42 @@ export const bossData = {
   dastardBheg: {
     name: "Dastard Bheg",
     alert:
-      "The cowardly imp Dastard Bheg took up his mace again to terrorize the Serendian villagers.",
+      "The cowardly imp took up his mace again to terrorize the Serendian villagers.",
     img: "http://urzasarchives.com/wp-content/uploads/wbt_bheg.png",
     lastSpawn: {}
   },
   dimTreeSpirit: {
     name: "Dim Tree Spirit",
     alert:
-      "Dim Tree Spirit, lord of the forest, has awoken from his slumber and summoned his loyal minions to attack the villagers.",
+      "The ord of the forest has awoken from his slumber and summoned his loyal minions to attack the villagers.",
     img: "http://urzasarchives.com/wp-content/uploads/wbt_dim.png",
     lastSpawn: {}
   },
   giantMudster: {
     name: "Giant Mudster",
     alert:
-      "The natural catastrophe Giant Mudster decided to wipe out the town of Glish one more time.",
+      "The natural catastrophe decided to wipe out the town of Glish one more time.",
     img: "http://urzasarchives.com/wp-content/uploads/wbt_mudster.png",
     lastSpawn: {}
   },
   karanda: {
     name: "Karanda",
     alert:
-      "The harpy queen's spawn was attacked by hunters and now it's Karanda's time to strike!",
+      "The harpy queen's spawn was attacked by hunters and now it's her time to strike!",
     img: "http://urzasarchives.com/wp-content/uploads/wbt_harpy.png",
     lastSpawn: {}
   },
   kzarka: {
     name: "Kzarka",
     alert:
-      "The dark religion's leader has been summoned in the ancient shrine. Heroes assemble and vanquish Kzarka!",
+      "The dark religion's leader has been summoned in the ancient shrine. Heroes assemble and vanquish him!",
     img: "http://urzasarchives.com/wp-content/uploads/wbt_kzarka.png",
     lastSpawn: {}
   },
   redNose: {
     name: "Red Nose",
     alert:
-      "Rudolph is very bad at handling his abandonment issues since Santa fired him. And kids make fun of his Red Nose.a",
+      "Rudolph is very bad at handling his abandonment issues since Santa fired him. And kids make fun of his nose.s",
     img: "http://urzasarchives.com/wp-content/uploads/wbt_red.png",
     lastSpawn: {}
   },
