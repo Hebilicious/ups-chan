@@ -39,6 +39,11 @@ export function toggleRole(message) {
     troll: "Troll Quint"
   }
   let roleFound = false
+  if (
+    !message.content.startsWith(".") &&
+    message.content.split(" ").length == 1
+  )
+    return
   Object.entries(roleObj).forEach(([command, roleName]) => {
     if (message.content.toLowerCase() === `.${command}`) {
       roleFound = true
