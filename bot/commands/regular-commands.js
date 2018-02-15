@@ -41,7 +41,7 @@ export function toggleRole(message) {
   }
   let roleFound = false
   //Starts with ., has alphabetic char after the dot, one word.
-  if (/[.][a-zA-Z]+/.test(message.content)) {
+  if (/^[.][a-zA-Z]+/.test(message.content)) {
     Object.entries(roleObj).forEach(([command, roleName]) => {
       if (message.content.toLowerCase() === `.${command}`) {
         roleFound = true
