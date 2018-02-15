@@ -36,7 +36,8 @@ export function toggleRole(message) {
     red: "Red Nose",
     dim: "Dim Tree",
     ogre: "Ogre Muraka",
-    troll: "Troll Quint"
+    troll: "Troll Quint",
+    rareitem: "rareitem"
   }
   let roleFound = false
   if (
@@ -49,7 +50,7 @@ export function toggleRole(message) {
         const role = message.guild.roles.find("name", roleName)
         if (!role) {
           message.guild
-            .createRole({ name: roleName, color: "PURPLE" })
+            .createRole({ name: roleName, mentionable: true, color: "PURPLE" })
             .then(role => {
               message.channel.send(`Created role ${roleName}.`)
               handleRole(role)
