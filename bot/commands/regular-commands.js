@@ -40,10 +40,8 @@ export function toggleRole(message) {
     rareitem: "rareitem"
   }
   let roleFound = false
-  if (
-    message.content.startsWith(".") &&
-    message.content.split(" ").length == 1
-  ) {
+  //Starts with ., has alphabetic char after the dot, one word.
+  if (/[.][a-zA-Z]+/.test(message.content)) {
     Object.entries(roleObj).forEach(([command, roleName]) => {
       if (message.content.toLowerCase() === `.${command}`) {
         roleFound = true
