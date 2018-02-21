@@ -50,8 +50,7 @@ export function handleBoss(client) {
       let conf = await DB.Connect(guild)
         .table("configuration")
         .get(0)
-      if (!conf.bossMod) return
-      if (conf.bossChannel && conf.bossChannel.length > 0) {
+      if (conf.bossMod && conf.bossChannel && conf.bossChannel.length > 0) {
         let cName = conf.bossChannel
         let channel = guild.channels.find("name", cName)
         if (channel) {
@@ -73,13 +72,17 @@ export function handleBoss(client) {
       let conf = await DB.Connect(guild)
         .table("configuration")
         .get(0)
-      if (!conf.bossMod) return
-      if (conf.bossChannel && conf.region && conf.bossChannel.length > 0) {
+      if (
+        conf.bossMod &&
+        conf.bossChannel &&
+        conf.region &&
+        conf.bossChannel.length > 0
+      ) {
         let cName = conf.bossChannel
         let channel = guild.channels.find("name", cName)
         if (channel && conf.region == region) {
           console.log(region + " " + boss.alert)
-          let role = guild.roles.find("name", boss.name)
+          let role = guild.roles.find("name", boss.role)
           if (role) channel.send(`Tagging all ${role} lovers...`)
           embed.setTitle(boss.name)
           embed.setDescription(boss.alert)
@@ -142,6 +145,7 @@ function retrieveBossData(Emitter) {
  */
 function readBossData(boss, tableNumber, table, Emitter, itr) {
   let region = itr == 0 ? "eu" : itr == 1 ? "na" : ""
+  // console.log(`Enter ${region} : ${JSON.stringify(boss.lastSpawn)}`)
   let selector = table //initial html table element
   let lastSpawn
   //find desired boss table
@@ -156,8 +160,6 @@ function readBossData(boss, tableNumber, table, Emitter, itr) {
     .next()
     .next()
     .html()
-  //ensure spawn time has numbers
-  if (!/\d/.test(lastSpawn)) return //exit
   //check if boss spawned
   if (
     lastSpawn != null &&

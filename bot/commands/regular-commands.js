@@ -27,17 +27,17 @@ export function toggleRole(message) {
   // Roles which can be toggled by regular members
   const roleObj = {
     summon: "Summon",
-    kzarka: "Kzarka",
+    rareitem: "rareitem",
     kutum: "Kutum",
-    karanda: "Karanda",
-    nouver: "Nouver",
     bheg: "Bheg",
-    mud: "Mudster",
-    red: "Red Nose",
-    dim: "Dim Tree",
+    dimtree: "Dim Tree",
+    mudster: "Mudster",
+    karanda: "Karanda",
+    kzarka: "Kzarka",
+    rednose: "Red Nose",
+    nouver: "Nouver",
     ogre: "Ogre Muraka",
-    troll: "Troll Quint",
-    rareitem: "rareitem"
+    troll: "Troll Quint"
   }
   let roleFound = false
   //Starts with ., has alphabetic char after the dot, one word.

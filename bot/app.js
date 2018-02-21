@@ -14,6 +14,7 @@ import * as cleverBot from "./cleverbot/cleverbot.js"
 import { handleNodeWar } from "./nodewars/nodewar.js"
 import { spoilThisContent } from "./spoiler/spoiler.js"
 import { handleEnhance } from "./enhancing/enhancing.js"
+import { Imperial } from "./imperial/imperial.js"
 
 /**
  * Here we have to call this to initiate the bot.
@@ -78,6 +79,7 @@ client.on("message", message => {
     handleNodeWar(message, client)
     handleEnhance(message, client)
     cleverBot.cleverAnswer(message, client)
+    // Imperial.handleMessage(message, client)
   } else {
     // console.log("Don't talk with yourself!")
   }
