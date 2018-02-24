@@ -70,7 +70,7 @@ function failstackManager(message, client) {
         if (isWordInList(secondArg, iType.name)) {
           //Iterate over itemtypes properties.
           Object.entries(iType).forEach(([k, v]) => {
-            if (v.current == target[firstArg]) {
+            if (v.current == target[firstArg.toLowerCase()]) {
               notHelping = false
               message.reply(
                 `Use stacks ranging from ${v.minStack} to ${
@@ -90,7 +90,7 @@ function failstackManager(message, client) {
       : null
   } else {
     message.reply(
-      `I don't know what a ${firstArg} ${secondArg} is, I'm sorry :(`
+      `Nobody told me what a ${firstArg} ${secondArg} was, so feel free to YOLO it (:`
     )
   }
 }
