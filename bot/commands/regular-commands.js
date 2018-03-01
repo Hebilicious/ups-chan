@@ -60,8 +60,8 @@ export function toggleRole(message) {
       }
     })
 
-    if (!roleFound)
-      // message.reply("This role is either non-existent or not assignable.")
+    // if (!roleFound)
+    // message.reply("This role is either non-existent or not assignable.")
 
     function handleRole(role) {
       if (!message.member.roles.some(r => r.id == role.id)) {
