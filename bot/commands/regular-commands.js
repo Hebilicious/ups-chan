@@ -3,21 +3,21 @@ import { sendEmbedHelpAsDM } from "../verbose/functions.js"
 import { getRandomMeeseeksInteraction } from "../verbose/messages.js"
 const timezone = "Europe/Paris"
 
-/**
- * Talks to Mr meeseeks.
- * @param {Message} message
- * @param {Client} client
- */
-export function meeseeksAnswer(message, client) {
-  //MeeseeksBOT ID
-  if (message.author.id == "159985870458322944") {
-    message.channel.send(getRandomMeeseeksInteraction()).then(m => {
-      setTimeout(() => {
-        m.delete()
-      }, 2500)
-    })
-  }
-}
+// /**
+//  * Talks to Mr meeseeks.
+//  * @param {Message} message
+//  * @param {Client} client
+//  */
+// export function meeseeksAnswer(message, client) {
+//   //MeeseeksBOT ID
+//   if (message.author.id == "159985870458322944") {
+//     message.channel.send(getRandomMeeseeksInteraction()).then(m => {
+//       setTimeout(() => {
+//         m.delete()
+//       }, 2500)
+//     })
+//   }
+// }
 
 /**
  * Toggle a specific role.
@@ -61,7 +61,7 @@ export function toggleRole(message) {
     })
 
     if (!roleFound)
-      message.reply("This role is either non-existent or not assignable.")
+      // message.reply("This role is either non-existent or not assignable.")
 
     function handleRole(role) {
       if (!message.member.roles.some(r => r.id == role.id)) {
@@ -139,16 +139,16 @@ export function pedoAge(message, client) {
   }
 }
 
-/**
- * Expect grammar.
- * @param {Message} message
- */
-export function grammar(message) {
-  const ex = ["execpt", "exectp", "excpet", "excetp", "except", "excpect"]
-  if (ex.some(w => message.content.includes(w))) {
-    message.reply("Expect. Expecting. ")
-  }
-}
+// /**
+//  * Expect grammar.
+//  * @param {Message} message
+//  */
+// export function grammar(message) {
+//   const ex = ["execpt", "exectp", "excpet", "excetp", "except", "excpect"]
+//   if (ex.some(w => message.content.includes(w))) {
+//     message.reply("Expect. Expecting. ")
+//   }
+// }
 
 /**
  * Send the help.

@@ -19,7 +19,13 @@ import * as Channels from "./imperial-channels"
 
 const Keys = { imperial: "$trade" }
 
-const Items = { Velia: ["Censor", "Porcelain"], Calpheon: ["Ginseng", "Spice"] }
+const Items = {
+  Velia: ["Censor", "Lacquer"],
+  Calpheon: ["Ginseng", "Slab"],
+  Heidel: ["Ginseng", "Lamp"],
+  Altinova: ["Porcelain", "Saber"],
+  Valencia: ["Silk", "Kite"]
+}
 
 export class Imperial {
   constructor() {
@@ -69,21 +75,25 @@ export class Imperial {
     if (channelNumber > 6 || channelNumber < 1) return
     //["Velia", 2] 2 is the leven number
     //Find the correct channel
-    let foundChannel = closestElement(channelName, Object.keys(Channels))
+    let foundChannel = closestElementFL(channelName, Object.keys(Channels))
     //Find the correct item
     console.log(foundChannel)
     //["Velia", "Censor", 2] 2 is the leven number
     let foundItem = this.findItem(imperialReport[1])
     console.log(foundItem)
-    return
+    // return
     switch (imperialReport.length) {
       case 2:
         //Ve2 censor
+        console.log("case 2")
         this.updateTable(foundChannel, channelNumber, [foundItem, "?"])
         break
       case 3:
         //Ve2 censor 0
-        if (Number.isInteger(imperialReport[2])) {
+        console.log("case 3")
+        console.log(imperialReport[2])
+        if (Number.isInteger(Number.parseInt(imperialReport[2]))) {
+          console.log(imperialReport[2])
           this.updateTable(foundChannel, channelNumber, [
             foundItem,
             imperialReport[2]
@@ -94,6 +104,8 @@ export class Imperial {
         }
         break
       case 4:
+        console.log("case 4")
+
         //Ve1 censor 0 porcelain
         if (Number.isInteger(imperialReport[2])) {
           let secondItem = this.findItem(imperialReport[2])
@@ -115,6 +127,8 @@ export class Imperial {
         }
         break
       case 5:
+        console.log("case 5")
+
         //Ve1 censor 0 porcelain 1
         let secondItem = this.findItem(imperialReport[4])
         this.updateTable(
@@ -130,6 +144,8 @@ export class Imperial {
   }
 
   static updateTable(...args) {
+    console.log("Updating table")
+    console.log(args)
     let channel = args[0]
     let cNumber = args[1]
     let firstItem = {
@@ -150,24 +166,36 @@ export class Imperial {
   }
 
   static setChannelItems(channel, cNumber, firstItem, secondItem) {
+    console.log("Set channel Items")
     return new Promise(resolve => {
-      let number = cNumber
+      let number = Ntw.toWords(cNumber)
+      // console.log(number)
+      let c = channel[0]
+      // console.log(c)
       let quantity = firstItem.quantity
-      let dataChannel = Channels[channel][number]
+      // console.log(quantity)
+      // console.log(Channels[c])
       let entry = { [firstItem.name]: quantity }
+      // console.log(entry)
       if (!secondItem) {
-        if (dataChannel instanceof Object) {
-          dataChannel = Object.assign({}, dataChannel, entry)
+        if (Channels[c][number] instanceof Object) {
+          Channels[c][number] = Object.assign({}, Channels[c][number], entry)
         } else {
-          dataChannel = entry
+          Channels[c][number] = entry
         }
         resolve()
       } else {
         let entry2 = { [secondItem.name]: secondItem.quantity }
-        if (dataChannel instanceof Object) {
-          dataChannel = Object.assign({}, dataChannel, entry, entry2)
+        // console.log(entry2)
+        if (Channels[c][number] instanceof Object) {
+          Channels[c][number] = Object.assign(
+            {},
+            Channels[c][number],
+            entry,
+            entry2
+          )
         } else {
-          dataChannel = Object.assign({}, entry, entry2)
+          Channels[c][number] = Object.assign({}, entry, entry2)
         }
         resolve()
       }
@@ -184,15 +212,25 @@ export class Imperial {
       .setFooter("Last updated at")
       .setTimestamp()
       .setThumbnail(image)
+      console.log(Channels)
       Object.entries(Channels).forEach(([name, numbers]) =>{
           embed.addField(`
-          ${name}:\n
-          ${this.mapChannelNumbers(numbers)}:`)
+          ${name}:`, `${mapChannelNumbers(numbers)}`)
       })
     this.message.channel.send({embed})
     }
 }
 
+function closestElementFL(needle, haystack) {
+  return haystack
+    .filter(
+      straw =>
+        straw[0].toLowerCase() == needle[0].toLowerCase() &&
+        straw[1].toLowerCase() == needle[1].toLowerCase()
+    )
+    .map(straw => [straw, leven(needle, straw)])
+    .reduce((p, c) => (p[1] < c[1] ? p : c))
+}
 function closestElement(needle, haystack) {
   return haystack
     .map(straw => [straw, leven(needle, straw)])
@@ -200,14 +238,14 @@ function closestElement(needle, haystack) {
 }
 
 function mapChannelNumbers(numbers) {
-  return Object.entries(numbers).map(
-    ([number, items]) => ` ${Wtn.convert(number)} : ${mapItems(items)} \n`
-  )
+  return Object.entries(numbers)
+    .map(([number, items]) => `${Wtn.convert(number)} : ${mapItems(items)}`)
+    .join("\n")
 }
 // {Censor: "?", Porcelain: 5},
 function mapItems(items) {
   return Object.entries(items).map(
-    ([name, quantity]) => `${getEmoji(name)} | ${quantity} `
+    ([name, quantity]) => ` ${getEmoji(name)} | ${quantity}`
   )
 }
 

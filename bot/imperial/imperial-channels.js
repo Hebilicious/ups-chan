@@ -50,7 +50,9 @@ export const Kamasylvia = {
   one: "",
   two: "",
   three: "",
-  four: "",
-  five: "",
-  six: ""
+  four: ""
+}
+
+export const Arsha = {
+  one: ""
 }
