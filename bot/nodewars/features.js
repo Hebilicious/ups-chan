@@ -71,11 +71,11 @@ export function attendNodeWar(message, channel, role) {
     .then(r => updateParticipantTopic(message, channel, role))
     .catch(console.error)
   // Send the message, mentioning the member
-  message.member.user.createDM().then(function(DM) {
-    DM.send(Messages.getRandomOkMessage())
-  })
+  // message.member.user.createDM().then(function(DM) {
+  //   DM.send(Messages.getRandomOkMessage())
+  // })
   channel.send(
-    message.member.user.username + " will attend at the upcoming memewar!"
+    message.member.user.username + " will attend at the upcoming nodewar."
   )
 }
 
@@ -95,11 +95,11 @@ export function cancelNodeWarAttendance(message, channel, role) {
     .then(r => updateParticipantTopic(message, channel, role))
     .catch(console.error)
   // Send the message, mentioning the member
-  message.member.user.createDM().then(function(DM) {
-    DM.send(Messages.getRandomOkMessage())
-  })
+  // message.member.user.createDM().then(function(DM) {
+  //   DM.send(Messages.getRandomOkMessage())
+  // })
   channel.send(
-    message.member.user.username + " will not attend! Next time fosure though."
+    message.member.user.username + " will not attend. Next time for sure."
   )
 }
 
