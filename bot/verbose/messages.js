@@ -34,7 +34,7 @@ export function getRandomGoodLuckMessage() {
     "Yup. We're going for it.",
     "We're doing it.",
     "Evie would not hesitate.",
-    "Remember than someone failed TRI ogre 12 times tho..."
+    "Remember that someone failed TRI ogre 12 times tho..."
   ]
   return randomMessage(messages)
 }

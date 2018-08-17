@@ -93,7 +93,7 @@ export async function cancelNodeWarAttendance(message, channel, role) {
     .then(r => updateParticipantTopic(message, channel, role))
     .catch(console.error)
   channel.send(
-    message.member.user.username + " will not attend! Next time fosure though."
+    message.member.user.username + " will not attend. Next time for sure."
   )
 }
 

@@ -17,7 +17,7 @@ class Event {
 /**
  * Outputs something on a role change.
  */
-export class guildMemberUpdate extends Event {
+class guildMemberUpdate extends Event {
   constructor() {
     super("guildMemberUpdate")
     Array.prototype.diff = function(array) {

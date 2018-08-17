@@ -10,6 +10,7 @@ import * as aCommands from "./commands/admin-commands.js"
 import * as events from "./events/events.js"
 import { handleEnhance } from "./enhancing/enhancing.js"
 import { handleNodeWar } from "./nodewars/nodewar.js"
+import { Imperial } from "./imperial/imperial.js"
 /**
  * Neither the cleverbot nor spoiler protection features are working currently 
  * and I'm not willing to fix that just now. You can live without them.
@@ -79,6 +80,7 @@ client.on("message", message => {
     handleNodeWar(message, client)
     handleEnhance(message, client)
     // cleverBot.cleverAnswer(message, client)
+    // Imperial.handleMessage(message, client)
   } else {
     // console.log("Don't talk with yourself!")
   }
