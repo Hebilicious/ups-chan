@@ -7,19 +7,6 @@ function randomMessage(messages) {
   return messages[Math.floor(Math.random() * messages.length)]
 }
 
-export function getRandomBossTopic() {
-  const messages = [
-    "I'm looking for bosses.",
-    "I feel like Karanda is gonna give me a box today...",
-    "Come on Kzarka, where are you?",
-    "Should I really tell you about Red Nose guys?",
-    "Still looking, don't worry.",
-    "Come out, come out, wherever you are ❤",
-    "Where the hell did I store my Kutum auras ??",
-    "Ugh, I don't feel like going in the desert today."
-  ]
-  return randomMessage(messages)
-}
 export function getRandomMeeseeksInteraction() {
   const messages = [
     "👋 Hey Mr Meeseeks, look at me !! 👋",
@@ -31,6 +18,7 @@ export function getRandomMeeseeksInteraction() {
   ]
   return randomMessage(messages)
 }
+
 export function getRandomGoodLuckMessage() {
   const messages = [
     "I believe.",
@@ -95,28 +83,31 @@ export function getRandomWinMessage() {
   return randomMessage(messages)
 }
 
-export function getRandomOkMessage() {
-  const messages = [
-    "As you wish.",
-    "Your will, my hands.",
-    "Your wishes, my commands.",
-    "At your service.",
-    "Of course master.",
-    "I obey.",
-    "I'm yours to command.",
-    "Anything to please you my lord.",
-    "Yes please daddy.",
-    "Oh yeah, that's the spot baby...",
-    "I heard lib is a woman, is that true ?? Uh I'm sorry that's the wrong message !! I meant : Yes master.",
-    "Without hesitation.",
-    "Yes master.",
-    "Right away sir.",
-    "Sir, yes sir.",
-    "Rush b cyka blyat.. *enables english* Yes mylord.",
-    "Gladly",
-    "Whatever you say.",
-    "It's not like i wanted to do that >_<",
-    "I would have you right now on this table until you beg for mercy twice."
-  ]
-  return randomMessage(messages)
-}
+/**
+ * UNUSED FUNCTION
+ */
+// export function getRandomOkMessage() {
+//   const messages = [
+//     "As you wish.",
+//     "Your will, my hands.",
+//     "Your wishes, my commands.",
+//     "At your service.",
+//     "Of course master.",
+//     "I obey.",
+//     "I'm yours to command.",
+//     "Anything to please you my lord.",
+//     "Yes please daddy.",
+//     "Oh yeah, that's the spot baby...",
+//     "I heard lib is a woman, is that true ?? Uh I'm sorry that's the wrong message !! I meant : Yes master.",
+//     "Without hesitation.",
+//     "Yes master.",
+//     "Right away sir.",
+//     "Sir, yes sir.",
+//     "Rush b cyka blyat.. *enables english* Yes mylord.",
+//     "Gladly",
+//     "Whatever you say.",
+//     "It's not like i wanted to do that >_<",
+//     "I would have you right now on this table until you beg for mercy twice."
+//   ]
+//   return randomMessage(messages)
+// }

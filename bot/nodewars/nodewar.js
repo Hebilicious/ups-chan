@@ -154,17 +154,16 @@ function nodewarManager(message, client, nodeWarChannel, attendingRole, conf) {
     Nodewar.sendHelp(message, client)
     return
   }
-  //If no auth we return early
-  if (!Nodewar.canCreateNodeWar(message.member, conf.adminRolesIds)) {
-    message.reply("Gtfo scrub.")
-    return
-  }
   //If only $nodewar is passed we do stuff
   if (args.length == 0) {
     NodewarDB.nodewarCheck(message, nodeWarChannel, attendingRole)
     return
   }
-
+  //If no auth we return early
+  if (!Nodewar.canCreateNodeWar(message.member, conf.adminRolesIds)) {
+    message.reply("Insufficient permissions, gtfo.")
+    return
+  }
   //Cancel command
   if (firstArg === "cancel") {
     NodewarDB.cancelNodeWar(message, nodeWarChannel, attendingRole)
@@ -194,16 +193,13 @@ function nodewarManager(message, client, nodeWarChannel, attendingRole, conf) {
   }
 
   //Changing NW Channel command
-  if (
-    firstArg === "channel" &&
-    message.member.permissions.has("ADMINISTRATOR")
-  ) {
+  if (firstArg === "channel" && message.member.permissions.has("ADMINISTRATOR")) {
     let c =
       message.member.guild.channels.find("name", secondArg) ||
       message.member.guild.channels.find("id", thirdArg)
     if (!c) return
     DB.UpdateConfiguration(message.guild, { nodeWarChannel: c.name })
-    message.reply("Nodewar channel successfully set.")
+    message.reply("Memewar channel successfully set.")
     return
   }
 
@@ -233,11 +229,10 @@ function nodewarManager(message, client, nodeWarChannel, attendingRole, conf) {
     Sugar.Date.setLocale("en-GB")
     let sugarDate = Sugar.Date.create(firstArg)
     let tzDate = moment.tz(sugarDate, timezone)
-    if (tzDate.isValid()) {
+    if (tzDate.isValid() && !(tzDate.isBefore(Sugar.Date.create("today")))) {
+      let formattedDate = tzDate.format("dddd, MMMM Do YYYY")
       message.reply(
-        `Well met! Let's do a nodewar on the ${tzDate.format(
-          "dddd, MMMM Do YYYY"
-        )}`
+        `Well met! Let's do a Memewar on the ${formattedDate}`
       )
       NodewarDB.createNodeWar(message, tzDate)
     } else {

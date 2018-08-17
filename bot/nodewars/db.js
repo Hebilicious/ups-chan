@@ -41,7 +41,7 @@ export function endNodeWar(message, channel, role, result) {
       console.log(JSON.stringify(result, null, 2))
       if (victory) {
         message.channel.send(Messages.getRandomWinMessage())
-        setNodewarTopic(message, "EZ game EZ win EZ")
+        setNodewarTopic(message, "EZ GAME EZ WIN EZ")
       } else {
         message.channel.send(Messages.getRandomLossMessage())
         setNodewarTopic(message, "We got unlucky.")
@@ -65,7 +65,7 @@ export function cancelNodeWar(message, channel, role) {
     .run()
     .then(result => {
       console.log(JSON.stringify(result, null, 2))
-      message.reply(`NodeWar successfully canceled.`)
+      message.reply(`Memewar successfully canceled.`)
       setNodewarTopic(message, "UPS will prevail soon.")
       clearAttendingMembers(message, channel, role)
     })
@@ -96,13 +96,13 @@ export function createNodeWar(message, date) {
     .then(result => {
       if (result.length == 1) {
         updateCurrentNodeWar(nwObject, message)
-        message.reply(`Modified the current Nodewar.`)
-        setNodewarTopic(message, `Nodewar => ${fDate} !`)
+        message.reply(`Modified the current Memewar.`)
+        setNodewarTopic(message, `Memewar => ${fDate} !`)
       }
       if (result.length == 0) {
         insertNewNodeWar(nwObject, message)
-        message.reply("New nodewar created !")
-        setNodewarTopic(message, `Nodewar => ${fDate} !`)
+        message.reply("New Memewar created !")
+        setNodewarTopic(message, `Memewar => ${fDate} !`)
       }
       if (result.length > 1) {
         message.reply("DB ERROR, need to be resynced.")
@@ -136,7 +136,7 @@ export async function isNodeWarActive(message) {
   let activeNw = await DB.Connect(message.guild)
     .table("nodewar")
     .filter({ isActive: true })
-  activeNw.length == 1 ? true : false
+  return activeNw.length == 1 ? true : false
 }
 
 //Update a node war
@@ -171,9 +171,9 @@ function respondNodewar(message, channel, role, result) {
     setNodewarTopic(message, `Nodewar => ${fDate} !`).then(r =>
       updateParticipantTopic(message, channel, role)
     )
-    message.reply(`Nodewar scheduled for ${fDate}.`)
+    message.reply(`Memewar scheduled for ${fDate}.`)
   } else {
-    message.reply("When would you like to create a nodewar?")
+    message.reply("When would you like to create a Memewar?")
   }
 }
 
@@ -189,4 +189,28 @@ async function setNodewarTopic(message, topic) {
     conf.nodeWarChannel
   )
   return nodeWarChannel.setTopic(topic)
+}
+
+export function linkFamilyName(message) {
+  console.log("Trying to link family name...")
+  let nwObject = {isActive: true}
+  DB.Connect(message.guild)
+    .table("nodewar")
+    .filter({ isActive: true })
+    .run()
+    .then(result => {
+      if (result.length == 1) {
+        updateCurrentNodeWar(nwObject, message)
+        message.reply(`Modified the current Memewar.`)
+        setNodewarTopic(message, `Memewar => ${fDate} !`)
+      }
+      if (result.length == 0) {
+        insertNewNodeWar(nwObject, message)
+        message.reply("New Memewar created !")
+        setNodewarTopic(message, `Memewar => ${fDate} !`)
+      }
+      if (result.length > 1) {
+        message.reply("DB ERROR, need to be resynced.")
+      }
+    })
 }

@@ -4,16 +4,19 @@ const client = new Discord.Client()
 
 import * as DB from "./database/database.js"
 
-import * as Boss from "./boss/boss.js"
-
 import * as rCommands from "./commands/regular-commands.js"
 import * as aCommands from "./commands/admin-commands.js"
 
 import * as events from "./events/events.js"
-import * as cleverBot from "./cleverbot/cleverbot.js"
-import { handleNodeWar } from "./nodewars/nodewar.js"
-import { spoilThisContent } from "./spoiler/spoiler.js"
 import { handleEnhance } from "./enhancing/enhancing.js"
+import { handleNodeWar } from "./nodewars/nodewar.js"
+/**
+ * Neither the cleverbot nor spoiler protection features are working currently 
+ * and I'm not willing to fix that just now. You can live without them.
+ */
+// import * as cleverBot from "./cleverbot/cleverbot.js"
+// import { spoilThisContent } from "./spoiler/spoiler.js"
+
 
 /**
  * Here we have to call this to initiate the bot.
@@ -23,11 +26,11 @@ import { handleEnhance } from "./enhancing/enhancing.js"
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`)
   //Sync the DB with every server.
-  DB.syncConnectedServers(client).then(Boss.handleBoss(client))
+  DB.syncConnectedServers(client)
   client.user.setPresence({
     game: {
-      name: "Waiting for Lahn",
-      url: "http://twitch.tv/fix8radio",
+      name: "Waiting for Drieghan",
+      url: "http://twitch.tv/alzyx",
       type: "STREAMING"
     }
   })
@@ -66,18 +69,16 @@ client.on("message", message => {
   // console.log(`User:${message.author.username}, ID: ${message.author.id}`)
   if (message.author.id != client.user.id) {
     //DM only
-    if (message.guild == null) {
-      // console.log("No guild...")
-      cleverBot.cleverDM(message, client)
-    }
+    // if (message.guild == null) {
+    //   cleverBot.cleverDM(message, client)
+    // }
     //Pass the message to all the commands ES2016+ PogChamp.
     const commands = { ...rCommands, ...aCommands }
     Object.entries(commands).forEach(([command, call]) => call(message, client))
     //List of feature.
-    spoilThisContent(message, client)
     handleNodeWar(message, client)
     handleEnhance(message, client)
-    cleverBot.cleverAnswer(message, client)
+    // cleverBot.cleverAnswer(message, client)
   } else {
     // console.log("Don't talk with yourself!")
   }

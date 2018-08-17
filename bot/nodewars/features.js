@@ -3,7 +3,7 @@ import * as Messages from "../verbose/messages.js"
 import { checkMemberForRolesIds } from "../auth/authorization.js"
 import { sendEmbedHelpAsDM } from "../verbose/functions.js"
 import { isNodeWarActive } from "./db.js"
-
+ 
 /**
  * Send Nodewar Help.
  * @param {Message} message
@@ -60,9 +60,10 @@ export function clearAttendingMembers(message, channel, role) {
  * @param  {[type]} message [description]
  * @return {[type]}     [description]
  */
-export function attendNodeWar(message, channel, role) {
-  if (!isNodeWarActive(message)) {
-    channel.send("There's no active Nodewar.")
+export async function attendNodeWar(message, channel, role) {
+  let active = await isNodeWarActive(message)
+  if (!active) {
+    channel.send("There's no active Memewar.")
     return
   }
   // Assign the role to the member
@@ -70,12 +71,8 @@ export function attendNodeWar(message, channel, role) {
     .addRole(role)
     .then(r => updateParticipantTopic(message, channel, role))
     .catch(console.error)
-  // Send the message, mentioning the member
-  message.member.user.createDM().then(function(DM) {
-    DM.send(Messages.getRandomOkMessage())
-  })
   channel.send(
-    message.member.user.username + " will attend at the upcoming memewar!"
+    message.member.user.username + " will attend in the upcoming Memewar!"
   )
 }
 
@@ -84,9 +81,10 @@ export function attendNodeWar(message, channel, role) {
  * @param  {[type]} message [description]
  * @return {[type]}     [description]
  */
-export function cancelNodeWarAttendance(message, channel, role) {
-  if (!isNodeWarActive(message)) {
-    channel.send("There's no active Nodewar.")
+export async function cancelNodeWarAttendance(message, channel, role) {
+  let active = await isNodeWarActive(message)
+  if (!active) {
+    channel.send("There's no active Memewar.")
     return
   }
   // Remove the role from the member
@@ -94,10 +92,6 @@ export function cancelNodeWarAttendance(message, channel, role) {
     .removeRole(role)
     .then(r => updateParticipantTopic(message, channel, role))
     .catch(console.error)
-  // Send the message, mentioning the member
-  message.member.user.createDM().then(function(DM) {
-    DM.send(Messages.getRandomOkMessage())
-  })
   channel.send(
     message.member.user.username + " will not attend! Next time fosure though."
   )
@@ -125,7 +119,13 @@ export function updateParticipantTopic(message, channel, role) {
  * @param  {Channel} channel [description]
  * @param  {Role} role    [description]
  */
-export function listAttendingMembers(message, channel, role, conf) {
+export async function listAttendingMembers(message, channel, role, conf) {
+  // First check if there is an upcoming nodewar
+  let active = await isNodeWarActive(message)
+  if (!active) {
+    channel.send("There's no active Memewar.")
+    return
+  }
   //Check for roles
   //If no auth we return early
   if (!canCreateNodeWar(message.member, conf.adminRolesIds)) {
@@ -141,13 +141,13 @@ export function listAttendingMembers(message, channel, role, conf) {
   nameList = nameList.join("\n ")
   if (nwlist.size > 0) {
     message.channel.send(
-      `**Here's a list of everyone who's attending to the upcoming nodewar :**\n ${nameList} \n That is a total of **${
+      `**Here's a list of everyone who's attending to the upcoming Memewar :**\n ${nameList} \n That is a total of **${
         nwlist.size
       }** people.`
     )
   } else {
     message.channel.send(
-      "There are no participants for the upcoming nodewar yet."
+      "There are no participants for the upcoming Memewar yet."
     )
   }
 }
